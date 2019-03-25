@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView x:Class="PlayOnCloud.ChannelsList"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:WrapPanelSizeConverter x:Key="wrapPanelSizeConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition>
+                    <RowDefinition.Height>
+                        <OnIdiom x:TypeArguments="GridLength"
+                                 Phone="Auto"
+                                 Tablet="*" />
+                    </RowDefinition.Height>
+                </RowDefinition>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <playon:CustomScrollView
+                HeightRequest="{Binding Height, Source={x:Reference Name=channelsView}}"
+                RefreshCommand="{Binding MediaContent.RefreshSelected}"
+                VerticalOptions="FillAndExpand"
+                IsRefreshing="True">
+                <playon:CustomScrollView.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="15,15,15,8"
+                             Tablet="15,15,15,8" />
+                </playon:CustomScrollView.Padding>
+                <playon:CustomScrollView.Triggers>
+                    <DataTrigger Binding="{Binding DeviceOrientation}"
+                                 TargetType="playon:CustomScrollView"
+                                 Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="10,30,10,8"
+                                         Tablet="10,30,10,8" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Account.ChannelsCount}"
+                                 TargetType="playon:CustomScrollView"
+                                 Value="0">
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="0,0,0,0"
+                                         Tablet="0,0,0,0" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </playon:CustomScrollView.Triggers>
+                <playon:WrapPanel x:Name="channelsView"
+                                  HorizontalOptions="Center"
+                                  IsVisible="{Binding MediaContent.SelectedItem.IsRoot}"
+                                  ItemsSource="{Binding MediaContent.Root.Children}"
+                                  Orientation="Horizontal"
+                                  VerticalOptions="FillAndExpand">
+                    <playon:WrapPanel.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="10" />
+                    </playon:WrapPanel.Spacing>
+                    <playon:WrapPanel.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HeightRequest="{Binding Converter={StaticResource wrapPanelSizeConverter}}"
+                                  WidthRequest="{Binding Converter={StaticResource wrapPanelSizeConverter}}">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding BindingContext.MediaContent.SelectItem, Source={x:Reference Name=channelsView}}"
+                                        CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                                <ffimageloading:CachedImage FadeAnimationEnabled="True"
+                                                            HorizontalOptions="Center"
+                                                            LoadingPlaceholder="defaultChannelTile.jpg"
+                                                            Source="{Binding LargeThumbnailUrl}"
+                                                            VerticalOptions="Center" />
+                                <ffimageloading:CachedImage HorizontalOptions="Center"
+                                                            IsVisible="False"
+                                                            Source="serviceToolsOverlay.png"
+                                                            VerticalOptions="Center">
+                                    <ffimageloading:CachedImage.Triggers>
+                                        <DataTrigger Binding="{Binding IsAvailable}"
+                                                     TargetType="ffimageloading:CachedImage"
+                                                     Value="False">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                    </ffimageloading:CachedImage.Triggers>
+                                </ffimageloading:CachedImage>
+                            </Grid>
+                        </DataTemplate>
+                    </playon:WrapPanel.ItemTemplate>
+                </playon:WrapPanel>
+            </playon:CustomScrollView>
+            <playon:CustomActivityIndicator Grid.Row="0" Rotation="0"
+                                            Grid.RowSpan="1"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding MediaContent.IsLoading}"
+                                            IsRunning="{Binding MediaContent.IsLoading}"
+                                            IsVisible="{Binding MediaContent.IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.Triggers>
+                    <DataTrigger Binding="{Binding Account.ChannelsCount}"
+                                 TargetType="playon:CustomActivityIndicator"
+                                 Value="0">
+                        <Setter Property="Grid.Row">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="x:Int32"
+                                         Phone="1"
+                                         Tablet="0" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Grid.RowSpan">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="x:Int32"
+                                         Phone="2"
+                                         Tablet="1" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </playon:CustomActivityIndicator.Triggers>
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+            <Grid Grid.Row="1"
+                  HeightRequest="50"
+                  HorizontalOptions="Center"
+                  IsVisible="True"
+                  VerticalOptions="Center">
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="15,0,15,0"
+                             Tablet="15,0,15,0" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding DeviceOrientation}"
+                                 TargetType="Grid"
+                                 Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="20,0,20,0"
+                                         Tablet="20,0,20,0" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Account.ChannelsCount}"
+                                 TargetType="Grid"
+                                 Value="0">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <playon:CustomLabel LineSpacing="1.3"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Justified}"
+                                    Style="{StaticResource TinyFontLabel}"
+                                    Text="The use of third-party trademarks in this app is intended to imply neither any endorsement by nor any affiliation with the respective trademark owners."
+                                    TextColor="#939393" />
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

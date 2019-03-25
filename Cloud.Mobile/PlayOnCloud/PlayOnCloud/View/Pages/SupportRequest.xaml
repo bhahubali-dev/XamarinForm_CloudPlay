@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PlayOnCloud.SupportRequest"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             BackgroundColor="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Editor x:Name="supportRequestEditor"
+                HorizontalOptions="FillAndExpand"
+                TextColor="Black"
+                VerticalOptions="FillAndExpand">
+            <Editor.FontSize>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="10"
+                         Tablet="14" />
+            </Editor.FontSize>
+        </Editor>
+        <BoxView x:Name="keyboardSeparator"
+                 Grid.Row="1"
+                 HeightRequest="0"
+                 HorizontalOptions="FillAndExpand" />
+    </Grid>
+</ContentPage>

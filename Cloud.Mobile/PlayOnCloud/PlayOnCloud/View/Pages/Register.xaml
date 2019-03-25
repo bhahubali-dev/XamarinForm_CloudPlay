@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage x:Class="PlayOnCloud.Register"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <ContentPage.Triggers>
+        <DataTrigger Binding="{Binding DeviceOrientation}"
+                     TargetType="ContentPage"
+                     Value="{x:Static playonModel:DeviceOrientation.Landscape}">
+            <Setter Property="BackgroundImage" Value="{Binding Converter={StaticResource splashScreenBackgroundConverter}, ConverterParameter='BackgroundImage/BackgroundImage,jpg'}" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding DeviceOrientation}"
+                     TargetType="ContentPage"
+                     Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+            <Setter Property="BackgroundImage" Value="{Binding Converter={StaticResource splashScreenBackgroundConverter}, ConverterParameter='BackgroundImage/BackgroundImage,jpg'}" />
+        </DataTrigger>
+    </ContentPage.Triggers>
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:SplashScreenBackgroundConverter x:Key="splashScreenBackgroundConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    Android="0"
+                    WinPhone="0"
+                    iOS="0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid Grid.RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5.2*" />
+                <RowDefinition Height="0.8*" />
+                <RowDefinition Height="3.5*" />
+                <RowDefinition Height="0.5*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="4"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Account.IsLoading}"
+                                 TargetType="Grid"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <playon:Login x:Name="loginForm"
+                              HorizontalOptions="Center"
+                              IsVisible="False"
+                              VerticalOptions="Center">
+                    <playon:Login.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="playon:Login"
+                                     Value="{x:Static playonModel:RegisterViewMode.Login}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.IsLoading}"
+                                     TargetType="playon:Login"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.ForceHideView}"
+                                     TargetType="playon:Login"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </playon:Login.Triggers>
+                </playon:Login>
+                <playon:SignUp x:Name="signUpForm"
+                               HorizontalOptions="Center"
+                               IsVisible="False"
+                               VerticalOptions="Center">
+                    <playon:SignUp.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="playon:SignUp"
+                                     Value="{x:Static playonModel:RegisterViewMode.SignUp}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.IsLoading}"
+                                     TargetType="playon:SignUp"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.ForceHideView}"
+                                     TargetType="playon:SignUp"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </playon:SignUp.Triggers>
+                </playon:SignUp>
+                <playon:ResetPassword x:Name="resetPasswordForm"
+                                      HorizontalOptions="Center"
+                                      IsVisible="False"
+                                      VerticalOptions="Center">
+                    <playon:ResetPassword.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="playon:ResetPassword"
+                                     Value="{x:Static playonModel:RegisterViewMode.ResetPassword}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.IsLoading}"
+                                     TargetType="playon:ResetPassword"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </playon:ResetPassword.Triggers>
+                </playon:ResetPassword>
+            </Grid>
+            <playon:ImageButton Clicked="OnBackPressed"
+                                HorizontalOptions="Start"
+                                IsVisible="False"
+                                Style="{DynamicResource BackImageButton}"
+                                VerticalOptions="Start">
+                <playon:ImageButton.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="18,54,0,0"
+                             Tablet="36,92,0,0" />
+                </playon:ImageButton.Margin>
+                <playon:ImageButton.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="17"
+                             Tablet="30" />
+                </playon:ImageButton.HeightRequest>
+                <playon:ImageButton.Triggers>
+                    <MultiTrigger TargetType="playon:ImageButton">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Register.View}" Value="{x:Static playonModel:RegisterViewMode.None}" />
+                            <BindingCondition Binding="{Binding Register.Type}" Value="{x:Static playonModel:RegisterViewType.Queue}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="playon:ImageButton"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </playon:ImageButton.Triggers>
+            </playon:ImageButton>
+            <Button BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    IsVisible="False"
+                    Text="Welcome!"
+                    TextColor="White"
+                    VerticalOptions="Start">
+                <Button.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,40,0,0"
+                             Tablet="0,80,0,0" />
+                </Button.Margin>
+                <Button.FontSize>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="34" />
+                </Button.FontSize>
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Register.View}" Value="{x:Static playonModel:RegisterViewMode.None}" />
+                            <BindingCondition Binding="{Binding Register.Type}" Value="{x:Static playonModel:RegisterViewType.Queue}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Button"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button CommandParameter="{x:Static playonModel:RegisterViewMode.Login}"
+                    IsVisible="False"
+                    Style="{DynamicResource RegisterButton}"
+                    Text="Log in"
+                    VerticalOptions="Start">
+                <Button.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,40,24,0"
+                             Tablet="0,80,40,0" />
+                </Button.Margin>
+                <Button.FontSize>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="18"
+                             Tablet="28" />
+                </Button.FontSize>
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Register.View}" Value="{x:Static playonModel:RegisterViewMode.None}" />
+                            <BindingCondition Binding="{Binding Register.Type}" Value="{x:Static playonModel:RegisterViewType.Launch}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Button"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Grid BackgroundColor="Black" VerticalOptions="Start">
+                <Grid.Padding>
+                    <OnPlatform x:TypeArguments="Thickness"
+                                Android="0"
+                                WinPhone="0"
+                                iOS="10,40,10,10" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Register.View}"
+                                 TargetType="Grid"
+                                 Value="{x:Static playonModel:RegisterViewMode.None}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Grid"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <playon:ImageButton Margin="0,0,0,0"
+                                    Command="{Binding Register.SwitchView}"
+                                    CommandParameter="{x:Static playonModel:RegisterViewMode.None}"
+                                    Style="{DynamicResource BackImageButton}"
+                                    VerticalOptions="Center">
+                    <playon:ImageButton.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="17"
+                                 Tablet="30" />
+                    </playon:ImageButton.HeightRequest>
+                </playon:ImageButton>
+                <Label HorizontalOptions="CenterAndExpand"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       XAlign="Center">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RegisterViewMode.Login}">
+                            <Setter Property="Text" Value="Log in" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RegisterViewMode.SignUp}">
+                            <Setter Property="Text" Value="Sign up" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RegisterViewMode.ResetPassword}">
+                            <Setter Property="Text" Value="Reset Password" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Button CommandParameter="{x:Static playonModel:RegisterViewMode.SignUp}"
+                        IsVisible="False"
+                        Style="{DynamicResource RegisterButton}"
+                        Text="Or sign up">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Button"
+                                     Value="{x:Static playonModel:RegisterViewMode.Login}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button CommandParameter="{x:Static playonModel:RegisterViewMode.Login}"
+                        IsVisible="False"
+                        Style="{DynamicResource RegisterButton}"
+                        Text="Or log in">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Button"
+                                     Value="{x:Static playonModel:RegisterViewMode.SignUp}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+            <Image Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   IsVisible="False"
+                   Source="cloudLogo.png"
+                   VerticalOptions="Center">
+                <Image.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,0,0,30"
+                             Tablet="0,0,0,20" />
+                </Image.Margin>
+                <Image.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="100"
+                             Tablet="182" />
+                </Image.WidthRequest>
+                <Image.Triggers>
+                    <MultiTrigger TargetType="Image">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Register.View}" Value="{x:Static playonModel:RegisterViewMode.None}" />
+                            <BindingCondition Binding="{Binding Register.Type}" Value="{x:Static playonModel:RegisterViewType.Launch}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Image"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <Grid HorizontalOptions="Center"
+                  IsVisible="False"
+                  VerticalOptions="End">
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Register.View}"
+                                 TargetType="Grid"
+                                 Value="{x:Static playonModel:RegisterViewMode.None}">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Grid"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <playon:CustomLabel BoldText="your first 5 downloads are on us!"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                                    Text="Download movies and shows to watch offline. Sign up now and your first 5 downloads are on us!"
+                                    TextColor="White">
+                    <playon:CustomLabel.LineSpacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="1.2"
+                                 Tablet="1.3" />
+                    </playon:CustomLabel.LineSpacing>
+                    <playon:CustomLabel.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="250"
+                                 Tablet="452" />
+                    </playon:CustomLabel.WidthRequest>
+                    <playon:CustomLabel.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="25" />
+                    </playon:CustomLabel.FontSize>
+                    <playon:CustomLabel.Triggers>
+                        <MultiTrigger TargetType="playon:CustomLabel">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Register.View}" Value="{x:Static playonModel:RegisterViewMode.None}" />
+                                <BindingCondition Binding="{Binding Register.Type}" Value="{x:Static playonModel:RegisterViewType.Queue}" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="ParagraphStyleAlignment" Value="{x:Static playon:CustomTextAlignment.Justified}" />
+                            <Setter Property="Text" Value="PLAYON CLOUD uses your email to send you links to download your recordings. Sign up and your first 5 recordings are on us!" />
+                            <Setter Property="BoldText" Value="your first 5 recordings are on us!" />
+                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding DeviceOrientation}"
+                                     TargetType="playon:CustomLabel"
+                                     Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                            <Setter Property="WidthRequest">
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="250"
+                                         Tablet="452" />
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DeviceOrientation}"
+                                     TargetType="playon:CustomLabel"
+                                     Value="{x:Static playonModel:DeviceOrientation.Landscape}">
+                            <Setter Property="WidthRequest">
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="250"
+                                         Tablet="580" />
+                            </Setter>
+                        </DataTrigger>
+                    </playon:CustomLabel.Triggers>
+                </playon:CustomLabel>
+            </Grid>
+           <playon:CustomActivityIndicator x:Name="activityIndicator"
+                                            Grid.RowSpan="4"
+                                            HorizontalOptions="Center"
+                                            IsEnabled="True"
+                                            IsRunning="True"
+                                            IsVisible="{Binding Register.IsLoading}"
+                                            VerticalOptions="Center" >
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+              <playon:CustomActivityIndicator x:Name="activityIndicatorAccount"
+                                            Grid.RowSpan="4"
+                                            HorizontalOptions="Center"
+                                            IsEnabled="False"
+                                            IsRunning="False"
+                                            IsVisible="False"
+                                            VerticalOptions="Center">
+                <playon:CustomActivityIndicator.Triggers>
+                    <MultiTrigger TargetType="playon:CustomActivityIndicator">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Account.IsLoading}" Value="True" />
+                            <BindingCondition Binding="{Binding Register.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Setter Property="IsVisible" Value="True" />
+                        <Setter Property="IsRunning" Value="True" />
+                    </MultiTrigger>
+                </playon:CustomActivityIndicator.Triggers>
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+            <Grid Grid.Row="2"
+                  BackgroundColor="Transparent"
+                  HorizontalOptions="Center"
+                  IsVisible="False"
+                  VerticalOptions="Start">
+                <Grid.RowSpacing>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="10"
+                             Tablet="15" />
+                </Grid.RowSpacing>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Register.View}"
+                                 TargetType="Grid"
+                                 Value="{x:Static playonModel:RegisterViewMode.None}">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Register.IsLoading}"
+                                 TargetType="Grid"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <playon:RegisterButton x:Name="fbSignUpButton"
+                                       Background="#2e7de9"
+                                       BoldText="Facebook"
+                                       ImageSourceText="fbLogo.png"
+                                       OnClicked="SignUpWithFacebookClick"
+                                       Text="Connect with Facebook"
+                                       TextColor="White">
+                    <playon:RegisterButton.MarginText>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="8,0,0,0"
+                                 Tablet="0,0,0,0" />
+                    </playon:RegisterButton.MarginText>
+                </playon:RegisterButton>
+                <playon:RegisterButton Grid.Row="1"
+                                       Background="White"
+                                       BoldText="Email"
+                                       ButtonCommand="{Binding Register.SwitchView}"
+                                       ButtonCommandParameter="{x:Static playonModel:RegisterViewMode.SignUp}"
+                                       ImageSourceText="mailIcon.png"
+                                       Text="Continue with Email"
+                                       TextColor="#00a6f3">
+                    <playon:RegisterButton.MarginText>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="18,0,0,0"
+                                 Tablet="0,0,0,0" />
+                    </playon:RegisterButton.MarginText>
+                </playon:RegisterButton>
+                <playon:ImageButton Grid.Row="2"
+                                    BoldText=""
+                                    Clicked="SkipRegister"
+                                    FontAttributes="Bold"
+                                    Style="{DynamicResource TransparentButton}"
+                                    Text="Or, skip for now"
+                                    TextColor="White">
+                    <playon:ImageButton.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0,10,0,0"
+                                 Tablet="0,5,0,0" />
+                    </playon:ImageButton.Margin>
+                    <playon:ImageButton.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="22" />
+                    </playon:ImageButton.FontSize>
+                    <playon:ImageButton.Triggers>
+                        <DataTrigger Binding="{Binding Register.Type}"
+                                     TargetType="playon:ImageButton"
+                                     Value="{x:Static playonModel:RegisterViewType.Queue}">
+                            <Setter Property="Text" Value="Have an account? Sign in!" />
+                            <Setter Property="FontAttributes" Value="None" />
+                            <Setter Property="BoldText" Value="Sign in!" />
+                        </DataTrigger>
+                    </playon:ImageButton.Triggers>
+                </playon:ImageButton>
+            </Grid>
+            <StackLayout Grid.Row="3"
+                         HorizontalOptions="CenterAndExpand"
+                         Orientation="Horizontal">
+                <Label HorizontalTextAlignment="Center"
+                       IsVisible="true"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="By signing up, you agree to PlayOn's"
+                       TextColor="#ababab">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RegisterViewMode.None}">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </Label.Triggers>
+
+                </Label>
+                <Label HorizontalTextAlignment="Center"
+                       IsVisible="true"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="Terms and Conditions."
+                       TextColor="White">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Register.View}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RegisterViewMode.None}">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="PanGestureRecognizer_OnPanUpdated" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </StackLayout>
+            <!--<playon:CustomLinkLabel Grid.Row="3"
+                                    HorizontalTextAlignment="Center"
+                                    IsVisible="true"
+                                    LinkColor="White"
+                                    Style="{DynamicResource SmallFontLabel}"
+                                    Text="By signing up, you agree to PlayOn's Terms and Conditions."
+                                    TextColor="#ababab"
+                                    Url="https://www.playon.tv/cloud-tos"
+                                    UrlText="Terms and Conditions">
+                <playon:CustomLinkLabel.Triggers>
+                    <DataTrigger Binding="{Binding Register.View}"
+                                 TargetType="playon:CustomLinkLabel"
+                                 Value="{x:Static playonModel:RegisterViewMode.None}">
+                        <Setter Property="IsVisible" Value="false" />
+                    </DataTrigger>
+                </playon:CustomLinkLabel.Triggers>
+            </playon:CustomLinkLabel>-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

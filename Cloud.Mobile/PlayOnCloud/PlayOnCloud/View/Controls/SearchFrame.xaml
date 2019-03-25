@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:RoundFrame x:Class="PlayOnCloud.SearchFrame"
+                   xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                   Padding="0">
+    <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+        <StackLayout.Padding>
+            <OnIdiom x:TypeArguments="Thickness"
+                     Phone="0,0,9,0"
+                     Tablet="0,0,18,0" />
+        </StackLayout.Padding>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+            <StackLayout.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="14,0,0,0"
+                         Tablet="24,0,0,0" />
+            </StackLayout.Padding>
+            <playon:SearchEntry x:Name="SearchPhraseEntry"
+                                Margin="0,-5,0,0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Completed="SearchPhraseEntry_OnCompleted"
+                                Placeholder="Search"
+                                PlaceholderTextColor="Black"
+                                TextChanged="SearchPhraseEntry_TextChanged">
+                <playon:SearchEntry.FontSize>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="12"
+                             Tablet="16" />
+                </playon:SearchEntry.FontSize>
+            </playon:SearchEntry>
+        </StackLayout>
+        <playon:ImageButton x:Name="ImageClearButton" Clicked="ClearButton_OnClicked" IsVisible="False">
+            <playon:ImageButton.Margin>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="0,5,0,5"
+                         Tablet="0,5,0,5" />
+            </playon:ImageButton.Margin>
+            <playon:ImageButton.WidthRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="18"
+                         Tablet="30" />
+            </playon:ImageButton.WidthRequest>
+            <playon:ImageButton.HeightRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="18"
+                         Tablet="30" />
+            </playon:ImageButton.HeightRequest>
+            <playon:ImageButton.ImageWidthRequest>
+                <OnIdiom x:TypeArguments="x:Int32"
+                         Phone="10"
+                         Tablet="16" />
+            </playon:ImageButton.ImageWidthRequest>
+            <playon:ImageButton.ImageHeightRequest>
+                <OnIdiom x:TypeArguments="x:Int32"
+                         Phone="10"
+                         Tablet="16" />
+            </playon:ImageButton.ImageHeightRequest>
+        </playon:ImageButton>
+        <playon:ImageButton x:Name="ImageSearchButton"
+                            Clicked="Search_Clicked"
+                            CommandParameter="{Binding Source={x:Reference SearchPhraseEntry},
+                                                       Path=Text}"
+                            Orientation="{x:Static playon:ImageOrientation.ImageCentered}">
+            <playon:ImageButton.Margin>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="0,10,0,0"
+                         Tablet="0,10,0,0" />
+            </playon:ImageButton.Margin>
+            <playon:ImageButton.WidthRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="18"
+                         Tablet="30" />
+            </playon:ImageButton.WidthRequest>
+            <playon:ImageButton.HeightRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="18"
+                         Tablet="30" />
+            </playon:ImageButton.HeightRequest>
+            <playon:ImageButton.ImageWidthRequest>
+                <OnIdiom x:TypeArguments="x:Int32"
+                         Phone="10"
+                         Tablet="16" />
+            </playon:ImageButton.ImageWidthRequest>
+            <playon:ImageButton.ImageHeightRequest>
+                <OnIdiom x:TypeArguments="x:Int32"
+                         Phone="10"
+                         Tablet="16" />
+            </playon:ImageButton.ImageHeightRequest>
+        </playon:ImageButton>
+    </StackLayout>
+</playon:RoundFrame>

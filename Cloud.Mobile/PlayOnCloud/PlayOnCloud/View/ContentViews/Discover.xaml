@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:SlidingContentView x:Class="PlayOnCloud.Discover"
+                           xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                           xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                           xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+                           xmlns:xfc="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core">
+    <playon:SlidingContentView.Resources>
+        <ResourceDictionary>
+            <playon:ChannelNeedLoginConverter x:Key="channelNeedLoginConverter" />
+            <playon:ChannelHasLoginConverter x:Key="channelHasLoginConverter" />
+            <playon:ContentItemDurationAirDateConverter x:Key="contentItemDurationAirDateConverter" />
+        </ResourceDictionary>
+    </playon:SlidingContentView.Resources>
+    <playon:SlidingContentView.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition>
+                    <RowDefinition.Height>
+                        <OnIdiom x:TypeArguments="xfc:GridLength"
+                                 Phone="110"
+                                 Tablet="170" />
+                    </RowDefinition.Height>
+                </RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid BackgroundColor="Black" HorizontalOptions="FillAndExpand">
+                <ffimageloading:CachedImage Aspect="AspectFill"
+                                            BitmapOptimizations="False"
+                                            FadeAnimationEnabled="False"
+                                            HorizontalOptions="FillAndExpand"
+                                            IsVisible="False"
+                                            LoadingPlaceholder="{Binding MediaContent.MastheadLoadingPlaceholder}"
+                                            Opacity="0.15"
+                                            RetryCount="0"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="FillAndExpand">
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsChannel}" Value="False" />
+                                <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Source"
+                                    Value="{Binding MediaContent.SelectedFolder.LargeThumbnailMastheadUrl}" />
+                            <Setter Property="ErrorPlaceholder"
+                                    Value="{Binding MediaContent.SelectedChannel.MastheadUrl}" />
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                </ffimageloading:CachedImage>
+                <ffimageloading:CachedImage Aspect="AspectFill"
+                                            BitmapOptimizations="False"
+                                            ErrorPlaceholder="{Binding MediaContent.SelectedChannel.LargeThumbnailUrl}"
+                                            FadeAnimationEnabled="True"
+                                            HorizontalOptions="FillAndExpand"
+                                            RetryCount="0"
+                                            Source="{Binding MediaContent.SelectedChannel.MastheadUrl}"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="FillAndExpand">
+                    <ffimageloading:CachedImage.LoadingPlaceholder>
+                        <OnIdiom x:TypeArguments="ImageSource">
+                            <OnIdiom.Phone>
+                                <FileImageSource File="defaultMastheadSmall.jpg" />
+                            </OnIdiom.Phone>
+                            <OnIdiom.Tablet>
+                                <FileImageSource File="defaultMastheadMedium.jpg" />
+                            </OnIdiom.Tablet>
+                        </OnIdiom>
+                    </ffimageloading:CachedImage.LoadingPlaceholder>
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsChannel}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible" Value="False" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                </ffimageloading:CachedImage>
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             IsVisible="False"
+                             Orientation="Horizontal"
+                             VerticalOptions="Start">
+                    <StackLayout.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </StackLayout.Padding>
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.Triggers>
+                            <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsChannel}"
+                                         TargetType="Grid"
+                                         Value="False">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Grid.Triggers>
+                        <Button Command="{Binding MediaContent.ShowLoginDropdown}"
+                                HorizontalOptions="FillAndExpand"
+                                Style="{DynamicResource TransparentButton}"
+                                VerticalOptions="FillAndExpand" />
+                    </Grid>
+                    <Label FontAttributes="Bold"
+                           HorizontalOptions="CenterAndExpand"
+                           LineBreakMode="TailTruncation"
+                           Text="{Binding MediaContent.SelectedChannel.Name}"
+                           TextColor="White"
+                           VerticalOptions="Center">
+                        <Label.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="12"
+                                     Tablet="24" />
+                        </Label.FontSize>
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsChannel}"
+                                         TargetType="Label"
+                                         Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <StackLayout.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                     TargetType="StackLayout"
+                                     Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+                <Grid HorizontalOptions="Center"
+                      IsVisible="False"
+                      RowSpacing="15"
+                      VerticalOptions="End">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </Grid.Padding>
+                    <Grid.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                     TargetType="Grid"
+                                     Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <playon:SearchFrame Grid.Row="1"
+                                        BackgroundColor="White"
+                                        BorderColor="White"
+                                        BorderWidth="0"
+                                        Command="{Binding MediaContent.Search}"
+                                        HorizontalOptions="Center"
+                                        ImageSource="search.png"
+                                        ImageSourceClear="xCircle.png"
+                                        IsVisible="False"
+                                        Text="{Binding MediaContent.SearchPhrase,
+                                                       Mode=TwoWay}"
+                                        TextColor="#0f0f0f"
+                                        VerticalOptions="End">
+                        <playon:SearchFrame.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="220"
+                                     Tablet="350" />
+                        </playon:SearchFrame.WidthRequest>
+                        <playon:SearchFrame.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="28"
+                                     Tablet="48" />
+                        </playon:SearchFrame.HeightRequest>
+                        <playon:SearchFrame.BorderRadius>
+                            <OnIdiom x:TypeArguments="x:Int32"
+                                     Phone="14"
+                                     Tablet="24" />
+                        </playon:SearchFrame.BorderRadius>
+                        <playon:SearchFrame.Triggers>
+                            <MultiTrigger TargetType="playon:SearchFrame">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsSearchVisible}"
+                                                      Value="True" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}"
+                                                      Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </playon:SearchFrame.Triggers>
+                    </playon:SearchFrame>
+                </Grid>
+                <playon:ImageButton Command="{Binding MediaContent.GoBack}"
+                                    IsVisible="False"
+                                    Style="{DynamicResource BackImageButton}">
+                    <playon:ImageButton.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                     TargetType="playon:ImageButton"
+                                     Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </playon:ImageButton.Triggers>
+                </playon:ImageButton>
+            </Grid>
+            <Grid Grid.RowSpan="3" IsVisible="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="Grid">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel.LoginInfo.ValidationSuccessful}"
+                                Value="False" />
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                Value="True" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <Grid Grid.RowSpan="2"
+                      BackgroundColor="Black"
+                      Opacity="0.9" />
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <StackLayout.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="20"
+                                 Tablet="40" />
+                    </StackLayout.Spacing>
+                    <StackLayout.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="10,0,10,0"
+                                 Tablet="20,0,20,0" />
+                    </StackLayout.Padding>
+                    <ffimageloading:CachedImage Aspect="AspectFill"
+                                                BitmapOptimizations="False"
+                                                ErrorPlaceholder="empty150x130.png"
+                                                FadeAnimationEnabled="False"
+                                                HorizontalOptions="Center"
+                                                IsVisible="False"
+                                                LoadingPlaceholder="empty150x130.png"
+                                                TransformPlaceholders="False"
+                                                VerticalOptions="End">
+                        <ffimageloading:CachedImage.Triggers>
+                            <MultiTrigger TargetType="ffimageloading:CachedImage">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.ValidationSuccessful}"
+                                        Value="False" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                        Value="True" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}"
+                                                      Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Source" Value="{Binding MediaContent.SelectedChannel.LoginImageUrl}" />
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </ffimageloading:CachedImage.Triggers>
+                    </ffimageloading:CachedImage>
+                    <playon:ChannelLogin BindingContext="{Binding MediaContent}" />
+                    <StackLayout.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.IsLoading}"
+                                     TargetType="StackLayout"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+                <playon:ImageButton Command="{Binding MediaContent.GoBack}" Style="{DynamicResource BackImageButton}" />
+                <Grid Grid.Row="1">
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="15,10,15,15"
+                                 Tablet="35,15,35,35" />
+                    </Grid.Padding>
+                    <!--<StackLayout HorizontalOptions="FillAndExpand">
+                        <Label LineBreakMode="WordWrap"
+                               Text="We will never view or share your third-party account passwords. For more information, please see our"
+                               TextColor="#939393" />
+                        <Label LineBreakMode="WordWrap"
+                               Text="privacy policy."
+                               TextColor="#ffffff">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label LineBreakMode="WordWrap"
+                               Text="We are not necessarily affiliated with or endorsed by the sites PlayOn accesses or stores login credentials for."
+                               TextColor="#939393" />
+                    </StackLayout>-->
+                    <playon:CustomLinkLabel LineBreakMode="WordWrap"
+                                            ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Justified}"
+                                            Text="We will never view or share your third-party account passwords. For more information, please see our privacy policy. We are not necessarily affiliated with or endorsed by the sites PlayOn accesses or stores login credentials for."
+                                            TextColor="#939393"
+                                            Url="https://playon.tv/privacy"
+                                            UrlText="privacy policy">
+                        <playon:CustomLinkLabel.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="8"
+                                     Tablet="12" />
+                        </playon:CustomLinkLabel.FontSize>
+                        <playon:CustomLinkLabel.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                        </playon:CustomLinkLabel.GestureRecognizers>
+                    </playon:CustomLinkLabel>
+                </Grid>
+            </Grid>
+            <StackLayout Grid.Row="1">
+                <Grid BackgroundColor="Black" IsVisible="False">
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="15,8,15,8"
+                                 Tablet="30,16,30,16" />
+                    </Grid.Padding>
+                    <Grid.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="37"
+                                 Tablet="74" />
+                    </Grid.HeightRequest>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Triggers>
+                        <MultiTrigger TargetType="Grid">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}" Value="False" />
+                                <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsFolder}" Value="True" />
+                                <BindingCondition
+                                    Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelHasLoginConverter}}"
+                                    Value="True" />
+                                <BindingCondition
+                                    Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                    Value="False" />
+                                <BindingCondition
+                                    Binding="{Binding MediaContent.SelectedChannel.LoginInfo.LoginPerformed}"
+                                    Value="False" />
+                                <BindingCondition
+                                    Binding="{Binding MediaContent.SelectedChannel.LoginInfo.HideLoginInfoBar}"
+                                    Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </Grid.Triggers>
+                    <Label Grid.ColumnSpan="2"
+                           HorizontalOptions="Center"
+                           Style="{DynamicResource TinyFontLabel}"
+                           Text="{Binding MediaContent.SelectedChannel.LoginMetadata.ToolbarText}"
+                           TextColor="White"
+                           VerticalOptions="Center" />
+                    <Button Grid.Column="1"
+                            Command="{Binding MediaContent.HideLoginInfoBar}"
+                            HorizontalOptions="End"
+                            Image="close.png"
+                            VerticalOptions="Center">
+                        <Button.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="25"
+                                     Tablet="50" />
+                        </Button.WidthRequest>
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="20"
+                                     Tablet="40" />
+                        </Button.HeightRequest>
+                    </Button>
+                    <Button Grid.Row="1"
+                            BackgroundColor="Transparent"
+                            Command="{Binding MediaContent.ShowChannelLoginInfo}"
+                            FontAttributes="Bold"
+                            HorizontalOptions="End"
+                            Text="Learn more"
+                            TextColor="#00baff"
+                            VerticalOptions="FillAndExpand">
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="10"
+                                     Tablet="14" />
+                        </Button.FontSize>
+                        <Button.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="90"
+                                     Tablet="180" />
+                        </Button.WidthRequest>
+                    </Button>
+                    <BoxView Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             HorizontalOptions="Center"
+                             Opacity="0.3"
+                             VerticalOptions="FillAndExpand"
+                             WidthRequest="1"
+                             Color="White" />
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            Command="{Binding MediaContent.ShowChannelLoginControls}"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Start"
+                            Text="Log in"
+                            TextColor="#00baff"
+                            VerticalOptions="FillAndExpand">
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="10"
+                                     Tablet="14" />
+                        </Button.FontSize>
+                        <Button.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="90"
+                                     Tablet="180" />
+                        </Button.WidthRequest>
+                    </Button>
+                </Grid>
+                <Grid ColumnSpacing="0" IsVisible="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsChannel}"
+                                     TargetType="Grid"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <Image Grid.Column="0"
+                           HorizontalOptions="Fill"
+                           InputTransparent="True"
+                           Source="fadeBreadcrumbLeft.png"
+                           VerticalOptions="FillAndExpand">
+                        <Image.Margin>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="-40,0,0,0"
+                                     Tablet="-80,0,0,0" />
+                        </Image.Margin>
+                        <Image.TranslationX>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="40"
+                                     Tablet="80" />
+                        </Image.TranslationX>
+                        <Image.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="40"
+                                     Tablet="80" />
+                        </Image.WidthRequest>
+                    </Image>
+                    <playon:CustomScrollView x:Name="breadcrumbsScrollView"
+                                             Grid.Column="1"
+                                             BackgroundColor="#0F0F0F"
+                                             DisableBounces="True"
+                                             HorizontalOptions="Fill"
+                                             Orientation="Horizontal"
+                                             VerticalOptions="FillAndExpand">
+                        <playon:WrapPanel ItemsSource="{Binding MediaContent.Breadcrumbs}"
+                                          Orientation="Horizontal"
+                                          SelectedItem="{Binding MediaContent.SelectedFolder}"
+                                          Spacing="0">
+                            <playon:WrapPanel.Margin>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="8,0,0,0"
+                                         Tablet="16,0,0,0" />
+                            </playon:WrapPanel.Margin>
+                            <playon:WrapPanel.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout BackgroundColor="#0F0F0F"
+                                                 HorizontalOptions="Center"
+                                                 IsVisible="True"
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="FillAndExpand">
+                                        <StackLayout.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="40"
+                                                     Tablet="60" />
+                                        </StackLayout.HeightRequest>
+                                        <StackLayout.Triggers>
+                                            <DataTrigger Binding="{Binding IsRoot}"
+                                                         TargetType="StackLayout"
+                                                         Value="True">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <Button Margin="0"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding BindingContext.MediaContent.SelectItem,
+                                                                  Source={x:Reference Name=breadcrumbsScrollView}}"
+                                                CommandParameter="{Binding}"
+                                                FontAttributes="None"
+                                                Text="{Binding Name}"
+                                                TextColor="#0094FC">
+                                            <Button.Triggers>
+                                                <DataTrigger Binding="{Binding IsFromSearch}"
+                                                             TargetType="Button"
+                                                             Value="True">
+                                                    <Setter Property="Text"
+                                                            Value="{Binding Name, StringFormat='Search results for &quot;{0}&quot;'}" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                            <Button.HeightRequest>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="50"
+                                                         Tablet="60" />
+                                            </Button.HeightRequest>
+                                            <Button.FontSize>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="12"
+                                                         Tablet="20" />
+                                            </Button.FontSize>
+                                        </Button>
+                                        <Button Margin="0,0,0,0"
+                                                BackgroundColor="Transparent"
+                                                HorizontalOptions="Center"
+                                                InputTransparent="True"
+                                                IsVisible="True"
+                                                Text="&gt;"
+                                                TextColor="#0094FC"
+                                                VerticalOptions="Center">
+                                            <Button.WidthRequest>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="12"
+                                                         Tablet="24" />
+                                            </Button.WidthRequest>
+                                            <Button.FontSize>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="12"
+                                                         Tablet="20" />
+                                            </Button.FontSize>
+                                        </Button>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </playon:WrapPanel.ItemTemplate>
+                            <playon:WrapPanel.SelectedItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout BackgroundColor="#0F0F0F"
+                                                 HorizontalOptions="Center"
+                                                 IsVisible="True"
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="FillAndExpand">
+                                        <StackLayout.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="40"
+                                                     Tablet="60" />
+                                        </StackLayout.HeightRequest>
+                                        <StackLayout.Triggers>
+                                            <DataTrigger Binding="{Binding IsRoot}"
+                                                         TargetType="StackLayout"
+                                                         Value="True">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <Button Margin="0,0,0,0"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding BindingContext.MediaContent.SelectItem,
+                                                                  Source={x:Reference Name=breadcrumbsScrollView}}"
+                                                CommandParameter="{Binding}"
+                                                FontAttributes="Bold"
+                                                Text="{Binding Name}"
+                                                TextColor="#0094FC">
+                                            <Button.Triggers>
+                                                <DataTrigger Binding="{Binding IsFromSearch}"
+                                                             TargetType="Button"
+                                                             Value="True">
+                                                    <Setter Property="Text"
+                                                            Value="{Binding Name, StringFormat='Search results for &quot;{0}&quot;'}" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                            <Button.HeightRequest>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="50"
+                                                         Tablet="60" />
+                                            </Button.HeightRequest>
+                                            <Button.FontSize>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="12"
+                                                         Tablet="20" />
+                                            </Button.FontSize>
+                                        </Button>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </playon:WrapPanel.SelectedItemTemplate>
+                        </playon:WrapPanel>
+                    </playon:CustomScrollView>
+                    <Image Grid.Column="2"
+                           HorizontalOptions="Fill"
+                           InputTransparent="True"
+                           Source="fadeBreadcrumbRight.png"
+                           VerticalOptions="FillAndExpand">
+                        <Image.Margin>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="0,0,-40,0"
+                                     Tablet="0,0,-80,0" />
+                        </Image.Margin>
+                        <Image.TranslationX>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="-40"
+                                     Tablet="-80" />
+                        </Image.TranslationX>
+                        <Image.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="40"
+                                     Tablet="80" />
+                        </Image.WidthRequest>
+                    </Image>
+                </Grid>
+            </StackLayout>
+            <playon:CustomListView Grid.Row="2"
+                                   BackgroundColor="Transparent"
+                                   HorizontalOptions="FillAndExpand"
+                                   IsPullToRefreshEnabled="True"
+                                   IsRefreshing="{Binding MediaContent.IsRefreshing,
+                                                          Mode=TwoWay}"
+                                   IsVisible="False"
+                                   RefreshCommand="{Binding MediaContent.Refresh}"
+                                   VerticalOptions="FillAndExpand">
+                <playon:CustomListView.RowHeight>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="40"
+                             Tablet="70" />
+                </playon:CustomListView.RowHeight>
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell Tapped="Item_OnTapped">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ffimageloading:CachedImage Grid.Column="0"
+                                                            Aspect="AspectFill"
+                                                            ErrorPlaceholder="{Binding ChannelThumbnailUrl}"
+                                                            FadeAnimationEnabled="False"
+                                                            LoadingPlaceholder="empty.png"
+                                                            RetryCount="0"
+                                                            Source="{Binding SmallThumbnailUrl}"
+                                                            TransformPlaceholders="False" />
+                                <Grid Grid.Column="1"
+                                      RowSpacing="2"
+                                      VerticalOptions="Center">
+                                    <Grid.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="5,0,0,0"
+                                                 Tablet="10,0,0,0" />
+                                    </Grid.Padding>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label LineBreakMode="TailTruncation"
+                                           Style="{DynamicResource MediumFontLabel}"
+                                           Text="{Binding Name}"
+                                           TextColor="White" />
+                                    <Label Grid.Column="1"
+                                           Style="{DynamicResource SmallFontLabel}"
+                                           Text="{Binding Converter={StaticResource contentItemDurationAirDateConverter}}"
+                                           TextColor="#8c8c8c" />
+                                    <Label Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           LineBreakMode="TailTruncation"
+                                           Style="{DynamicResource SmallFontLabel}"
+                                           Text="{Binding Description}"
+                                           TextColor="#8c8c8c" />
+                                </Grid>
+                                <StackLayout Grid.Column="2"
+                                             HorizontalOptions="End"
+                                             Padding="0,0,5,0"
+                                             VerticalOptions="Center">
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="9"
+                                                 Tablet="18" />
+                                    </StackLayout.Padding>
+                                    <Image Source="folderArrow.png">
+                                        <Image.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="12"
+                                                     Tablet="24" />
+                                        </Image.HeightRequest>
+                                    </Image>
+                                </StackLayout>
+                            </Grid>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+                <playon:CustomListView.Triggers>
+                    <MultiTrigger TargetType="playon:CustomListView">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}" Value="False" />
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                    <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                 TargetType="playon:CustomListView"
+                                 Value="False">
+                        <Setter Property="ItemsSource" Value="{Binding MediaContent.SelectedFolder.Children}" />
+                        <Setter Property="SelectedItem" Value="{Binding MediaContent.SelectedItem, Mode=TwoWay}" />
+                    </DataTrigger>
+                </playon:CustomListView.Triggers>
+            </playon:CustomListView>
+            <StackLayout Grid.Row="2"
+                         HorizontalOptions="Center"
+                         IsVisible="False"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="20,0,20,80"
+                             Tablet="40,0,40,160" />
+                </StackLayout.Padding>
+                <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="We were unable to find anything here"
+                       TextColor="White"
+                       XAlign="Center" />
+                <Label Style="{DynamicResource CompactFontLabel}"
+                       TextColor="#838383"
+                       XAlign="Center">
+                    This content may no longer be available, or there may be a temporary network issue, or you may not have access to this content based on your credentials.
+                </Label>
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.SelectedFolder.Children.Count}" Value="0" />
+                            <BindingCondition Binding="{Binding MediaContent.IsLoading}" Value="False" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}" Value="False" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}" Value="True" />
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <Grid Grid.Row="2"
+                  Grid.RowSpacing="25"
+                  HorizontalOptions="Center"
+                  IsVisible="False"
+                  VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,0,0,80"
+                             Tablet="0,0,0,160" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="Grid">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.IsLoading}" Value="False" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsChannel}" Value="True" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}"
+                                              Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <Image Source="serviceTools.png" />
+                <Label Grid.Row="1"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="This channel is currently unavailable."
+                       TextColor="#838383"
+                       XAlign="Center" />
+            </Grid>
+            <playon:CustomActivityIndicator Grid.Row="2"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding MediaContent.IsLoading}"
+                                            IsRunning="{Binding MediaContent.IsLoading}"
+                                            IsVisible="{Binding MediaContent.IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.Triggers>
+                    <MultiTrigger TargetType="playon:CustomActivityIndicator">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel.LoginInfo.ValidationSuccessful}"
+                                Value="False" />
+                            <BindingCondition
+                                Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelNeedLoginConverter}}"
+                                Value="True" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedChannel.IsAvailable}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Grid.RowSpan" Value="3" />
+                        <Setter Property="Grid.Row" Value="0" />
+                    </MultiTrigger>
+                </playon:CustomActivityIndicator.Triggers>
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+        </Grid>
+    </playon:SlidingContentView.Content>
+</playon:SlidingContentView>

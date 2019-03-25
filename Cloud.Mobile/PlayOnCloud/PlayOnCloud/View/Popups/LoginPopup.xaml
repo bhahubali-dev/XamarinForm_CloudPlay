@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:PopupBase x:Class="PlayOnCloud.LoginPopup"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                  xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:PopupBase.Resources>
+        <ResourceDictionary>
+            <playon:ChannelHasLoginConverter x:Key="channelHasLoginConverter" />
+            <playon:ChannelsLongNameConverter x:Key="channelsLongNameConverter" />
+        </ResourceDictionary>
+    </playon:PopupBase.Resources>
+    <Grid BackgroundColor="Transparent">
+        <Grid BackgroundColor="Transparent">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer CommandParameter="{x:Null}" Tapped="Background_OnTapped" />
+            </Grid.GestureRecognizers>
+        </Grid>
+        <StackLayout BackgroundColor="Transparent"
+                     HorizontalOptions="Center"
+                     Orientation="Vertical"
+                     VerticalOptions="Start">
+            <StackLayout.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="44,0,0,0"
+                         Tablet="77,0,0,0" />
+            </StackLayout.Padding>
+            <StackLayout.Triggers>
+                <DataTrigger Binding="{Binding DeviceOrientation}"
+                             TargetType="StackLayout"
+                             Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                    <Setter Property="Padding">
+                        <Setter.Value>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="0,0,0,44"
+                                     Tablet="0,0,0,77" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </StackLayout.Triggers>
+            <Grid HorizontalOptions="FillAndExpand">
+                <Grid.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="80"
+                             Tablet="116" />
+                </Grid.HeightRequest>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer CommandParameter="{x:Null}" Tapped="Background_OnTapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <playon:RoundFrame BackgroundColor="Black"
+                               BorderColor="White"
+                               BorderRadius="1"
+                               BorderWidth="1"
+                               HorizontalOptions="FillAndExpand"
+                               Padding="0">
+                <playon:RoundFrame.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="220"
+                             Tablet="360" />
+                </playon:RoundFrame.WidthRequest>
+                <Grid BackgroundColor="Black"
+                      HorizontalOptions="FillAndExpand"
+                      RowSpacing="0"
+                      VerticalOptions="CenterAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0"
+                                 HorizontalOptions="StartAndExpand"
+                                 IsVisible="False"
+                                 Orientation="Horizontal"
+                                 VerticalOptions="CenterAndExpand">
+                        <StackLayout.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="40"
+                                     Tablet="60" />
+                        </StackLayout.HeightRequest>
+                        <playon:ImageButton BackgroundColor="Transparent"
+                                            InputTransparent="True"
+                                            Source="checkMarkWhite.png"
+                                            VerticalOptions="Center">
+                            <playon:ImageButton.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="12"
+                                         Tablet="20" />
+                            </playon:ImageButton.WidthRequest>
+                            <playon:ImageButton.HeightRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="12"
+                                         Tablet="20" />
+                            </playon:ImageButton.HeightRequest>
+                            <playon:ImageButton.Margin>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="25,0,0,0"
+                                         Tablet="50,0,0,0" />
+                            </playon:ImageButton.Margin>
+                        </playon:ImageButton>
+                        <Label LineBreakMode="TailTruncation"
+                               Text="{Binding MediaContent.SelectedChannel.LoginInfo.Username}"
+                               TextColor="White"
+                               VerticalOptions="Center"
+                               XAlign="Center">
+                            <Label.FontSize>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="12"
+                                         Tablet="18" />
+                            </Label.FontSize>
+                        </Label>
+                        <StackLayout.Triggers>
+                            <MultiTrigger TargetType="StackLayout">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelHasLoginConverter}}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.HasCredentials}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.LoginPerformed}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </StackLayout.Triggers>
+                    </StackLayout>
+                    <playon:ImageButton Grid.Row="1"
+                                        Clicked="Button_OnClicked"
+                                        Command="{Binding MediaContent.ShowChannelLoginControls}"
+                                        Style="{DynamicResource LoginPopupImageButton}"
+                                        Text="Change Channel Credentials">
+                        <playon:ImageButton.Triggers>
+                            <MultiTrigger TargetType="playon:ImageButton">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelHasLoginConverter}}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.HasCredentials}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.LoginPerformed}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </playon:ImageButton.Triggers>
+                    </playon:ImageButton>
+                    <playon:ImageButton Grid.Row="2"
+                                        Clicked="Button_OnClicked"
+                                        Command="{Binding MediaContent.Account.SubmitSupportRequest}"
+                                        IsVisible="True"
+                                        Style="{DynamicResource LoginPopupImageButton}"
+                                        Text="Report a Problem" />
+                    <playon:ImageButton Grid.Row="3"
+                                        Clicked="Button_OnClicked"
+                                        Command="{Binding MediaContent.ShowChannelLoginControls}"
+                                        Style="{DynamicResource LoginPopupImageButton}"
+                                        Text="Sign in">
+                        <playon:ImageButton.Triggers>
+                            <MultiTrigger TargetType="playon:ImageButton">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelHasLoginConverter}}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.LoginPerformed}"
+                                        Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </playon:ImageButton.Triggers>
+                    </playon:ImageButton>
+                    <playon:ImageButton Grid.Row="4"
+                                        Clicked="Button_OnClicked"
+                                        Command="{Binding MediaContent.ChannelLogout}"
+                                        CommandParameter="{Binding MediaContent.SelectedChannel}"
+                                        Style="{DynamicResource LoginPopupImageButton}"
+                                        Text="{Binding MediaContent.SelectedChannel.Name,
+                                                       StringFormat='Sign out of {0}',
+                                                       Converter={StaticResource channelsLongNameConverter}}">
+                        <playon:ImageButton.Triggers>
+                            <MultiTrigger TargetType="playon:ImageButton">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel, Converter={StaticResource channelHasLoginConverter}}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.HasCredentials}"
+                                        Value="True" />
+                                    <BindingCondition
+                                        Binding="{Binding MediaContent.SelectedChannel.LoginInfo.LoginPerformed}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </playon:ImageButton.Triggers>
+                    </playon:ImageButton>
+                </Grid>
+            </playon:RoundFrame>
+        </StackLayout>
+    </Grid>
+</playon:PopupBase>

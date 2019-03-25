@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage x:Class="PlayOnCloud.DetailsPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             BackgroundColor="Black">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    Android="0"
+                    WinPhone="0"
+                    iOS="0,20,0,0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="mainGrid">
+                <playon:ImageButton Clicked="GotBackClick" Style="{DynamicResource BackImageButton}">
+                    &gt;
+                </playon:ImageButton>
+            </Grid>
+            <StackLayout Grid.Row="1"
+                         BackgroundColor="Black"
+                         Orientation="Horizontal">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="12,0,12,0"
+                             Tablet="25,0,25,0" />
+                </StackLayout.Padding>
+                <StackLayout.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="40"
+                             Tablet="77" />
+                </StackLayout.HeightRequest>
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="20"
+                             Tablet="40" />
+                </StackLayout.Spacing>
+                <playon:NavigationFrame x:Name="discoverButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Content}"
+                                        ForcePortraitMode="True"
+                                        Image="channels.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Channels">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Content}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="libraryButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Library}"
+                                        ForcePortraitMode="True"
+                                        Image="recordings.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Recordings">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Library}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="queueButton"
+                                        BadgeValue="{Binding Queue.NewItemsCount}"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Queue}"
+                                        ForcePortraitMode="True"
+                                        Image="queue.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Queue">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Queue}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="notificationsButton"
+                                        BadgeValue="{Binding Notifications.UnreadNotificationsCount}"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Notifications}"
+                                        ForcePortraitMode="True"
+                                        Image="notifications.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Messages">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Notifications}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="accountButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Account}"
+                                        ForcePortraitMode="True"
+                                        Image="account.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Settings">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Account}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

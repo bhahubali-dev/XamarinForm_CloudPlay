@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+			x:Class="PlayOnCloud.TestPage"
+			Padding="20,20,20,20">
+	<ContentPage.Content>
+    <StackLayout BackgroundColor="Gray" Orientation="Vertical">
+      <StackLayout Orientation="Horizontal" BackgroundColor="Black">
+		<playon:NavigationFrame
+			Text="Library"
+			TextColor="#ffffff"
+			Image="library.png"
+			Checked="True"
+			FontSize="18">
+		</playon:NavigationFrame>
+
+		  <!-- <playon:ImageButton x:Name="LibraryButton"
+							  Text="LibraryDOHH"
+							  BackgroundColor="#000000"
+							  TextColor="#ffffff"
+							  HeightRequest="70"
+							  WidthRequest="130"
+							  ImageWidthRequest="32"
+							  ImageHeightRequest="29"
+							  Orientation="ImageOnTop"
+							  BorderRadius="0"
+							  Checked="False"
+							  SupportCheckedState="True"
+							  UncheckedAlpha="0.3"
+							  BadgeValue="1"
+							  BadgeColor="Aqua"
+							  BadgeSubColor="White">
+			  <playon:ImageButton.Source>
+				  <OnPlatform x:TypeArguments="ImageSource">
+					  <OnPlatform.iOS>
+						  <FileImageSource File="library.png" />
+					  </OnPlatform.iOS>
+				  </OnPlatform>
+			  </playon:ImageButton.Source>
+		  </playon:ImageButton> -->
+      </StackLayout>
+    </StackLayout>
+	</ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PlayOnCloud.PostLoad"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             BackgroundImage="{Binding Converter={StaticResource splashScreenBackgroundConverter},
+                                       ConverterParameter='Images.xcassets/LaunchImage.launchimage/Default,png'}">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:SplashScreenBackgroundConverter x:Key="splashScreenBackgroundConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <StackLayout HorizontalOptions="Center"
+                 Orientation="Vertical"
+                 VerticalOptions="Center">
+        <playon:CustomActivityIndicator x:Name="activityIndicator"
+                                        HorizontalOptions="Center"
+                                        IsEnabled="True"
+                                        IsRunning="True"
+                                        IsVisible="True"
+                                        VerticalOptions="Center"
+                                        Color="White">
+            <playon:CustomActivityIndicator.WidthRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="22"
+                         Tablet="44" />
+            </playon:CustomActivityIndicator.WidthRequest>
+            <playon:CustomActivityIndicator.HeightRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="22"
+                         Tablet="44" />
+            </playon:CustomActivityIndicator.HeightRequest>
+            <playon:CustomActivityIndicator.Margin>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="0, 120, 0, 0"
+                         Tablet="0, 240, 0, 0" />
+            </playon:CustomActivityIndicator.Margin>
+        </playon:CustomActivityIndicator>
+    </StackLayout>
+</ContentPage>

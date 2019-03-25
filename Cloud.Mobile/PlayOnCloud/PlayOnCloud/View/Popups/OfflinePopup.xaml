@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<playon:PopupBase x:Class="PlayOnCloud.OfflinePopup"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud">
+    <Grid BackgroundColor="Transparent">
+        <Grid BackgroundColor="Black" Opacity="0.8" />
+        <Grid BackgroundColor="Transparent"
+              HeightRequest="321"
+              HorizontalOptions="Center"
+              VerticalOptions="Center"
+              WidthRequest="342">
+            <playon:RoundFrame BackgroundColor="White" BorderRadius="6" />
+            <Grid HorizontalOptions="Center"
+                  RowSpacing="25"
+                  VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image HorizontalOptions="Center"
+                       Source="offline.png"
+                       VerticalOptions="Center" />
+                <Grid Grid.Row="1"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                           Text="You're Offline."
+                           TextColor="#252525"
+                           XAlign="Center" />
+                    <Label Grid.Row="1"
+                           Style="{DynamicResource SmallFontLabel}"
+                           TextColor="#252525"
+                           XAlign="Center">
+                        This feature is not available offline. Please try
+                        again later when you're back online.
+                    </Label>
+                </Grid>
+                <playon:RoundButton Grid.Row="3"
+                                    BackgroundColor="#00ccff"
+                                    Clicked="CloseClicked"
+                                    HorizontalOptions="Center"
+                                    Text="Got it"
+                                    TextColor="White"
+                                    VerticalOptions="Start" />
+            </Grid>
+        </Grid>
+    </Grid>
+</playon:PopupBase>

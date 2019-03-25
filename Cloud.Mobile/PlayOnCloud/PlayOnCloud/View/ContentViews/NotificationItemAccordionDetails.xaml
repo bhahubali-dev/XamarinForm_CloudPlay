@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="PlayOnCloud.NotificationItemAccordionDetails"
+	xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+	xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+	x:Name="notificationsLayout">
+	<ContentView.Resources>
+		<ResourceDictionary>
+			<playon:NullConverter x:Key="nullConverter"/>
+		</ResourceDictionary>
+	</ContentView.Resources>
+	<RelativeLayout
+		HorizontalOptions="FillAndExpand"
+		VerticalOptions="FillAndExpand"
+		BackgroundColor="Black">
+		<playon:SlidingGrid
+			x:Name="notificationItemDetailsGrid"
+			VerticalOptions="FillAndExpand"
+			HorizontalOptions="FillAndExpand"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+			RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+			<playon:NotificationItemDetails
+				IsVisible="False"
+				VerticalOptions="FillAndExpand"
+				HorizontalOptions="FillAndExpand">
+				<playon:NotificationItemDetails.WidthRequest>
+					<OnIdiom
+						x:TypeArguments="x:Double"
+						Phone="200"
+						Tablet="400"/>
+				</playon:NotificationItemDetails.WidthRequest>
+				<playon:NotificationItemDetails.Triggers>
+					<MultiTrigger TargetType="playon:NotificationItemDetails">
+						<MultiTrigger.Conditions>
+							<BindingCondition Binding="{Binding Notifications.FailedRecordingTipVisible}" Value="False"/>
+						</MultiTrigger.Conditions>
+						<Setter Property="IsVisible" Value="True"/>
+					</MultiTrigger>
+				</playon:NotificationItemDetails.Triggers>
+			</playon:NotificationItemDetails>
+			<playon:SlidingGrid.Triggers>
+				<MultiTrigger TargetType="playon:SlidingGrid">
+					<MultiTrigger.Conditions>
+						<BindingCondition Binding="{Binding Notifications.SelectedItem, Converter={StaticResource nullConverter}}" Value="False"/>
+					</MultiTrigger.Conditions>
+					<Setter Property="Shown" Value="True"/>
+				</MultiTrigger>
+			</playon:SlidingGrid.Triggers>
+		</playon:SlidingGrid>
+	</RelativeLayout>
+	<ContentView.Triggers>
+		<DataTrigger TargetType="ContentView" Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}">
+			<Setter Property="HeightRequest" Value="0"/>
+		</DataTrigger>
+	</ContentView.Triggers>
+</ContentView>

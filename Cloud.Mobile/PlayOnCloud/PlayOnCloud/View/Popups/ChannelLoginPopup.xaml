@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<playon:PopupBase x:Class="PlayOnCloud.ChannelLoginPopup"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                  xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                  xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:PopupBase.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="40,0,0,0"
+                         Tablet="77,0,0,0" />
+            </Grid.Padding>
+            <Grid.Triggers>
+                <DataTrigger Binding="{Binding DeviceOrientation}"
+                             TargetType="Grid"
+                             Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                    <Setter Property="Padding">
+                        <Setter.Value>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="0,0,0,40"
+                                     Tablet="0,0,0,77" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Grid.Triggers>
+            <Grid Grid.RowSpan="2"
+                  BackgroundColor="Black"
+                  Opacity="0.9" />
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="20"
+                             Tablet="40" />
+                </StackLayout.Spacing>
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="10,0,10,0"
+                             Tablet="20,0,20,0" />
+                </StackLayout.Padding>
+                <ffimageloading:CachedImage Aspect="AspectFill"
+                                            BitmapOptimizations="False"
+                                            ErrorPlaceholder="empty150x130.png"
+                                            FadeAnimationEnabled="False"
+                                            HorizontalOptions="Center"
+                                            LoadingPlaceholder="empty150x130.png"
+                                            Source="{Binding SelectedChannel.LoginImageUrl}"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="End" />
+                <playon:ChannelLogin IsVisible="False" OnLoginComplete="LoginComplete">
+                    <playon:ChannelLogin.Triggers>
+                        <MultiTrigger TargetType="playon:ChannelLogin">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedChannel.LoginInfo.ValidationSuccessful}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </playon:ChannelLogin.Triggers>
+                </playon:ChannelLogin>
+                <playon:ChannelLogout IsVisible="False">
+                    <playon:ChannelLogout.Triggers>
+                        <MultiTrigger TargetType="playon:ChannelLogout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedChannel.LoginInfo.ValidationSuccessful}" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </playon:ChannelLogout.Triggers>
+                </playon:ChannelLogout>
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsLoading}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="False" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Start"
+                         Padding="6,20,0,0"
+                         VerticalOptions="Start">
+                <Button BackgroundColor="Transparent"
+                        Clicked="Button_OnClicked"
+                        HorizontalOptions="Start"
+                        Image="closeBig.png"
+                        Style="{DynamicResource TransparentButton}"
+                        VerticalOptions="Start">
+                    <Button.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="40"
+                                 Tablet="80" />
+                    </Button.WidthRequest>
+                    <Button.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="50"
+                                 Tablet="100" />
+                    </Button.HeightRequest>
+                </Button>
+            </StackLayout>
+            <playon:CustomActivityIndicator Grid.RowSpan="2"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding IsLoading}"
+                                            IsRunning="{Binding IsLoading}"
+                                            IsVisible="{Binding IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+            <Grid Grid.Row="1">
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="15"
+                             Tablet="35" />
+                </Grid.Padding>
+                <!--<StackLayout Orientation="Horizontal">
+                    <Label
+                        Text="We will never view or share your third-party account passwords. For more information, please see our"
+                        TextColor="#939393" />
+                    <Label
+                        Text="privacy policy."
+                        TextColor="#ffffff">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label
+                        Text="We are not necessarily affiliated with or endorsed by the sites PlayOn accesses or stores login credentials for."
+                        TextColor="#939393" />
+                </StackLayout>-->
+                <playon:CustomLinkLabel LineBreakMode="WordWrap"
+                                        Text="We will never view or share your third-party account passwords. For more information, please see our privacy policy. We are not necessarily affiliated with or endorsed by the sites PlayOn accesses or stores login credentials for."
+                                        TextColor="#939393"
+                                        Url="https://playon.tv/privacy"
+                                        UrlText="privacy policy">
+                    <playon:CustomLinkLabel.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="8"
+                                 Tablet="12" />
+                    </playon:CustomLinkLabel.FontSize>
+                    <playon:CustomLinkLabel.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                    </playon:CustomLinkLabel.GestureRecognizers>
+                </playon:CustomLinkLabel>
+            </Grid>
+        </Grid>
+    </playon:PopupBase.Content>
+</playon:PopupBase>

@@ -1,0 +1,533 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage x:Class="PlayOnCloud.Main"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:playonViewModel="clr-namespace:PlayOnCloud.ViewModel;assembly=PlayOnCloud"
+             x:Name="mainPage"
+             BackgroundColor="Black">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <playon:NullConverter x:Key="nullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    Android="0"
+                    WinPhone="0"
+                    iOS="0,20,0,0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid BackgroundColor="#212121"
+              ColumnSpacing="0"
+              RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackLayout x:Name="navigationLayout" BackgroundColor="Black">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,10,0,0"
+                             Tablet="0,20,0,0" />
+                </StackLayout.Padding>
+                <StackLayout.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="40"
+                             Tablet="77" />
+                </StackLayout.WidthRequest>
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
+                    <playon:ImageButton Command="{Binding GoHome}"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Source="playon.png"
+                                        VerticalOptions="Start">
+                        <playon:ImageButton.ImageWidthRequest>
+                            <OnIdiom x:TypeArguments="x:Int32"
+                                     Phone="24"
+                                     Tablet="47" />
+                        </playon:ImageButton.ImageWidthRequest>
+                        <playon:ImageButton.ImageHeightRequest>
+                            <OnIdiom x:TypeArguments="x:Int32"
+                                     Phone="15"
+                                     Tablet="31" />
+                        </playon:ImageButton.ImageHeightRequest>
+                    </playon:ImageButton>
+                    <StackLayout.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="5,0,0,10"
+                                 Tablet="10,0,0,20" />
+                    </StackLayout.Padding>
+                    <StackLayout.Triggers>
+                        <DataTrigger Binding="{Binding DeviceOrientation}"
+                                     TargetType="StackLayout"
+                                     Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+                <playon:NavigationFrame x:Name="discoverButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Content}"
+                                        Image="channels.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Channels">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Content}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="libraryButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Library}"
+                                        Image="recordings.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Recordings">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Library}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="queueButton"
+                                        BadgeValue="{Binding Queue.NewItemsCount}"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Queue}"
+                                        Image="queue.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Queue">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Queue}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="notificationsButton"
+                                        BadgeValue="{Binding Notifications.UnreadNotificationsCount}"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Notifications}"
+                                        Image="notifications.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Messages">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Notifications}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame x:Name="accountButton"
+                                        Command="{Binding SelectItem}"
+                                        CommandParameter="{x:Static playonModel:CloudItem.Account}"
+                                        Image="account.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Settings">
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="{x:Static playonModel:CloudItem.Account}">
+                            <Setter Property="Checked" Value="True" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <StackLayout.Triggers>
+                    <DataTrigger Binding="{Binding DeviceOrientation}"
+                                 TargetType="StackLayout"
+                                 Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                        <Setter Property="Grid.Row" Value="1" />
+                        <Setter Property="Grid.ColumnSpan" Value="2" />
+                        <Setter Property="Orientation" Value="Horizontal" />
+                        <Setter Property="HeightRequest">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="40"
+                                         Tablet="77" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="12,0,12,0"
+                                         Tablet="25,0,25,0" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Spacing">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="20"
+                                         Tablet="40" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <Grid Grid.ColumnSpan="2"
+                  BackgroundColor="#802e2e2e"
+                  HorizontalOptions="FillAndExpand"
+                  IsVisible="{Binding Products.IsLoading}"
+                  VerticalOptions="FillAndExpand">
+                <playon:CustomActivityIndicator HorizontalOptions="Center"
+                                                IsEnabled="{Binding Products.IsLoading}"
+                                                IsRunning="{Binding Products.IsLoading}"
+                                                IsVisible="{Binding Products.IsLoading}"
+                                                VerticalOptions="Center"
+                                                Color="White">
+                    <playon:CustomActivityIndicator.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="22"
+                                 Tablet="44" />
+                    </playon:CustomActivityIndicator.WidthRequest>
+                    <playon:CustomActivityIndicator.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="22"
+                                 Tablet="44" />
+                    </playon:CustomActivityIndicator.HeightRequest>
+                    <playon:CustomActivityIndicator.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0, 120, 0, 0"
+                                 Tablet="0, 240, 0, 0" />
+                    </playon:CustomActivityIndicator.Margin>
+                </playon:CustomActivityIndicator>
+            </Grid>
+            <Grid Grid.Column="1"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <RelativeLayout x:Name="discoverLayout"
+                                HorizontalOptions="FillAndExpand"
+                                IsVisible="False"
+                                VerticalOptions="FillAndExpand">
+                    <playon:Discover HorizontalOptions="FillAndExpand"
+                                     IsVisible="False"
+                                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                            Property=Height,
+                                                                                            Factor=1}"
+                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView,
+                                                                                           ElementName=contentItemDetailsGrid,
+                                                                                           Property=X,
+                                                                                           Factor=1}"
+                                     VerticalOptions="FillAndExpand">
+                        <playon:Discover.DetailsWidth>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="200"
+                                     Tablet="400" />
+                        </playon:Discover.DetailsWidth>
+                        <playon:Discover.Triggers>
+                            <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                         TargetType="playon:Discover"
+                                         Value="False">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                            <MultiTrigger TargetType="playon:Discover">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsFolder}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsChannel}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                      Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="DetailsShown" Value="True" />
+                            </MultiTrigger>
+                        </playon:Discover.Triggers>
+                    </playon:Discover>
+                    <playon:SlidingGrid x:Name="contentItemDetailsGrid"
+                                        HorizontalOptions="EndAndExpand"
+                                        VerticalOptions="FillAndExpand">
+                        <Image Aspect="AspectFill" Source="detailsBackground.png" />
+                        <playon:ContentItemDetailsView HorizontalOptions="FillAndExpand"
+                                                       VerticalOptions="FillAndExpand">
+                            <playon:ContentItemDetailsView.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="200"
+                                         Tablet="400" />
+                            </playon:ContentItemDetailsView.WidthRequest>
+                            <playon:ContentItemDetailsView.Triggers>
+                                <DataTrigger Binding="{Binding MediaContent.SelectedItem.IsFolder}"
+                                             TargetType="playon:ContentItemDetailsView"
+                                             Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </playon:ContentItemDetailsView.Triggers>
+                        </playon:ContentItemDetailsView>
+                        <playon:SlidingGrid.Triggers>
+                            <MultiTrigger TargetType="playon:SlidingGrid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsFolder}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsChannel}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}"
+                                                      Value="False" />
+                                    <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                      Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Shown" Value="True" />
+                            </MultiTrigger>
+                        </playon:SlidingGrid.Triggers>
+                    </playon:SlidingGrid>
+                    <RelativeLayout.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="RelativeLayout"
+                                     Value="{x:Static playonModel:CloudItem.Content}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </RelativeLayout.Triggers>
+                </RelativeLayout>
+                <RelativeLayout x:Name="libraryLayout"
+                                HorizontalOptions="FillAndExpand"
+                                IsVisible="False"
+                                VerticalOptions="FillAndExpand">
+                    <playon:Library HorizontalOptions="FillAndExpand"
+                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                           Property=Height,
+                                                                                           Factor=1}"
+                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView,
+                                                                                          ElementName=libraryItemDetailsGrid,
+                                                                                          Property=X,
+                                                                                          Factor=1}"
+                                    VerticalOptions="FillAndExpand">
+                        <playon:Library.DetailsWidth>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="200"
+                                     Tablet="400" />
+                        </playon:Library.DetailsWidth>
+                    </playon:Library>
+                    <playon:SlidingGrid x:Name="libraryItemDetailsGrid"
+                                        HorizontalOptions="EndAndExpand"
+                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                               Property=Height,
+                                                                                               Factor=1}"
+                                        VerticalOptions="FillAndExpand">
+                        <playon:LibraryItemDetails BindingContext="{Binding Library}"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                                          Property=Height,
+                                                                                                          Factor=1}"
+                                                   VerticalOptions="FillAndExpand">
+                            <playon:LibraryItemDetails.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="200"
+                                         Tablet="400" />
+                            </playon:LibraryItemDetails.WidthRequest>
+                            <playon:LibraryItemDetails.Triggers>
+                                <DataTrigger Binding="{Binding Edit}"
+                                             TargetType="playon:LibraryItemDetails"
+                                             Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </DataTrigger>
+                            </playon:LibraryItemDetails.Triggers>
+                        </playon:LibraryItemDetails>
+                        <playon:SlidingGrid.Triggers>
+                            <MultiTrigger TargetType="playon:SlidingGrid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding Library.SelectedItem, Converter={StaticResource nullConverter}}"
+                                        Value="False" />
+                                    <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                      Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Shown" Value="True" />
+                            </MultiTrigger>
+                        </playon:SlidingGrid.Triggers>
+                    </playon:SlidingGrid>
+                    <RelativeLayout.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="RelativeLayout"
+                                     Value="{x:Static playonModel:CloudItem.Library}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </RelativeLayout.Triggers>
+                </RelativeLayout>
+                <RelativeLayout x:Name="queueLayout"
+                                HorizontalOptions="FillAndExpand"
+                                IsVisible="False"
+                                VerticalOptions="FillAndExpand">
+                    <playon:Queue HorizontalOptions="FillAndExpand"
+                                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                         Property=Height,
+                                                                                         Factor=1}"
+                                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView,
+                                                                                        ElementName=queueItemDetailsGrid,
+                                                                                        Property=X,
+                                                                                        Factor=1}"
+                                  VerticalOptions="FillAndExpand">
+                        <playon:Queue.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="200"
+                                     Tablet="400" />
+                        </playon:Queue.WidthRequest>
+                    </playon:Queue>
+                    <playon:SlidingGrid x:Name="queueItemDetailsGrid"
+                                        HorizontalOptions="EndAndExpand"
+                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                               Property=Height,
+                                                                                               Factor=1}"
+                                        VerticalOptions="FillAndExpand">
+                        <playon:QueueItemDetails BindingContext="{Binding Queue}"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                                        Property=Height,
+                                                                                                        Factor=1}"
+                                                 VerticalOptions="FillAndExpand">
+                            <playon:QueueItemDetails.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="200"
+                                         Tablet="400" />
+                            </playon:QueueItemDetails.WidthRequest>
+                        </playon:QueueItemDetails>
+                        <playon:SlidingGrid.Triggers>
+                            <MultiTrigger TargetType="playon:SlidingGrid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding Queue.SelectedItem, Converter={StaticResource nullConverter}}"
+                                        Value="False" />
+                                    <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                      Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Shown" Value="True" />
+                            </MultiTrigger>
+                        </playon:SlidingGrid.Triggers>
+                    </playon:SlidingGrid>
+                    <RelativeLayout.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="RelativeLayout"
+                                     Value="{x:Static playonModel:CloudItem.Queue}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </RelativeLayout.Triggers>
+                </RelativeLayout>
+                <RelativeLayout x:Name="notificationsLayout"
+                                HorizontalOptions="FillAndExpand"
+                                IsVisible="False"
+                                VerticalOptions="FillAndExpand">
+                    <playon:Notifications HorizontalOptions="FillAndExpand"
+                                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                                 Property=Height,
+                                                                                                 Factor=1}"
+                                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView,
+                                                                                                ElementName=notificationItemDetailsGrid,
+                                                                                                Property=X,
+                                                                                                Factor=1}"
+                                          VerticalOptions="FillAndExpand">
+                        <playon:Notifications.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="200"
+                                     Tablet="400" />
+                        </playon:Notifications.WidthRequest>
+                    </playon:Notifications>
+                    <playon:SlidingGrid x:Name="notificationItemDetailsGrid"
+                                        HorizontalOptions="EndAndExpand"
+                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                                               Property=Height,
+                                                                                               Factor=1}"
+                                        VerticalOptions="FillAndExpand">
+                        <playon:NotificationItemDetails HorizontalOptions="FillAndExpand"
+                                                        IsVisible="False"
+                                                        VerticalOptions="FillAndExpand">
+                            <playon:NotificationItemDetails.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="200"
+                                         Tablet="400" />
+                            </playon:NotificationItemDetails.WidthRequest>
+                            <playon:NotificationItemDetails.Triggers>
+                                <MultiTrigger TargetType="playon:NotificationItemDetails">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Notifications.FailedRecordingTipVisible}"
+                                                          Value="False" />
+                                        <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                          Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True" />
+                                </MultiTrigger>
+                            </playon:NotificationItemDetails.Triggers>
+                        </playon:NotificationItemDetails>
+                        <playon:FailedRecordingTip HorizontalOptions="FillAndExpand"
+                                                   IsVisible="False"
+                                                   VerticalOptions="FillAndExpand">
+                            <playon:FailedRecordingTip.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="200"
+                                         Tablet="400" />
+                            </playon:FailedRecordingTip.WidthRequest>
+                            <playon:FailedRecordingTip.Triggers>
+                                <MultiTrigger TargetType="playon:FailedRecordingTip">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Notifications.FailedRecordingTipVisible}"
+                                                          Value="True" />
+                                        <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                          Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True" />
+                                </MultiTrigger>
+                            </playon:FailedRecordingTip.Triggers>
+                        </playon:FailedRecordingTip>
+                        <playon:SlidingGrid.Triggers>
+                            <MultiTrigger TargetType="playon:SlidingGrid">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding Notifications.SelectedItem, Converter={StaticResource nullConverter}}"
+                                        Value="False" />
+                                    <BindingCondition Binding="{Binding DeviceOrientation}"
+                                                      Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Shown" Value="True" />
+                            </MultiTrigger>
+                        </playon:SlidingGrid.Triggers>
+                    </playon:SlidingGrid>
+                    <RelativeLayout.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="RelativeLayout"
+                                     Value="{x:Static playonModel:CloudItem.Notifications}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </RelativeLayout.Triggers>
+                </RelativeLayout>
+                <Grid x:Name="accountLayout"
+                      ColumnSpacing="0"
+                      HorizontalOptions="FillAndExpand"
+                      IsVisible="False"
+                      VerticalOptions="FillAndExpand">
+                    <Grid.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}"
+                                     TargetType="Grid"
+                                     Value="{x:Static playonModel:CloudItem.Account}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <playon:Account HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                </Grid>
+            </Grid>
+            <playon:ChannelsList Grid.Column="1"
+                                 HorizontalOptions="FillAndExpand"
+                                 IsVisible="False"
+                                 VerticalOptions="FillAndExpand">
+                <playon:ChannelsList.Triggers>
+                    <MultiTrigger TargetType="playon:ChannelsList">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding SelectedItem}"
+                                              Value="{x:Static playonModel:CloudItem.Content}" />
+                            <BindingCondition Binding="{Binding MediaContent.SelectedItem.IsRoot}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </playon:ChannelsList.Triggers>
+            </playon:ChannelsList>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

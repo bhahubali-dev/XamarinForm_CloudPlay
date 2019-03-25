@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<playon:RoundFrame x:Class="PlayOnCloud.NavigationFrame"
+                   xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                   xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+                   x:Name="roundFrame"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="FillAndExpand"
+                   Padding="0"
+                   VerticalOptions="Start">
+    <Grid>
+        <StackLayout HorizontalOptions="Center"
+                     Orientation="Vertical"
+                     VerticalOptions="Center">
+            <StackLayout.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="0,5,0,1"
+                         Tablet="0,10,0,10" />
+            </StackLayout.Padding>
+            <Grid x:Name="imageGridHolder"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Image x:Name="ImageImageSource" Aspect="AspectFit" />
+                <Button x:Name="BadgeImageSource"
+                        BackgroundColor="#00bff3"
+                        BorderColor="Black"
+                        HorizontalOptions="End"
+                        Text="·"
+                        TextColor="White"
+                        VerticalOptions="Center">
+                    <Button.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="7"
+                                 Tablet="12" />
+                    </Button.WidthRequest>
+                    <Button.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="7"
+                                 Tablet="12" />
+                    </Button.HeightRequest>
+                    <Button.BorderRadius>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="3"
+                                 Tablet="5" />
+                    </Button.BorderRadius>
+                    <Button.BorderWidth>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="1"
+                                 Tablet="2" />
+                    </Button.BorderWidth>
+                    <Button.TranslationY>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="7"
+                                 Tablet="11" />
+                    </Button.TranslationY>
+                    <Button.TranslationX>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="4"
+                                 Tablet="8" />
+                    </Button.TranslationX>
+                </Button>
+            </Grid>
+            <Label x:Name="TextLabel" HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+        <Grid BackgroundColor="#16FFFFFF"
+              HorizontalOptions="FillAndExpand"
+              IsVisible="False"
+              VerticalOptions="FillAndExpand">
+            <Grid.Triggers>
+                <MultiTrigger TargetType="Grid">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding Checked, Source={x:Reference roundFrame}}" Value="True" />
+                        <BindingCondition Binding="{Binding UseHighlight, Source={x:Reference roundFrame}}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </Grid.Triggers>
+            <Grid BackgroundColor="#16bcee"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="End">
+                <Grid.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="2"
+                             Tablet="4" />
+                </Grid.HeightRequest>
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="Grid">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding ForcePortraitMode, Source={x:Reference roundFrame}}" Value="False" />
+                            <BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="WidthRequest">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="x:Double"
+                                         Phone="2"
+                                         Tablet="4" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalOptions" Value="Start" />
+                        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                    </MultiTrigger>
+                </Grid.Triggers>
+            </Grid>
+        </Grid>
+        <Button x:Name="TransparentButton"
+                BackgroundColor="Transparent"
+                Clicked="Clicked" />
+    </Grid>
+    <playon:RoundFrame.Triggers>
+        <DataTrigger Binding="{Binding DeviceOrientation}"
+                     TargetType="playon:RoundFrame"
+                     Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        </DataTrigger>
+    </playon:RoundFrame.Triggers>
+</playon:RoundFrame>

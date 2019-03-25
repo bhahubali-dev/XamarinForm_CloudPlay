@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			xmlns:s="clr-namespace:System;assembly=mscorlib"
+			x:Class="PlayOnCloud.FailedRecordingTip"
+			BackgroundColor="Black">
+	<ContentView.Content>
+		<Grid HorizontalOptions="FillAndExpand" VerticalOptions="Center" RowSpacing="30">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.Padding>
+				<OnIdiom
+					x:TypeArguments="Thickness"
+					Phone="20,10,20,25"
+					Tablet="40,20,40,50"/>
+			</Grid.Padding>
+			<Label
+				VerticalOptions="Start"
+				HorizontalOptions="Center"
+				TextColor="White"
+				Text="Recording Failures"
+				Style="{DynamicResource MediumFontLabel}"/>
+			<Label
+				Grid.Row="1"
+				Text="Recordings can fail for many reasons. The provider site may have issues, or there may be an issue with your account. If you are trying to make a recording while streaming from the same provider account to another device at the same time, it may fail."
+				TextColor="White"
+				Style="{DynamicResource CompactFontLabel}"/>
+			<Label
+				Grid.Row="2"
+				Text="If you can stream this video through a browser window or the provider App, we recommend you try again after a day or so as that will give us time to resolve the issue."
+				TextColor="White"
+				Style="{DynamicResource CompactFontLabel}"/>
+			<Label
+				Grid.Row="3"
+				Text="We have issued you recording credit for this inconvenience and extend our apologies."
+				TextColor="White"
+				Style="{DynamicResource CompactFontLabel}"/>
+			<Button
+				Grid.Row="4"
+				Text="Got it"
+				TextColor="#47a2ff"
+				Style="{DynamicResource TransparentButton}"
+				HorizontalOptions="Center"
+				VerticalOptions="End"
+				Command="{Binding Notifications.ShowFailedRecordingTip}"
+				CommandParameter="True">
+				<Button.CommandParameter>
+					<s:Boolean>False</s:Boolean>
+				</Button.CommandParameter>
+				<Button.FontSize>
+					<OnIdiom x:TypeArguments="x:Double"
+						Phone="12"
+						Tablet="16"/>
+				</Button.FontSize>
+			</Button>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

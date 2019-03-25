@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:PopupBase x:Class="PlayOnCloud.ChannelLoginInfoView"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                  xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                  xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:PopupBase.Resources>
+        <ResourceDictionary />
+    </playon:PopupBase.Resources>
+    <playon:PopupBase.Content>
+        <Grid>
+            <Grid.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="40,0,0,0"
+                         Tablet="77,0,0,0" />
+            </Grid.Padding>
+            <Grid.Triggers>
+                <DataTrigger Binding="{Binding DeviceOrientation}"
+                             TargetType="Grid"
+                             Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                    <Setter Property="Padding">
+                        <Setter.Value>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="0,0,0,40"
+                                     Tablet="0,0,0,77" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Grid.Triggers>
+            <Grid BackgroundColor="Black" Opacity="0.9" />
+            <StackLayout HorizontalOptions="Start"
+                         Padding="6,20,0,0"
+                         VerticalOptions="Start">
+                <Button Clicked="Button_OnClicked"
+                        HorizontalOptions="Start"
+                        Image="closeBig.png"
+                        Style="{DynamicResource TransparentButton}"
+                        VerticalOptions="Start">
+                    <Button.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="40"
+                                 Tablet="80" />
+                    </Button.WidthRequest>
+                    <Button.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="50"
+                                 Tablet="100" />
+                    </Button.HeightRequest>
+                </Button>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="10"
+                             Tablet="20" />
+                </StackLayout.Spacing>
+                <ffimageloading:CachedImage Aspect="AspectFill"
+                                            BitmapOptimizations="False"
+                                            ErrorPlaceholder="empty150x130.png"
+                                            FadeAnimationEnabled="False"
+                                            HorizontalOptions="Center"
+                                            LoadingPlaceholder="empty150x130.png"
+                                            Source="{Binding MediaContent.SelectedChannel.LoginImageUrl}"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="End" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Style="{DynamicResource SmallFontLabel}"
+                           Text="{Binding MediaContent.SelectedChannel.LoginMetadata.LearnMoreHeader}"
+                           TextColor="White"
+                           XAlign="Center" />
+                    <Label Grid.Row="1"
+                           HorizontalOptions="Center"
+                           Style="{DynamicResource SmallFontLabel}"
+                           Text="{Binding MediaContent.SelectedChannel.LoginMetadata.LearnMoreDescription}"
+                           TextColor="White"
+                           XAlign="Center">
+                        <Label.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="270"
+                                     Tablet="400" />
+                        </Label.WidthRequest>
+                    </Label>
+                </Grid>
+                <Button BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Clicked="Button_OnClicked"
+                        Command="{Binding MediaContent.ShowChannelLoginControls}"
+                        HorizontalOptions="Center"
+                        Text="Log in with channel credentials"
+                        TextColor="#198feb"
+                        VerticalOptions="Center">
+                    <Button.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="16" />
+                    </Button.FontSize>
+                </Button>
+                <StackLayout Grid.Row="1"
+                             HorizontalOptions="Center"
+                             Orientation="Horizontal"
+                             VerticalOptions="Center">
+                    <Label Style="{DynamicResource SmallFontLabel}"
+                           Text="Or, visit"
+                           TextColor="White"
+                           VerticalOptions="Center" />
+                    <Button BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Clicked="Button_OnClicked"
+                            Command="{Binding OpenUrl}"
+                            CommandParameter="{Binding MediaContent.SelectedChannel.LoginMetadata.URL}"
+                            Text="{Binding MediaContent.SelectedChannel.LoginMetadata.URL}"
+                            TextColor="#198feb"
+                            VerticalOptions="Center">
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="10"
+                                     Tablet="14" />
+                        </Button.FontSize>
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </playon:PopupBase.Content>
+</playon:PopupBase>

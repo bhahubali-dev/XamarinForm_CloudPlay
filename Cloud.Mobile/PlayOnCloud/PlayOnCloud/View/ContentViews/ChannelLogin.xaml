@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlayOnCloud.ChannelLogin"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:ChannelNeedLoginConverter x:Key="channelNeedLoginConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid BackgroundColor="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackLayout
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+            <StackLayout.Spacing>
+                <OnIdiom
+                    x:TypeArguments="x:Double"
+                    Phone="12"
+                    Tablet="24" />
+            </StackLayout.Spacing>
+            <StackLayout.Padding>
+                <OnIdiom
+                    x:TypeArguments="Thickness"
+                    Phone="20,0,20,0"
+                    Tablet="40,0,40,0" />
+            </StackLayout.Padding>
+            <StackLayout
+                Orientation="Vertical">
+                <Label
+                    Text="{Binding SelectedChannel.LoginMetadata.AccountName, StringFormat='Log in to your {0} Account'}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Style="{DynamicResource ExtraMediumFontLabel}" />
+                <Label
+                    Margin="0,10,0,10"
+                    Text="{Binding SelectedChannel.LoginMetadata.Description}"
+                    TextColor="White"
+                    XAlign="Center"
+                    HorizontalOptions="Center"
+                    Style="{DynamicResource CompactFontLabel}" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Or, visit" TextColor="White" />
+                    <Label Text="{Binding SelectedChannel.Name, StringFormat='{0}'}" TextColor="#04a3ff">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapGustureCommand}"
+                                                  Tapped="TapGestureRecognizer_OnTapped"
+                                                  CommandParameter="{Binding SelectedChannel.LoginMetadata.URL}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="to create an account." TextColor="White" />
+                    <Label x:Name="ChannelUrl" Text="{Binding SelectedChannel.LoginMetadata.URL}" IsVisible="False" />
+                </StackLayout>
+                <!--<playon:CustomLinkLabel
+                    Text="{Binding SelectedChannel.Name, StringFormat='Or, visit {0} to create an account.'}"
+                    UrlText="{Binding SelectedChannel.Name}"
+                    Url="{Binding SelectedChannel.LoginMetadata.URL}"
+                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                    TextColor="White"
+                    LineBreakMode="WordWrap">
+                    <playon:CustomLinkLabel.FontSize>
+                        <OnIdiom
+                            x:TypeArguments="x:Double"
+                            Phone="12"
+                            Tablet="18" />
+                    </playon:CustomLinkLabel.FontSize>
+                </playon:CustomLinkLabel>-->
+            </StackLayout>
+            <StackLayout
+                Orientation="Vertical"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand">
+                <StackLayout.Spacing>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="15"
+                        Tablet="25" />
+                </StackLayout.Spacing>
+                <playon:RoundEntry
+                    ResponderName="channelLoginUsername"
+                    NextResponderName="channelLoginPassword"
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    Text="{Binding SelectedChannel.LoginInfo.Username, Mode=TwoWay}"
+                    Placeholder="Username"
+                    PlaceholderTextColor="#a3a3a3"
+                    Style="{DynamicResource LoginControls}"
+                    Margin="0,10,0,0"
+                    Tag="4" />
+                <playon:RoundEntry
+                    ResponderName="channelLoginPassword"
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    Text="{Binding SelectedChannel.LoginInfo.Password, Mode=TwoWay}"
+                    IsPassword="True"
+                    Placeholder="Password"
+                    PlaceholderTextColor="#a3a3a3"
+                    Completed="DoLogin"
+                    Style="{DynamicResource LoginControls}"
+                    Tag="4" />
+                <playon:RoundEntry
+                    IsVisible="False"
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    Text="{Binding SelectedChannel.LoginInfo.PIN, Mode=TwoWay}"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    Placeholder="PIN"
+                    PlaceholderTextColor="#a3a3a3"
+                    Style="{DynamicResource LoginControls}"
+                    Tag="4">
+                    <!--XXX: Do not show amazon PIN for now-->
+                    <!--<playon:RoundEntry.Triggers>
+						<DataTrigger TargetType="playon:RoundEntry" Binding="{Binding SelectedChannel.CredentialsType}" Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordPin}">
+							<Setter Property="IsVisible" Value="True"/>
+						</DataTrigger>
+					</playon:RoundEntry.Triggers>-->
+                </playon:RoundEntry>
+                <playon:BindablePicker
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    IsVisible="False"
+                    Title="  Cable Provider"
+                    Style="{DynamicResource BindablePickerLoginControls}"
+                    ItemsSource="{Binding SelectedChannel.LoginInfo.CableProviders}"
+                    SelectedIndex="{Binding SelectedChannel.LoginInfo.SelectedCableProviderIndex, Mode=TwoWay}">
+                    <playon:BindablePicker.Triggers>
+                        <DataTrigger TargetType="playon:BindablePicker"
+                                     Binding="{Binding SelectedChannel.CredentialsType}"
+                                     Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordServiceProvider}">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </playon:BindablePicker.Triggers>
+                </playon:BindablePicker>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedChannel.CredentialsType}"
+                                 Value="{x:Static playonModel:ChannelCredentialsType.ZipCode}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <StackLayout
+                Orientation="Vertical"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+                IsVisible="False">
+                <playon:RoundEntry
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    Text="{Binding SelectedChannel.LoginInfo.ZipCode, Mode=TwoWay}"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    Placeholder="Zip Code"
+                    PlaceholderTextColor="#a3a3a3"
+                    Style="{DynamicResource LoginControls}"
+                    Tag="4" />
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedChannel.CredentialsType}"
+                                 Value="{x:Static playonModel:ChannelCredentialsType.ZipCode}">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <StackLayout
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Start"
+                Padding="0,12,0,0"
+                Orientation="Vertical">
+                <playon:RoundFrame
+                    BackgroundColor="#ec008c"
+                    HorizontalOptions="Center"
+                    VerticalOptions="StartAndExpand"
+                    Padding="0"
+                    Style="{DynamicResource RoundFrameButtonLoginControls}"
+                    Tag="4">
+                    <playon:RoundFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="DoLogin" NumberOfTapsRequired="1" />
+                    </playon:RoundFrame.GestureRecognizers>
+                    <Label
+                        Text="Log in"
+                        TextColor="#202020"
+                        Style="{DynamicResource ExtraMediumFontLabel}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        FontAttributes="Bold" />
+                </playon:RoundFrame>
+                <Button Text="Help"
+                        TextColor="#04a3ff"
+                        Style="{DynamicResource MediumTransparentButton}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="StartAndExpand"
+                        Command="{Binding ChannelLoginHelp}"
+                        CommandParameter="{Binding SelectedChannel}" />
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+</ContentView>

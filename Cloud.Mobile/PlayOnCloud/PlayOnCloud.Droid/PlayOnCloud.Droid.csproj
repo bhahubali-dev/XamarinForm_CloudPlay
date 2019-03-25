@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AF9153D6-D0CC-49CC-9ECB-0E81DD9C619C}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayOnCloud.Droid</RootNamespace>
+    <AssemblyName>PlayOnCloud.Droid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <JavaMaximumHeapSize />
+    <JavaOptions />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExifLib.PCL.1.0.1\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.5\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.5\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Transformations, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Transformations.2.2.5\lib\MonoAndroid10\FFImageLoading.Transformations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HighlightMarker, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HighlightMarker.1.1.0\lib\monoandroid10\HighlightMarker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLCrypto, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PCLCrypto.2.0.147\lib\MonoAndroid23\PCLCrypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PInvoke.BCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.BCrypt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PInvoke.Kernel32.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Kernel32.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PInvoke.NCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.NCrypt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.Windows.Core, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PInvoke.Windows.Core.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.CurrentActivity, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Refractored.XamForms.PullToRefresh, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Refractored.XamForms.PullToRefresh.1.1.0\lib\MonoAndroid10\Refractored.XamForms.PullToRefresh.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Refractored.XamForms.PullToRefresh.Droid, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Refractored.XamForms.PullToRefresh.1.1.0\lib\MonoAndroid10\Refractored.XamForms.PullToRefresh.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLite-net, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\sqlite-net-pcl.1.3.1\lib\netstandard1.1\SQLite-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a84b7dcfb1391f7f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\MonoAndroid\SQLitePCLRaw.batteries_green.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\MonoAndroid\SQLitePCLRaw.batteries_v2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.core.1.1.2\lib\MonoAndroid\SQLitePCLRaw.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.lib.e_sqlite3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e4ad490600e2234c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.lib.e_sqlite3.android.1.1.2\lib\MonoAndroid\SQLitePCLRaw.lib.e_sqlite3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.provider.e_sqlite3.android.1.1.2\lib\MonoAndroid\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Json" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows, Version=2.0.6.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.0\System.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Design, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.Design.23.3.0\lib\MonoAndroid43\Xamarin.Android.Support.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v4.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v7.AppCompat.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v7.CardView.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.MediaRouter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v7.MediaRouter.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v7.RecyclerView.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Auth.Android">
+      <HintPath>..\..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="XLabs.Core, Version=2.0.5782.12218, Culture=neutral, PublicKeyToken=d65109b36e5040e4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLabs.Core.2.0.5782\lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\XLabs.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XLabs.Ioc, Version=2.0.5782.12218, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLabs.IoC.2.0.5782\lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\XLabs.Ioc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XLabs.Platform, Version=2.0.5782.12218, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLabs.Platform.2.0.5782\lib\MonoAndroid\XLabs.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XLabs.Platform.Droid, Version=2.0.5782.12262, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLabs.Platform.2.0.5782\lib\MonoAndroid\XLabs.Platform.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XLabs.Serialization, Version=2.0.5782.15703, Culture=neutral, PublicKeyToken=d65109b36e5040e4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLabs.Serialization.2.0.5782\lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\XLabs.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FormsViewGroup">
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.267\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.267\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform.Android">
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.267\lib\MonoAndroid10\Xamarin.Forms.Platform.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.267\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.267\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CloudItemProperties.cs" />
+    <Compile Include="Controls\CheckBoxView.cs" />
+    <Compile Include="Controls\CustomTextField.cs" />
+    <Compile Include="Controls\FormsUIRefreshControl.cs" />
+    <Compile Include="Controls\ITSegment.cs" />
+    <Compile Include="Controls\ITSegmentedControl.cs" />
+    <Compile Include="DependencyServices\AlertView.cs" />
+    <Compile Include="DependencyServices\AppVersionNumber.cs" />
+    <Compile Include="DependencyServices\DeviceInfo.cs" />
+    <Compile Include="DependencyServices\FacebookTools.cs" />
+    <Compile Include="DependencyServices\ImageTools.cs" />
+    <Compile Include="DependencyServices\InAppPurchase.cs" />
+    <Compile Include="DependencyServices\ItemDownloader.cs" />
+    <Compile Include="DependencyServices\KeyboardHelper.cs" />
+    <Compile Include="DependencyServices\LocalLibrary.cs" />
+    <Compile Include="DependencyServices\Logger.cs" />
+    <Compile Include="DependencyServices\ReachabilityHelper.cs" />
+    <Compile Include="DependencyServices\RemoteNotifications.cs" />
+    <Compile Include="DependencyServices\SharedSettings.cs" />
+    <Compile Include="DependencyServices\UserAgent.cs" />
+    <Compile Include="DependencyServices\UserStore.cs" />
+    <Compile Include="Extensions\FontExtensions.cs" />
+    <Compile Include="Extensions\SKProductExtension.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="LibraryItemProperties.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="MainApplication.cs" />
+    <Compile Include="Popups\DisplayHelper.cs" />
+    <Compile Include="Popups\FormsViewHelper.cs" />
+    <Compile Include="Popups\PopupDialogContainer.cs" />
+    <Compile Include="Popups\PopupService.cs" />
+    <Compile Include="Renderers\BlurredImageRenderer.cs" />
+    <Compile Include="Renderers\ChaptersEnabledVideoViewRenderer.cs" />
+    <Compile Include="Renderers\CheckBoxRenderer.cs" />
+    <Compile Include="Renderers\CustomActivityIndicatorRenderer.cs" />
+    <Compile Include="Renderers\CustomLabelRenderer.cs" />
+    <Compile Include="Renderers\CustomLinkLabelRenderer.cs" />
+    <Compile Include="Renderers\CustomListViewRenderer.cs" />
+    <Compile Include="Renderers\CustomProgressBarRenderer.cs" />
+    <Compile Include="Renderers\CustomScrollViewRenderer.cs" />
+    <Compile Include="Renderers\CustomSwitchRenderer.cs" />
+    <Compile Include="Renderers\CustomViewCellRenderer.cs" />
+    <Compile Include="Renderers\FacebookLoginrenderer.cs" />
+    <Compile Include="Renderers\GeneralButtonRenderer.cs" />
+    <Compile Include="Renderers\GeneralEntryRenderer.cs" />
+    <Compile Include="Renderers\ImageButtonRenderer.cs" />
+    <Compile Include="Renderers\ImageLoaderSourceHandlerEx.cs" />
+    <Compile Include="Renderers\NavigationFrameRenderer.cs" />
+    <Compile Include="Renderers\RoundButtonRenderer.cs" />
+    <Compile Include="Renderers\RoundEntryRenderer.cs" />
+    <Compile Include="Renderers\RoundFrameRenderer.cs" />
+    <Compile Include="Renderers\SearchEntryRenderer.cs" />
+    <Compile Include="Renderers\SegmentedControlRenderer.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SplashActivity.cs" />
+    <Compile Include="Tools\InputTools.cs" />
+    <Compile Include="Tools\Reachability.cs" />
+    <Compile Include="Tools\UIElementsHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\Images\Common\account.png">
+      <Link>Resources\drawable\account.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\backArrow.png">
+      <Link>Resources\drawable\backArrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\channels.png">
+      <Link>Resources\drawable\channels.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\check.png">
+      <Link>Resources\drawable\check.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkboxChecked.png">
+      <Link>Resources\drawable\checkboxChecked.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkboxUnchecked.png">
+      <Link>Resources\drawable\checkboxUnchecked.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkmark.png">
+      <Link>Resources\drawable\checkmark.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkMarkBlue.png">
+      <Link>Resources\drawable\checkMarkBlue.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkMarkOff.png">
+      <Link>Resources\drawable\checkMarkOff.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\checkMarkOn.png">
+      <Link>Resources\drawable\checkMarkOn.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\clock.png">
+      <Link>Resources\drawable\clock.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\cloudSegment.png">
+      <Link>Resources\drawable\cloudSegment.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\cloudSegmentBlue.png">
+      <Link>Resources\drawable\cloudSegmentBlue.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\defaultThumb.png">
+      <Link>Resources\drawable\defaultThumb.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\delete.png">
+      <Link>Resources\drawable\delete.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\detailsBackground.png">
+      <Link>Resources\drawable\detailsBackground.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\deviceSegment.png">
+      <Link>Resources\drawable\deviceSegment.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\deviceSegmentBlue.png">
+      <Link>Resources\drawable\deviceSegmentBlue.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\download.png">
+      <Link>Resources\drawable\download.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\email.png">
+      <Link>Resources\drawable\email.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\empty.png">
+      <Link>Resources\drawable\empty.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\folderArrow.png">
+      <Link>Resources\drawable\folderArrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\library.png">
+      <Link>Resources\drawable\library.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\libraryDownload.png">
+      <Link>Resources\drawable\libraryDownload.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\libraryDownloading.png">
+      <Link>Resources\drawable\libraryDownloading.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\libraryManageDelete.png">
+      <Link>Resources\drawable\libraryManageDelete.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\libraryManageDone.png">
+      <Link>Resources\drawable\libraryManageDone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\libraryManageDownload.png">
+      <Link>Resources\drawable\libraryManageDownload.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\loadingAnimation.png">
+      <Link>Resources\drawable\loadingAnimation.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\lock.png">
+      <Link>Resources\drawable\lock.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\notifications.png">
+      <Link>Resources\drawable\notifications.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\notificationsUnread.png">
+      <Link>Resources\drawable\notificationsUnread.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\offline.png">
+      <Link>Resources\drawable\offline.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\play.png">
+      <Link>Resources\drawable\play.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\playon.png">
+      <Link>Resources\drawable\playon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\queue.png">
+      <Link>Resources\drawable\queue.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\recordings.png">
+      <Link>Resources\drawable\recordings.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\refresh.png">
+      <Link>Resources\drawable\refresh.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\search.png">
+      <Link>Resources\drawable\search.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\serviceTools.png">
+      <Link>Resources\drawable\serviceTools.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\serviceToolsOverlay.png">
+      <Link>Resources\drawable\serviceToolsOverlay.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\warning.png">
+      <Link>Resources\drawable\warning.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\clock_blue.png">
+      <Link>Resources\drawable\clock_blue.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\accountHeroBackground.png">
+      <Link>Resources\drawable\accountHeroBackground.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\close.png">
+      <Link>Resources\drawable\close.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\closeBig.png">
+      <Link>Resources\drawable\closeBig.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\empty150x130.png">
+      <Link>Resources\drawable\empty150x130.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\defaultMastheadMedium.jpg">
+      <Link>Resources\drawable\defaultMastheadMedium.jpg</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\defaultMastheadSmall.jpg">
+      <Link>Resources\drawable\defaultMastheadSmall.jpg</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\channelLoginHelp.png">
+      <Link>Resources\drawable\channelLoginHelp.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\cloudLogo.png">
+      <Link>Resources\drawable\cloudLogo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\legalDisclaimer.png">
+      <Link>Resources\drawable\legalDisclaimer.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\legalDisclaimerBackground.png">
+      <Link>Resources\drawable\legalDisclaimerBackground.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\plusSign.png">
+      <Link>Resources\drawable\plusSign.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\resendEmail.png">
+      <Link>Resources\drawable\resendEmail.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\xCircle.png">
+      <Link>Resources\drawable\xCircle.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Images\Common\xMarkBlue.png">
+      <Link>Resources\drawable\xMarkBlue.png</Link>
+    </AndroidResource>
+    <None Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\drawable\splash.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="xamarin.auth">
+      <Visible>False</Visible>
+      <Version>1.2.3.1</Version>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayOnCloud\PlayOnCloud.csproj">
+      <Project>{a1453cdf-52cc-4011-b68b-a903172a8dde}</Project>
+      <Name>PlayOnCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\drawable\Icon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\drawable\icon-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\backgroundimage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\backgroundimagelandscape.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\drawable\BackgroundImage-Portrait.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Device_active.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\device_deactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Cloud_active.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\cloud_deactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ViewCellBackground.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Xamarin.Forms.2.3.4.267\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.267\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+</Project>

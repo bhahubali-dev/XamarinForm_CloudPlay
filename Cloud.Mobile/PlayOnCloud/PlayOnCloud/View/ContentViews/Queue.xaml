@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:SlidingContentView x:Class="PlayOnCloud.Queue"
+                           xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                           xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                           xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                           xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:SlidingContentView.Resources>
+        <ResourceDictionary>
+            <playon:DurationConverterShort x:Key="durationConverterShort" />
+            <playon:RecordingProgressStatusConverter x:Key="recordingProgressStatusConverter" />
+            <playon:NullConverter x:Key="nullConverter" />
+            <playon:NullStringConverter x:Key="nullStringConverter" />
+        </ResourceDictionary>
+    </playon:SlidingContentView.Resources>
+    <playon:SlidingContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4.5*" />
+                <RowDefinition Height="5.5*" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="gridActiveRecording" IsVisible="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Queue.ActiveRecording,
+                                                   Converter={StaticResource nullConverter}}"
+                        TargetType="Grid"
+                        Value="False">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
+                    <ffimageloading:CachedImage Aspect="AspectFill"
+                                                BitmapOptimizations="False"
+                                                FadeAnimationEnabled="False"
+                                                HorizontalOptions="FillAndExpand"
+                                                Opacity="0.2"
+                                                Source="{Binding Queue.ActiveRecording.LargeThumbnailUri}"
+                                                TransformPlaceholders="False"
+                                                VerticalOptions="FillAndExpand">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:BlurredTransformation Radius="15" />
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0,10,0,0"
+                                 Tablet="0,20,0,0" />
+                    </Grid.Padding>
+                    <Label HorizontalOptions="Center"
+                           Style="{DynamicResource TinyFontLabel}"
+                           Text="Active Recording"
+                           TextColor="White"
+                           VerticalOptions="Center" />
+                </Grid>
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       HorizontalOptions="Center"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="Pending: Your recording will begin shortly"
+                       TextColor="#ffc600">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Queue.ActiveRecording.RecordingStatus}"
+                                     TargetType="Label"
+                                     Value="{x:Static playonModel:RecordingStatus.Started}">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <ffimageloading:CachedImage Grid.Row="2"
+                                            Grid.Column="1"
+                                            Aspect="AspectFit"
+                                            BitmapOptimizations="False"
+                                            FadeAnimationEnabled="False"
+                                            HorizontalOptions="Center"
+                                            LoadingPlaceholder="defaultThumb.png"
+                                            Source="{Binding Queue.ActiveRecording.LargeThumbnailUri}"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="Center" />
+                <Label Grid.Row="3"
+                       Grid.ColumnSpan="3"
+                       FontAttributes="Bold"
+                       HorizontalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
+                       Style="{DynamicResource MediumFontLabel}"
+                       Text="{Binding Queue.ActiveRecording.FullTitle}"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       YAlign="Center">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Queue.ActiveRecording.Series,
+                                                       Converter={StaticResource nullStringConverter}}"
+                            TargetType="Label"
+                            Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label Grid.Row="3"
+                       Grid.ColumnSpan="3"
+                       FontAttributes="Bold"
+                       HorizontalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
+                       Style="{DynamicResource MediumFontLabel}"
+                       Text="{Binding Queue.ActiveRecording.Series}"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       YAlign="Center">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Queue.ActiveRecording.Series,
+                                                       Converter={StaticResource nullStringConverter}}"
+                            TargetType="Label"
+                            Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <playon:CustomProgressBar Grid.Row="4"
+                                          Grid.ColumnSpan="3"
+                                          BackgroundColor="Transparent"
+                                          Progress="{Binding Queue.ActiveRecording.RecordingProgress.Percent}"
+                                          VerticalOptions="End">
+                    <playon:CustomProgressBar.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="00,30,0,0"
+                                 Tablet="00,30,0,0" />
+                    </playon:CustomProgressBar.Margin>
+                </playon:CustomProgressBar>
+                <Label Grid.Row="4"
+                       Grid.Column="1"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
+                       Opacity="0.3"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="{Binding Queue.ActiveRecording.Title}"
+                       TextColor="White"
+                       VerticalOptions="Start">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Queue.ActiveRecording.Series,
+                                                       Converter={StaticResource nullStringConverter}}"
+                            TargetType="Label"
+                            Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label Grid.Row="4"
+                       Grid.Column="2"
+                       HorizontalOptions="End"
+                       LineBreakMode="TailTruncation"
+                       Style="{DynamicResource SmallFontLabel}"
+                       Text="{Binding Queue.ActiveRecording.RecordingProgress,
+                                      Converter={StaticResource recordingProgressStatusConverter}}"
+                       TextColor="#47a2ff"
+                       VerticalOptions="Start">
+                    <Label.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0,0,10,0"
+                                 Tablet="0,0,20,0" />
+                    </Label.Margin>
+                </Label>
+                <Label Grid.Row="5"
+                       Grid.Column="1"
+                       HorizontalOptions="Center"
+                       Opacity="0.5"
+                       Style="{DynamicResource TinyFontLabel}"
+                       Text="Queued Recordings"
+                       TextColor="White"
+                       VerticalOptions="Center">
+                    <Label.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0,10,0,0"
+                                 Tablet="0,20,0,0" />
+                    </Label.Margin>
+                </Label>
+            </Grid>
+            <StackLayout Grid.RowSpan="2"
+                         HorizontalOptions="Center"
+                         IsVisible="False"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="20,0,20,20"
+                             Tablet="40,0,40,40" />
+                </StackLayout.Padding>
+                <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="Your Queue is Empty"
+                       TextColor="White"
+                       XAlign="Center" />
+                <playon:CustomLabel LineSpacing="1.3"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                                    Style="{DynamicResource CompactFontLabel}"
+                                    TextColor="#838383"
+                                    Text="You do not have any recordings in your queue. When you request a new recording you can check the status of it here.You can also change your download options in the Settions tab." />
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Queue.ItemsCount}" Value="0" />
+                            <BindingCondition Binding="{Binding Queue.ActiveRecording}" Value="{x:Null}" />
+                            <BindingCondition Binding="{Binding Queue.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <playon:CustomActivityIndicator Grid.RowSpan="2"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding Queue.IsLoading}"
+                                            IsRunning="{Binding Queue.IsLoading}"
+                                            IsVisible="{Binding Queue.IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White" />
+            <StackLayout HorizontalOptions="Start"
+                         Orientation="Horizontal"
+                         VerticalOptions="Start">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="10,0,0,0"
+                             Tablet="20,3,0,0" />
+                </StackLayout.Padding>
+                <playon:CheckBox x:Name="chAutoDownload"
+                                 Checked="{Binding Library.AutoDownload,
+                                                   Mode=TwoWay}"
+                                 CheckedImage="checkMarkOn.png"
+                                 HorizontalOptions="End"
+                                 IsVisible="False"
+                                 UnCheckedImage="checkMarkOff.png">
+                    <playon:CheckBox.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="15"
+                                 Tablet="25" />
+                    </playon:CheckBox.WidthRequest>
+                    <playon:CheckBox.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="30"
+                                 Tablet="50" />
+                    </playon:CheckBox.HeightRequest>
+                </playon:CheckBox>
+                <Label HorizontalOptions="End"
+                       HorizontalTextAlignment="Start"
+                       LineBreakMode="TailTruncation"
+                       Style="{DynamicResource CompactFontLabel}"
+                       Text="Download Options"
+                       TextColor="#16bcee"
+                       VerticalOptions="Center"
+                       VerticalTextAlignment="Center">
+                    <Label.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="100"
+                                 Tablet="130" />
+                    </Label.WidthRequest>
+                    <Label.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="30"
+                                 Tablet="50" />
+                    </Label.HeightRequest>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAutoDownloadTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <playon:CustomListView x:Name="queueListView"
+                                   Grid.Row="1"
+                                   BackgroundColor="Transparent"
+                                   CanEditRow="True"
+                                   IsPullToRefreshEnabled="True"
+                                   IsRefreshing="{Binding Queue.IsRefreshing,
+                                                          Mode=TwoWay}"
+                                   ItemSelected="OnListBoxItemSelected"
+                                   ItemsSource="{Binding Queue.Items}"
+                                   MoveRowCommand="{Binding Queue.Move}"
+                                   RefreshCommand="{Binding Queue.Refresh}"
+                                   SelectedItem="{Binding Queue.SelectedItem,
+                                                          Mode=TwoWay}">
+                <playon:CustomListView.RowHeight>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="40"
+                             Tablet="70" />
+                </playon:CustomListView.RowHeight>
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell CanMove="True" Tapped="Item_OnTapped">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ffimageloading:CachedImage BitmapOptimizations="False"
+                                                            FadeAnimationEnabled="False"
+                                                            LoadingPlaceholder="defaultThumb.png"
+                                                            Source="{Binding SmallThumbnailUri}"
+                                                            TransformPlaceholders="False" />
+                                <StackLayout Grid.Column="1"
+                                             Orientation="Vertical"
+                                             VerticalOptions="Center">
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="0,0,9,0"
+                                                 Tablet="0,0,18,0" />
+                                    </StackLayout.Padding>
+                                    <Grid>
+                                        <Label HorizontalOptions="Start"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource MediumFontLabel}"
+                                               Text="{Binding FullTitle}"
+                                               TextColor="White">
+                                            <Label.Margin>
+                                                <OnIdiom x:TypeArguments="Thickness"
+                                                         Phone="0,0,20,0"
+                                                         Tablet="0,0,40,0" />
+                                            </Label.Margin>
+                                        </Label>
+                                        <Label HorizontalOptions="End"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="{Binding Duration,
+                                                              Converter={StaticResource durationConverterShort}}"
+                                               TextColor="#8c8c8c"
+                                               VerticalOptions="Center"
+                                               VerticalTextAlignment="Center" />
+                                    </Grid>
+                                    <Label LineBreakMode="TailTruncation"
+                                           Style="{DynamicResource SmallFontLabel}"
+                                           Text="{Binding Description}"
+                                           TextColor="#8c8c8c" />
+                                </StackLayout>
+                            </Grid>
+                            <playon:CustomViewCell.ContextActions>
+                                <MenuItem
+                                    Command="{Binding BindingContext.Queue.MoveUp,
+                                                            Source={x:Reference Name=queueListView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Move Up" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Queue.MoveDown,
+                                                            Source={x:Reference Name=queueListView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Move Down" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Queue.MoveToTop,
+                                                            Source={x:Reference Name=queueListView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Move To Top" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Queue.MoveToBottom,
+                                                            Source={x:Reference Name=queueListView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Move To Bottom" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Queue.Delete,
+                                                            Source={x:Reference Name=queueListView}}"
+                                    CommandParameter="{Binding}"
+                                    IsDestructive="True"
+                                    Text="Delete" />
+                            </playon:CustomViewCell.ContextActions>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+            </playon:CustomListView>
+        </Grid>
+    </playon:SlidingContentView.Content>
+</playon:SlidingContentView>

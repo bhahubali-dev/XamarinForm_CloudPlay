@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="PlayOnCloud.ChannelLogout"
+	xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+	xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+	<ContentView.Content>
+		<StackLayout
+				VerticalOptions="Center"
+				HorizontalOptions="Center"
+				IsVisible="False">
+			<StackLayout.Spacing>
+				<OnIdiom
+					x:TypeArguments="x:Double"
+					Phone="20"
+					Tablet="40"/>
+			</StackLayout.Spacing>
+			<StackLayout.Padding>
+				<OnIdiom
+					x:TypeArguments="Thickness"
+					Phone="10,0,10,0"
+					Tablet="20,0,20,0"/>
+			</StackLayout.Padding>
+			<StackLayout
+				Orientation="Vertical">
+				<Label
+					Text="You are Logged in"
+					TextColor="White"
+					FontAttributes="Bold"
+					HorizontalOptions="Center"
+					Style="{DynamicResource MediumFontLabel}"/>
+				<Label
+					Text="You are successfully logged in to this channel. If you would like to change account credentials or deactivate this account, please choose Log out below."
+					TextColor="White"
+					XAlign="Center"
+					HorizontalOptions="Center"
+					Style="{DynamicResource SmallFontLabel}"/>
+			</StackLayout>
+			<StackLayout
+				Orientation="Vertical"
+				VerticalOptions="StartAndExpand">
+				<StackLayout.Spacing>
+					<OnIdiom
+						x:TypeArguments="x:Double"
+						Phone="10"
+						Tablet="20"/>
+				</StackLayout.Spacing>
+				<StackLayout.Padding>
+					<OnIdiom
+						x:TypeArguments="Thickness"
+						Phone="10"
+						Tablet="20"/>
+				</StackLayout.Padding>
+				<Label
+					Text="{Binding SelectedChannel.LoginInfo.Username}"
+					TextColor="White"
+					FontAttributes="Bold"
+					XAlign="Center"
+					HorizontalOptions="Center"
+					Style="{DynamicResource MediumFontLabel}"/>
+				<Label
+					Text="***********"
+					TextColor="White"
+					XAlign="Center"
+					HorizontalOptions="Center"
+					Style="{DynamicResource MediumFontLabel}"/>
+			</StackLayout>
+			<playon:RoundButton
+				Text="Log out"
+				BackgroundColor="#ec008c"
+				TextColor="#202020"
+				HorizontalOptions="Center"
+				VerticalOptions="StartAndExpand"
+				Command="{Binding ChannelLogout}"
+				CommandParameter="{Binding SelectedChannel}"
+				Style="{DynamicResource RoundButtonLoginControls}"
+				Tag="3"/>
+			<StackLayout.Triggers>
+				<MultiTrigger TargetType="StackLayout">
+					<MultiTrigger.Conditions>
+						<BindingCondition Binding="{Binding SelectedChannel.LoginInfo.ValidationSuccessful}" Value="True"/>
+					</MultiTrigger.Conditions>
+					<Setter Property="IsVisible" Value="True"/>
+				</MultiTrigger>
+			</StackLayout.Triggers>
+		</StackLayout>
+	</ContentView.Content>
+</ContentView>

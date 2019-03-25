@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:playOnCloud="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="PlayOnCloud.DownloadOption">
+    <ContentView.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="60"
+                             Tablet="80" />
+                </Grid.HeightRequest>
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,10,0,0"
+                             Tablet="0,20,0,0" />
+                </Grid.Padding>
+                <Label HorizontalTextAlignment="Center"
+                       Style="{DynamicResource MediumFontLabel}"
+                       Text="Download Options"
+                       TextColor="White" />
+
+            </Grid>
+            <BoxView Grid.Row="1"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+            <Grid Grid.Row="2" BackgroundColor="Black" VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Label BackgroundColor="Transparent"
+                       HorizontalOptions="FillAndExpand"
+                       Text="Auto-download on WiFi"
+                       VerticalOptions="Center">
+                    <Label.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="16" />
+                    </Label.FontSize>
+                </Label>
+                <playOnCloud:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" />
+            </Grid>
+            <BoxView Grid.Row="3"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+
+            <Grid Grid.Row="4" HeightRequest="80"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="Center">
+                <Label FontAttributes="Italic" VerticalTextAlignment="Center"
+                       Style="{DynamicResource CompactFontLabel}"
+                       TextColor="#7b7b7b"
+                       Text="Automatically download recordings to this devices once they are complete.Auto-downloads will only occur over Wi-Fi unlessAuto-download on cellular data is on." />
+            </Grid>
+            <BoxView Grid.Row="5"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+            <Grid Grid.Row="6" BackgroundColor="Black" VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Label BackgroundColor="Transparent"
+                       HorizontalOptions="FillAndExpand"
+                       Text="Allow downloads over cellular data"
+                       VerticalOptions="Center">
+                    <Label.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="16" />
+                    </Label.FontSize>
+                </Label>
+                <playOnCloud:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" />
+            </Grid>
+            <BoxView Grid.Row="7"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+
+            <Grid Grid.Row="8"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="Center" HeightRequest="80">
+                <Label VerticalTextAlignment="Center"
+                       Text="Enable downloads on cellular data in order to allow manual downloads of videos without Wi-Fi."
+                       FontAttributes="Italic"
+                       Style="{DynamicResource CompactFontLabel}"
+                       TextColor="#7b7b7b" />
+            </Grid>
+            <BoxView Grid.Row="9"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+            <Grid Grid.Row="10" BackgroundColor="Black" VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Label BackgroundColor="Transparent"
+                       HorizontalOptions="FillAndExpand"
+                       Text="Auto-download on cellular data"
+                       VerticalOptions="Center">
+                    <Label.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="16" />
+                    </Label.FontSize>
+                </Label>
+                <playOnCloud:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" />
+            </Grid>
+            <BoxView Grid.Row="11"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+
+            <Grid Grid.Row="12" HeightRequest="90"
+                  HorizontalOptions="StartAndExpand"
+                  VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label TextColor="Red" Text="Warning:" VerticalTextAlignment="Start" />
+                <Label FontAttributes="Italic"
+                       Style="{DynamicResource CompactFontLabel}"
+                       TextColor="#7b7b7b"
+                       Text="This allows users to automatically download videos to their device using cellular data. It is intended fro use with an unlimited data plan. It is not recommended for most users."
+                       VerticalTextAlignment="Center" />
+            </Grid>
+            <BoxView Grid.Row="13"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

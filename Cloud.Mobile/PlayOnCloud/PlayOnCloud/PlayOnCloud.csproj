@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A1453CDF-52CC-4011-B68B-A903172A8DDE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayOnCloud</RootNamespace>
+    <AssemblyName>PlayOnCloud</AssemblyName>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Cloud.Corpus\AccessInfoCryptoBase.cs">
+      <Link>Tools\AccessInfoCryptoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Cloud.Corpus\AccessInfoEncryptor.cs">
+      <Link>Tools\AccessInfoEncryptor.cs</Link>
+    </Compile>
+    <Compile Include="App.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DependencyServiceInterfaces\IAlertView.cs" />
+    <Compile Include="DependencyServiceInterfaces\IAppVersionNumber.cs" />
+    <Compile Include="DependencyServiceInterfaces\IDeviceInfo.cs" />
+    <Compile Include="DependencyServiceInterfaces\IFacebookTools.cs" />
+    <Compile Include="DependencyServiceInterfaces\IImageTools.cs" />
+    <Compile Include="DependencyServiceInterfaces\IKeyboardHelper.cs" />
+    <Compile Include="DependencyServiceInterfaces\ILogger.cs" />
+    <Compile Include="DependencyServiceInterfaces\INetworkConnection.cs" />
+    <Compile Include="DependencyServiceInterfaces\IReachabilityHelper.cs" />
+    <Compile Include="DependencyServiceInterfaces\IRemoteNotifications.cs" />
+    <Compile Include="DependencyServiceInterfaces\ISharedSettings.cs" />
+    <Compile Include="DependencyServiceInterfaces\IUserAgent.cs" />
+    <Compile Include="DependencyServiceInterfaces\NetworkConnection.cs" />
+    <Compile Include="Extensions\ElementSource.cs" />
+    <Compile Include="Extensions\ObservableCollection.cs" />
+    <Compile Include="Extensions\StyleExtension.cs" />
+    <Compile Include="Model\ChannelEx.cs" />
+    <Compile Include="Model\Chapter.cs" />
+    <Compile Include="Model\ChapterType.cs" />
+    <Compile Include="Model\ContentItemEx.cs" />
+    <Compile Include="Model\CredentialsEx.cs" />
+    <Compile Include="Model\DeviceOrientation.cs" />
+    <Compile Include="Model\DownloadItem.cs" />
+    <Compile Include="Model\DownloadProgress.cs" />
+    <Compile Include="Model\DownloadStatus.cs" />
+    <Compile Include="Model\IContentItem.cs" />
+    <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\LibraryItem.cs" />
+    <Compile Include="Model\LibraryItemsCollection.cs" />
+    <Compile Include="Model\Notification.cs" />
+    <Compile Include="Model\NotificationsCollection.cs" />
+    <Compile Include="Model\NotificationStatus.cs" />
+    <Compile Include="Model\NotificationType.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\RecordingStatus.cs" />
+    <Compile Include="Model\LibrarySort.cs" />
+    <Compile Include="Model\LibraryViewMode.cs" />
+    <Compile Include="Model\RecordQueueItem.cs" />
+    <Compile Include="Model\RecordQueueItemProgress.cs" />
+    <Compile Include="Model\RecordQueueItemsCollection.cs" />
+    <Compile Include="Model\RegisterViewMode.cs" />
+    <Compile Include="Model\RegisterViewType.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\CloudItem.cs" />
+    <Compile Include="OAuthSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\Clients\AccountClient.cs" />
+    <Compile Include="Rest\Clients\ContentClient.cs" />
+    <Compile Include="Rest\Clients\LibraryClient.cs" />
+    <Compile Include="Rest\Clients\LoginClient.cs" />
+    <Compile Include="Rest\Clients\LogoutClient.cs" />
+    <Compile Include="Rest\Clients\NotificationClient.cs" />
+    <Compile Include="Rest\Clients\PasswordClient.cs" />
+    <Compile Include="Rest\Clients\ProductClient.cs" />
+    <Compile Include="Rest\Clients\QueueClient.cs" />
+    <Compile Include="Rest\Clients\ReceiptClient.cs" />
+    <Compile Include="Rest\Clients\SettingsClient.cs" />
+    <Compile Include="Rest\Clients\SignupClient.cs" />
+    <Compile Include="Rest\Clients\SupportClient.cs" />
+    <Compile Include="Rest\ErrorCodes.cs" />
+    <Compile Include="Rest\MaintenanceException.cs" />
+    <Compile Include="Rest\RequestMethod.cs" />
+    <Compile Include="Rest\RestRequestResponse.cs" />
+    <Compile Include="Rest\RestService.cs" />
+    <Compile Include="Rest\SessionExpiredException.cs" />
+    <Compile Include="Rest\ThrottleException.cs" />
+    <Compile Include="Rest\UpgradeException.cs" />
+    <Compile Include="TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\AppNavigation.cs" />
+    <Compile Include="Tools\BackButtonHelper.cs" />
+    <Compile Include="Tools\EventArgs.cs" />
+    <Compile Include="Tools\MarkManager.cs" />
+    <Compile Include="Tools\StringTools.cs" />
+    <Compile Include="ValueConverters\AirDateConverter.cs" />
+    <Compile Include="ValueConverters\NameBreadcrumbsConverter.cs" />
+    <Compile Include="ValueConverters\ByteArrayToImageSourceConverter.cs" />
+    <Compile Include="ValueConverters\ChannelNeedLoginConverter.cs" />
+    <Compile Include="ValueConverters\ChannelsLongNameConverter.cs" />
+    <Compile Include="ValueConverters\ContentItemDurationAirDateConverter.cs" />
+    <Compile Include="ValueConverters\DateOrTimeConverter.cs" />
+    <Compile Include="ValueConverters\DownloadProgressStatusConverter.cs" />
+    <Compile Include="ValueConverters\DurationConverter.cs" />
+    <Compile Include="ValueConverters\ExpirationTimeRemainingConverter.cs" />
+    <Compile Include="ValueConverters\LocalDateTimeConverter.cs" />
+    <Compile Include="ValueConverters\NotificationsConverters.cs" />
+    <Compile Include="ValueConverters\PluralStringConverter.cs" />
+    <Compile Include="ValueConverters\SplashScreenBackgroundConverter.cs" />
+    <Compile Include="ValueConverters\StringToImageSourceConverter.cs" />
+    <Compile Include="ValueConverters\NullConverter.cs" />
+    <Compile Include="ValueConverters\RecordingProgressStatusConverter.cs" />
+    <Compile Include="ValueConverters\WrapPanelSizeConverter.cs" />
+    <Compile Include="ValueConverters\UrlToImageSourceConverter.cs" />
+    <Compile Include="ViewModel\Account.cs" />
+    <Compile Include="ViewModel\Cloud.cs" />
+    <Compile Include="DependencyServiceInterfaces\IItemDownloader.cs" />
+    <Compile Include="DependencyServiceInterfaces\IInAppPurchase.cs" />
+    <Compile Include="DependencyServiceInterfaces\IUserStore.cs" />
+    <Compile Include="DependencyServiceInterfaces\ILocalLibrary.cs" />
+    <Compile Include="ViewModel\Library.cs" />
+    <Compile Include="ViewModel\MediaContent.cs" />
+    <Compile Include="ViewModel\Notifications.cs" />
+    <Compile Include="ViewModel\Products.cs" />
+    <Compile Include="ViewModel\Queue.cs" />
+    <Compile Include="ViewModel\Register.cs" />
+    <Compile Include="ViewModel\TapViewModel.cs" />
+    <Compile Include="ViewModel\TaskQueue.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\ContentViews\Account.xaml.cs">
+      <DependentUpon>Account.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\AccountChannel.xaml.cs">
+      <DependentUpon>AccountChannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\AccountDetails.xaml.cs">
+      <DependentUpon>AccountDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\ChannelLogin.xaml.cs">
+      <DependentUpon>ChannelLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\ChannelLogout.xaml.cs">
+      <DependentUpon>ChannelLogout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\ChannelsList.xaml.cs">
+      <DependentUpon>ChannelsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\ContentItemDetailsView.xaml.cs">
+      <DependentUpon>ContentItemDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\Discover.xaml.cs">
+      <DependentUpon>Discover.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\DownloadOption.xaml.cs">
+      <DependentUpon>DownloadOption.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\FailedRecordingTip.xaml.cs">
+      <DependentUpon>FailedRecordingTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\Library.xaml.cs">
+      <DependentUpon>Library.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\LibraryItemDetails.xaml.cs">
+      <DependentUpon>LibraryItemDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\NotificationItemAccordionDetails.xaml.cs">
+      <DependentUpon>NotificationItemAccordionDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\NotificationItemDetails.xaml.cs">
+      <DependentUpon>NotificationItemDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\Notifications.xaml.cs">
+      <DependentUpon>Notifications.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\Queue.xaml.cs">
+      <DependentUpon>Queue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\QueueItemDetails.xaml.cs">
+      <DependentUpon>QueueItemDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\ResetPassword.xaml.cs">
+      <DependentUpon>ResetPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\SignUp.xaml.cs">
+      <DependentUpon>SignUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentViews\SlidingContentView.cs" />
+    <Compile Include="View\Controls\BindablePicker.cs" />
+    <Compile Include="View\Controls\BlurredImage.cs" />
+    <Compile Include="View\Controls\ChaptersEnabledVideoView.cs" />
+    <Compile Include="View\Controls\CheckBox.cs" />
+    <Compile Include="View\Controls\CustomActivityIndicator.cs" />
+    <Compile Include="View\Controls\CustomLabel.cs" />
+    <Compile Include="View\Controls\CustomLabelBase.cs" />
+    <Compile Include="View\Controls\CustomLinkLabel.cs" />
+    <Compile Include="View\Controls\CustomListView.cs" />
+    <Compile Include="View\Controls\CustomProgressBar.cs" />
+    <Compile Include="View\Controls\CustomScrollView.cs" />
+    <Compile Include="View\Controls\CustomSwitch.cs" />
+    <Compile Include="View\Controls\CustomViewCell.cs" />
+    <Compile Include="View\Controls\ImageButton.cs" />
+    <Compile Include="View\Controls\ImageButtonSourceConverter.cs" />
+    <Compile Include="View\Controls\RegisterButton.xaml.cs">
+      <DependentUpon>RegisterButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\NavigationFrame.xaml.cs">
+      <DependentUpon>NavigationFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\PagerIndicatorDots.cs" />
+    <Compile Include="View\Controls\RoundButton.cs" />
+    <Compile Include="View\Controls\RoundEntry.cs" />
+    <Compile Include="View\Controls\RoundFrame.cs" />
+    <Compile Include="View\Controls\SearchEntry.cs" />
+    <Compile Include="View\Controls\SearchFrame.xaml.cs">
+      <DependentUpon>SearchFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\SegmentedControl.cs" />
+    <Compile Include="View\Controls\SlidingGrid.cs" />
+    <Compile Include="View\Controls\WrapPanel.cs" />
+    <Compile Include="View\Pages\DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\FacebookLogin.xaml.cs">
+      <DependentUpon>FacebookLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\Main.xaml.cs">
+      <DependentUpon>Main.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\MediaPlayer.xaml.cs">
+      <DependentUpon>MediaPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\PostLoad.xaml.cs">
+      <DependentUpon>PostLoad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\SupportRequest.xaml.cs">
+      <DependentUpon>SupportRequest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\ChannelLoginHelp.xaml.cs">
+      <DependentUpon>ChannelLoginHelp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\ChannelLoginInfoView.xaml.cs">
+      <DependentUpon>ChannelLoginInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\ChannelLoginPopup.xaml.cs">
+      <DependentUpon>ChannelLoginPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\LegalDisclaimer.xaml.cs">
+      <DependentUpon>LegalDisclaimer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\LoginPopup.xaml.cs">
+      <DependentUpon>LoginPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\Messages.cs" />
+    <Compile Include="View\Popups\MessagingCenterManager.cs" />
+    <Compile Include="View\Popups\OfflinePopup.xaml.cs">
+      <DependentUpon>OfflinePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popups\PopupArguments.cs" />
+    <Compile Include="View\Popups\PopupBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Controls\SearchFrame.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Pages\Register.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\Main.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Library.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Discover.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Queue.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Notifications.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Account.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Images\SampleImages\ABC.png">
+      <Link>SampleData\Images\ABC.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Amazon.png">
+      <Link>SampleData\Images\Amazon.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\CBS.png">
+      <Link>SampleData\Images\CBS.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Fox.png">
+      <Link>SampleData\Images\Fox.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\HBOgo.png">
+      <Link>SampleData\Images\HBOgo.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Hulu.png">
+      <Link>SampleData\Images\Hulu.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\NBC.png">
+      <Link>SampleData\Images\NBC.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Netflix.png">
+      <Link>SampleData\Images\Netflix.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\PBS.png">
+      <Link>SampleData\Images\PBS.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\TheCW.png">
+      <Link>SampleData\Images\TheCW.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Vimeo.png">
+      <Link>SampleData\Images\Vimeo.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Youtube.png">
+      <Link>SampleData\Images\Youtube.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Controls\NavigationFrame.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Images\SampleImages\PlayOnHero.png">
+      <Link>SampleData\Images\PlayOnHero.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\ChannelLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Images\SampleImages\3rdRock.png">
+      <Link>SampleData\Images\3rdRock.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\4400.png">
+      <Link>SampleData\Images\4400.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\MasterOfNone.png">
+      <Link>SampleData\Images\MasterOfNone.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\ContentItemDetailsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\AccountDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Images\SampleImages\NewGirl.png">
+      <Link>SampleData\Images\NewGirl.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\TheGood.png">
+      <Link>SampleData\Images\TheGood.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\TheGoodWife.png">
+      <Link>SampleData\Images\TheGoodWife.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Images\SampleImages\Whiplash.png">
+      <Link>SampleData\Images\Whiplash.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\LibraryItemDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\QueueItemDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\NotificationItemDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\MediaPlayer.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\FacebookLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\SignUp.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\PostLoad.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\ResetPassword.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\SupportRequest.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\ChannelsList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\FailedRecordingTip.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\OfflinePopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\LoginPopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\ChannelLoginInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\ChannelLoginPopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\ChannelLoginHelp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Pages\DetailsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Popups\LegalDisclaimer.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\ChannelLogout.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\NotificationItemAccordionDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Controls\RegisterButton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\AccountChannel.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ContentViews\DownloadOption.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="..\..\..\Cloud.ClientShared\Cloud.ClientShared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <NuGetTargetMoniker>.NETStandard,Version=v1.6</NuGetTargetMoniker>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

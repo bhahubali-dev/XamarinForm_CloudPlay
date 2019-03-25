@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<playon:SlidingContentView x:Class="PlayOnCloud.Library"
+                           xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:controls="clr-namespace:PlayOnCloud.View.Controls;assembly=PlayOnCloud"
+                           xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                           xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                           xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:SlidingContentView.Resources>
+        <ResourceDictionary>
+            <playon:DurationConverter x:Key="durationConverter" />
+            <playon:DownloadProgressStatusConverter x:Key="downloadProgressStatusConverter" />
+            <playon:ByteArrayToImageSourceConverter x:Key="byteArrayToImageSourceConverter" />
+            <playon:ExpirationDaysRemainingConverter x:Key="expirationDaysRemainingConverter" />
+        </ResourceDictionary>
+    </playon:SlidingContentView.Resources>
+    <playon:SlidingContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="0.05*" />
+                <RowDefinition Height="0.85*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalOptions="Center"
+                             Orientation="Horizontal">
+                    <Image x:Name="ImgCloud"
+                           Margin="0,0,-5,0"
+                           Source="Cloud_active.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer x:Name="ImgBtn1" Tapped="ImgBtn1_OnTapped" />
+                        </Image.GestureRecognizers>
+                        <Image.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="100"
+                                     Tablet="130" />
+                        </Image.WidthRequest>
+                        <Image.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="24"
+                                     Tablet="32" />
+                        </Image.HeightRequest>
+                    </Image>
+                    <Image x:Name="ImgDevice"
+                           Margin="-5,0,0,0"
+                           Source="device_deactive.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer x:Name="imgbtn2" Tapped="Imgbtn2_OnTapped" />
+                        </Image.GestureRecognizers>
+                        <Image.WidthRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="100"
+                                     Tablet="130" />
+                        </Image.WidthRequest>
+                        <Image.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="24"
+                                     Tablet="32" />
+                        </Image.HeightRequest>
+                    </Image>
+                </StackLayout>
+                <!--<playon:SegmentedControl Grid.Row="1"
+                                         Grid.Column="1" HorizontalOptions="Center"
+                                         SelectedValue="{Binding Library.SelectedView,
+                                                                 Mode=TwoWay}">
+                    <playon:SegmentedControl.Children>
+                        <playon:SegmentedControlOption NormalImage="cloudSegmentBlue.png"
+                                                       SelectedImage="cloudSegment.png"
+                                                       Text="Cloud" />
+                        <playon:SegmentedControlOption NormalImage="deviceSegmentBlue.png"
+                                                       SelectedImage="deviceSegment.png"
+                                                       Text="Device" />
+                    </playon:SegmentedControl.Children>
+                    <playon:SegmentedControl.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="8"
+                                 Tablet="12" />
+                    </playon:SegmentedControl.FontSize>
+                    <playon:SegmentedControl.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="200"
+                                 Tablet="260" />
+                    </playon:SegmentedControl.WidthRequest>
+                    <playon:SegmentedControl.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="24"
+                                 Tablet="32" />
+                    </playon:SegmentedControl.HeightRequest>
+                    <playon:SegmentedControl.BorderWidth>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="1"
+                                 Tablet="2" />
+                    </playon:SegmentedControl.BorderWidth>
+                    <playon:SegmentedControl.BorderRadius>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="4"
+                                 Tablet="8" />
+                    </playon:SegmentedControl.BorderRadius>
+                </playon:SegmentedControl>-->
+            </Grid>
+            <StackLayout Grid.Row="0"
+                         Grid.RowSpan="4"
+                         HorizontalOptions="Center"
+                         IsVisible="False"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="20,0,20,0"
+                             Tablet="40,0,40,0" />
+                </StackLayout.Padding>
+                <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="You have no Cloud Recordings"
+                       TextColor="White"
+                       XAlign="Center" />
+                <playon:CustomLabel LineSpacing="1.3"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                                    Style="{DynamicResource CompactFontLabel}"
+                                    TextColor="#838383">
+                    When you make a recording in the Cloud, it will appear here, allowing you to download it to this device.
+                </playon:CustomLabel>
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Library.CloudItemsCount}" Value="0" />
+                            <BindingCondition Binding="{Binding Library.SelectedView}" Value="0" />
+                            <BindingCondition Binding="{Binding Library.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <StackLayout Grid.Row="0"
+                         Grid.RowSpan="4"
+                         HorizontalOptions="Center"
+                         IsVisible="False"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="40,0,40,0"
+                             Tablet="80,0,80,0" />
+                </StackLayout.Padding>
+                <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="There are no Recordings on this Device"
+                       TextColor="White"
+                       XAlign="Center" />
+                <playon:CustomLabel LineSpacing="1.3"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                                    Style="{DynamicResource CompactFontLabel}"
+                                    TextColor="#838383">
+                    When you make a recording you can choose to download it to your device. You may also enable &quot;Auto-download&quot; from the Queue tab to automatically download recordings.
+                </playon:CustomLabel>
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Library.LocalItemsCount}" Value="0" />
+                            <BindingCondition Binding="{Binding Library.SelectedView}" Value="1" />
+                            <BindingCondition Binding="{Binding Library.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <Grid Grid.Row="1" Padding="15,5,15,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Grid BackgroundColor="#282828" Padding="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <playon:ImageButton Command="{Binding Library.Sort}"
+                                        CommandParameter="{x:Static playonModel:LibrarySort.Recent}"
+                                        Source="clock.png"
+                                        Style="{DynamicResource RecordingsImageButton}"
+                                        Text=" Recent">
+                        <playon:ImageButton.Triggers>
+                            <DataTrigger Binding="{Binding Library.LibrarySort}"
+                                         TargetType="playon:ImageButton"
+                                         Value="{x:Static playonModel:LibrarySort.Recent}">
+                                <Setter Property="Opacity" Value="1" />
+                            </DataTrigger>
+                        </playon:ImageButton.Triggers>
+                    </playon:ImageButton>
+                    <playon:ImageButton Grid.Column="1"
+                                        Command="{Binding Library.Sort}"
+                                        CommandParameter="{x:Static playonModel:LibrarySort.Alphabetical}"
+                                        Source="library.png"
+                                        Style="{DynamicResource RecordingsImageButton}"
+                                        Text=" A-Z">
+                        <playon:ImageButton.Triggers>
+                            <DataTrigger Binding="{Binding Library.LibrarySort}"
+                                         TargetType="playon:ImageButton"
+                                         Value="{x:Static playonModel:LibrarySort.Alphabetical}">
+                                <Setter Property="Opacity" Value="1" />
+                            </DataTrigger>
+                        </playon:ImageButton.Triggers>
+                    </playon:ImageButton>
+                </Grid>
+                <Grid Grid.Column="1"
+                      BackgroundColor="#282828"
+                      Padding="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <playon:ImageButton Command="{Binding Library.Refresh}"
+                                        Source="refresh.png"
+                                        Style="{DynamicResource RecordingsImageButton}"
+                                        Text=" Refresh" />
+                    <playon:ImageButton Grid.Column="1"
+                                        Command="{Binding Library.Manage}"
+                                        Source="check.png"
+                                        Style="{DynamicResource RecordingsImageButton}"
+                                        Text=" Manage" />
+                </Grid>
+            </Grid>
+            <playon:CustomListView x:Name="cloudItemsView"
+                                   Grid.Row="2"
+                                   Margin="0,10,0,0"
+                                   BackgroundColor="Transparent"
+                                   CanEditRow="True"
+                                   InputTransparent="True"
+                                   IsPullToRefreshEnabled="True"
+                                   IsRefreshing="{Binding Library.IsRefreshing,
+                                                          Mode=TwoWay}"
+                                   IsVisible="False"
+                                   ItemSelected="OnListBoxItemSelected"
+                                   ItemsSource="{Binding Library.CloudItems}"
+                                   RefreshCommand="{Binding Library.RefreshCloudItems}"
+                                   SelectedItem="{Binding Library.SelectedCloudItem,
+                                                          Mode=TwoWay}"
+                                   SeparatorColor="Transparent">
+                <playon:CustomListView.RowHeight>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="40"
+                             Tablet="70" />
+                </playon:CustomListView.RowHeight>
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell SelectedBackgroundColor="#282828" Tapped="Item_OnTapped">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <playon:CustomProgressBar Grid.ColumnSpan="4"
+                                                          CustomScale="3"
+                                                          HeightRequest="1"
+                                                          HorizontalOptions="FillAndExpand"
+                                                          IsVisible="False"
+                                                          Progress="{Binding DownloadProgress.Percent}"
+                                                          VerticalOptions="End">
+                                    <playon:CustomProgressBar.Margin>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="0,20,0,0"
+                                                 Tablet="0,30,00,0" />
+                                    </playon:CustomProgressBar.Margin>
+                                    <playon:CustomProgressBar.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadStatus}"
+                                                     TargetType="playon:CustomProgressBar"
+                                                     Value="{x:Static playonModel:DownloadStatus.Downloading}">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                    </playon:CustomProgressBar.Triggers>
+                                </playon:CustomProgressBar>
+                                <AbsoluteLayout Grid.Column="0"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="FillAndExpand">
+                                    <ffimageloading:CachedImage Aspect="AspectFill"
+                                                                BitmapOptimizations="False"
+                                                                ErrorPlaceholder="defaultThumb.png"
+                                                                FadeAnimationEnabled="False"
+                                                                LoadingPlaceholder="defaultThumb.png"
+                                                                RetryCount="2"
+                                                                Source="{Binding SmallThumbnailUri}"
+                                                                TransformPlaceholders="False">
+                                        <ffimageloading:CachedImage.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="44"
+                                                     Tablet="78" />
+                                        </ffimageloading:CachedImage.HeightRequest>
+                                        <ffimageloading:CachedImage.WidthRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="67"
+                                                     Tablet="114" />
+                                        </ffimageloading:CachedImage.WidthRequest>
+                                    </ffimageloading:CachedImage>
+                                    <ffimageloading:CachedImage AbsoluteLayout.LayoutBounds="1,1,-1,-1"
+                                                                AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                                Aspect="AspectFill"
+                                                                BitmapOptimizations="False"
+                                                                FadeAnimationEnabled="False"
+                                                                Source="libraryDownload.png"
+                                                                TransformPlaceholders="False">
+                                        <ffimageloading:CachedImage.Triggers>
+                                            <DataTrigger Binding="{Binding DownloadStatus}"
+                                                         TargetType="ffimageloading:CachedImage"
+                                                         Value="{x:Static playonModel:DownloadStatus.Downloading}">
+                                                <Setter Property="Source" Value="libraryDownloading.png" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DownloadStatus}"
+                                                         TargetType="ffimageloading:CachedImage"
+                                                         Value="{x:Static playonModel:DownloadStatus.Completed}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </ffimageloading:CachedImage.Triggers>
+                                        <ffimageloading:CachedImage.WidthRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="15"
+                                                     Tablet="27" />
+                                        </ffimageloading:CachedImage.WidthRequest>
+                                        <ffimageloading:CachedImage.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="15"
+                                                     Tablet="27" />
+                                        </ffimageloading:CachedImage.HeightRequest>
+                                    </ffimageloading:CachedImage>
+                                </AbsoluteLayout>
+                                <Grid Grid.Column="1"
+                                      RowSpacing="2"
+                                      VerticalOptions="Center">
+                                    <Grid.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="5,0,0,0"
+                                                 Tablet="10,0,0,0" />
+                                    </Grid.Padding>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource MediumFontLabel}"
+                                               Text="{Binding FullTitle}"
+                                               TextColor="White" />
+                                        <Label Grid.Column="1"
+                                               HorizontalOptions="End"
+                                               HorizontalTextAlignment="End"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="{Binding Duration,
+                                                              Converter={StaticResource durationConverter}}"
+                                               TextColor="#8c8c8c"
+                                               VerticalOptions="Center"
+                                               VerticalTextAlignment="Center" />
+                                    </Grid>
+                                    <Grid Grid.Row="1"
+                                          HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="{Binding Description}"
+                                               TextColor="#8c8c8c"
+                                               VerticalOptions="Center"
+                                               VerticalTextAlignment="Center" />
+                                        <StackLayout Grid.Column="1"
+                                                     HorizontalOptions="End"
+                                                     Orientation="Horizontal">
+                                            <ffimageloading:CachedImage Aspect="AspectFit"
+                                                                        BitmapOptimizations="False"
+                                                                        FadeAnimationEnabled="False"
+                                                                        Source="clock_blue.png"
+                                                                        TransformPlaceholders="False">
+                                                <ffimageloading:CachedImage.WidthRequest>
+                                                    <OnIdiom x:TypeArguments="x:Double"
+                                                             Phone="7"
+                                                             Tablet="10" />
+                                                </ffimageloading:CachedImage.WidthRequest>
+                                                <ffimageloading:CachedImage.HeightRequest>
+                                                    <OnIdiom x:TypeArguments="x:Double"
+                                                             Phone="7"
+                                                             Tablet="10" />
+                                                </ffimageloading:CachedImage.HeightRequest>
+                                            </ffimageloading:CachedImage>
+                                            <Label HorizontalTextAlignment="End"
+                                                   Style="{DynamicResource SmallFontLabel}"
+                                                   Text="{Binding Expires,
+                                                                  Converter={StaticResource expirationDaysRemainingConverter}}"
+                                                   TextColor="#3bb4ff"
+                                                   VerticalOptions="Center"
+                                                   VerticalTextAlignment="Center" />
+                                            <StackLayout.Triggers>
+                                                <DataTrigger Binding="{Binding DownloadStatus}"
+                                                             TargetType="StackLayout"
+                                                             Value="{x:Static playonModel:DownloadStatus.Downloading}">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </StackLayout.Triggers>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1"
+                                                     HorizontalOptions="End"
+                                                     Orientation="Vertical"
+                                                     VerticalOptions="End">
+                                            <Label HorizontalOptions="End"
+                                                   HorizontalTextAlignment="End"
+                                                   IsVisible="False"
+                                                   Style="{DynamicResource SmallFontLabel}"
+                                                   Text="{Binding DownloadProgress,
+                                                                  Converter={StaticResource downloadProgressStatusConverter}}"
+                                                   TextColor="#3bb4ff">
+                                                <Label.Triggers>
+                                                    <DataTrigger Binding="{Binding DownloadStatus}"
+                                                                 TargetType="Label"
+                                                                 Value="{x:Static playonModel:DownloadStatus.Downloading}">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </StackLayout>
+                                    </Grid>
+                                </Grid>
+                                <StackLayout Grid.Column="2"
+                                             HorizontalOptions="End"
+                                             Padding="0,0,5,0"
+                                             VerticalOptions="Center">
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="9"
+                                                 Tablet="18" />
+                                    </StackLayout.Padding>
+                                    <Image Source="folderArrow.png">
+                                        <Image.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="28" />
+                                        </Image.HeightRequest>
+                                    </Image>
+                                </StackLayout>
+                                <StackLayout Grid.Column="3"
+                                             IsVisible="{Binding BindingContext.Library.Edit,
+                                                                 Source={x:Reference Name=cloudItemsView}}"
+                                             VerticalOptions="Center">
+                                    <playon:CheckBox
+                                        Checked="{Binding Checked,
+                                                                       Mode=TwoWay}"
+                                        CheckedImage="checkboxChecked.png"
+                                        UnCheckedImage="checkboxUnchecked.png"
+                                        VerticalOptions="Center">
+                                        <playon:CheckBox.WidthRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="20" />
+                                        </playon:CheckBox.WidthRequest>
+                                        <playon:CheckBox.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="20" />
+                                        </playon:CheckBox.HeightRequest>
+                                    </playon:CheckBox>
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="0,0,10,0"
+                                                 Tablet="0,0,15,0" />
+                                    </StackLayout.Padding>
+                                </StackLayout>
+                            </Grid>
+                            <playon:CustomViewCell.ContextActions>
+                                <MenuItem
+                                    Command="{Binding BindingContext.Library.Download,
+                                                            Source={x:Reference Name=cloudItemsView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Download" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Library.CancelDownload,
+                                                            Source={x:Reference Name=cloudItemsView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Cancel Download" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Library.Delete,
+                                                            Source={x:Reference Name=cloudItemsView}}"
+                                    CommandParameter="{Binding}"
+                                    IsDestructive="True"
+                                    Text="Delete" />
+                            </playon:CustomViewCell.ContextActions>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+                <playon:CustomListView.Triggers>
+                    <DataTrigger Binding="{Binding Library.SelectedView}"
+                                 TargetType="playon:CustomListView"
+                                 Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </playon:CustomListView.Triggers>
+            </playon:CustomListView>
+            <playon:CustomListView x:Name="localItemsView"
+                                   Grid.Row="2"
+                                   Margin="0,10,0,0"
+                                   BackgroundColor="Black"
+                                   CanEditRow="True"
+                                   InputTransparent="False"
+                                   IsPullToRefreshEnabled="True"
+                                   IsRefreshing="{Binding Library.IsRefreshing,
+                                                          Mode=TwoWay}"
+                                   IsVisible="False"
+                                   ItemsSource="{Binding Library.LocalItems}"
+                                   RefreshCommand="{Binding Library.RefreshLocalItems}"
+                                   SelectedItem="{Binding Library.SelectedLibraryItem,
+                                                          Mode=TwoWay}"
+                                   SeparatorColor="Black"
+                                   SeparatorVisibility="None">
+                <playon:CustomListView.RowHeight>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="40"
+                             Tablet="70" />
+                </playon:CustomListView.RowHeight>
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell Tapped="Item_OnTapped">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Aspect="AspectFill"
+                                       Source="{Binding SmallThumbnailData,
+                                                        Converter={StaticResource byteArrayToImageSourceConverter}}">
+                                    <Image.WidthRequest>
+                                        <OnIdiom x:TypeArguments="x:Double"
+                                                 Phone="67"
+                                                 Tablet="114" />
+                                    </Image.WidthRequest>
+                                </Image>
+                                <Grid Grid.Column="1"
+                                      RowSpacing="2"
+                                      VerticalOptions="Center">
+                                    <Grid.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="5,0,0,0"
+                                                 Tablet="10,0,0,0" />
+                                    </Grid.Padding>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label LineBreakMode="TailTruncation"
+                                           Style="{DynamicResource MediumFontLabel}"
+                                           Text="{Binding FullTitle}"
+                                           TextColor="White" />
+                                    <Label Grid.Column="1"
+                                           HorizontalTextAlignment="End"
+                                           Style="{DynamicResource SmallFontLabel}"
+                                           Text="{Binding Duration,
+                                                          Converter={StaticResource durationConverter}}"
+                                           TextColor="#8c8c8c" />
+                                    <Label Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           LineBreakMode="TailTruncation"
+                                           Style="{DynamicResource SmallFontLabel}"
+                                           Text="{Binding Description}"
+                                           TextColor="#8c8c8c" />
+                                </Grid>
+                                <StackLayout Grid.Column="2"
+                                             HorizontalOptions="End"
+                                             Padding="0,0,5,0"
+                                             VerticalOptions="Center">
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="9"
+                                                 Tablet="18" />
+                                    </StackLayout.Padding>
+                                    <Image Source="folderArrow.png">
+                                        <Image.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="28" />
+                                        </Image.HeightRequest>
+                                    </Image>
+                                </StackLayout>
+                                <StackLayout Grid.Column="3"
+                                             IsVisible="{Binding BindingContext.Library.Edit,
+                                                                 Source={x:Reference Name=localItemsView}}"
+                                             VerticalOptions="Center">
+                                    <playon:CheckBox
+                                        Checked="{Binding Checked,
+                                                                       Mode=TwoWay}"
+                                        CheckedImage="checkboxChecked.png"
+                                        UnCheckedImage="checkboxUnchecked.png"
+                                        VerticalOptions="Center">
+                                        <playon:CheckBox.WidthRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="20" />
+                                        </playon:CheckBox.WidthRequest>
+                                        <playon:CheckBox.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="14"
+                                                     Tablet="20" />
+                                        </playon:CheckBox.HeightRequest>
+                                        <playon:CheckBox.Triggers>
+                                            <DataTrigger Binding="{Binding Storage}"
+                                                         TargetType="playon:CheckBox"
+                                                         Value="{x:Static playonModel:LibraryItemStorage.iTunes}">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </playon:CheckBox.Triggers>
+                                    </playon:CheckBox>
+                                    <StackLayout.Padding>
+                                        <OnIdiom x:TypeArguments="Thickness"
+                                                 Phone="0,0,10,0"
+                                                 Tablet="0,0,15,0" />
+                                    </StackLayout.Padding>
+                                </StackLayout>
+                            </Grid>
+                            <playon:CustomViewCell.ContextActions>
+                                <MenuItem
+                                    Command="{Binding BindingContext.Library.Play,
+                                                            Source={x:Reference Name=localItemsView}}"
+                                    CommandParameter="{Binding}"
+                                    Text="Play" />
+                                <MenuItem
+                                    Command="{Binding BindingContext.Library.Delete,
+                                                            Source={x:Reference Name=localItemsView}}"
+                                    CommandParameter="{Binding}"
+                                    IsDestructive="True"
+                                    Text="Delete" />
+                            </playon:CustomViewCell.ContextActions>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+                <playon:CustomListView.Triggers>
+                    <DataTrigger Binding="{Binding Library.SelectedView}"
+                                 TargetType="playon:CustomListView"
+                                 Value="1">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </playon:CustomListView.Triggers>
+            </playon:CustomListView>
+            <playon:CustomActivityIndicator Grid.Row="2"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding Library.IsLoading}"
+                                            IsRunning="{Binding Library.IsLoading}"
+                                            IsVisible="{Binding Library.IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+            <StackLayout x:Name="contentLayout"
+                         Grid.Row="3"
+                         BackgroundColor="Black"
+                         HorizontalOptions="FillAndExpand"
+                         IsVisible="{Binding BindingContext.Library.Edit,
+                                             Source={x:Reference Name=cloudItemsView}}"
+                         Orientation="Horizontal"
+                         VerticalOptions="FillAndExpand">
+                <StackLayout.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="40"
+                             Tablet="70" />
+                </StackLayout.HeightRequest>
+                <playon:NavigationFrame Checked="True"
+                                        Command="{Binding Library.DownloadChecked}"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Image="libraryManageDownload.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Download"
+                                        TextColor="#3bb4ff"
+                                        UseHighlight="False"
+                                        VerticalOptions="CenterAndExpand">
+                    <playon:NavigationFrame.ImageSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </playon:NavigationFrame.ImageSize>
+                    <playon:NavigationFrame.Triggers>
+                        <DataTrigger Binding="{Binding Library.SelectedView}"
+                                     TargetType="playon:NavigationFrame"
+                                     Value="1">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </playon:NavigationFrame.Triggers>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame Checked="True"
+                                        Command="{Binding Library.ManageDone}"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Image="libraryManageDone.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Done"
+                                        TextColor="#2bb673"
+                                        UseHighlight="False"
+                                        VerticalOptions="CenterAndExpand">
+                    <playon:NavigationFrame.ImageSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </playon:NavigationFrame.ImageSize>
+                </playon:NavigationFrame>
+                <playon:NavigationFrame Checked="True"
+                                        Command="{Binding Library.DeleteChecked}"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Image="libraryManageDelete.png"
+                                        Style="{DynamicResource NavigationButton}"
+                                        Text="Delete"
+                                        TextColor="#ff000a"
+                                        UseHighlight="False"
+                                        VerticalOptions="CenterAndExpand">
+                    <playon:NavigationFrame.ImageSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </playon:NavigationFrame.ImageSize>
+                </playon:NavigationFrame>
+            </StackLayout>
+        </Grid>
+    </playon:SlidingContentView.Content>
+</playon:SlidingContentView>

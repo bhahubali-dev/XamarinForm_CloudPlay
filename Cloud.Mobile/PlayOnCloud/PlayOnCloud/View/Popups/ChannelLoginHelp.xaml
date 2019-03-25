@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<playon:PopupBase x:Class="PlayOnCloud.ChannelLoginHelp"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                  xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <playon:PopupBase.Content>
+        <Grid>
+            <Grid.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="44,0,0,0"
+                         Tablet="77,0,0,0" />
+            </Grid.Padding>
+            <Grid.Triggers>
+                <DataTrigger Binding="{Binding DeviceOrientation}"
+                             TargetType="Grid"
+                             Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                    <Setter Property="Padding">
+                        <Setter.Value>
+                            <OnIdiom x:TypeArguments="Thickness"
+                                     Phone="0,0,0,44"
+                                     Tablet="0,0,0,77" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Grid.Triggers>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.125*" />
+                <ColumnDefinition Width="0.75*" />
+                <ColumnDefinition Width="0.125*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.10*" />
+                <RowDefinition Height="0.80*" />
+                <RowDefinition Height="0.10*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="3"
+                  Grid.ColumnSpan="3"
+                  BackgroundColor="Black"
+                  Opacity="0.9" />
+            <playon:ImageButton Grid.RowSpan="3"
+                                Grid.ColumnSpan="3"
+                                Clicked="GotBackClick"
+                                Style="{DynamicResource BackImageButton}">
+                <playon:ImageButton.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="6,25,0,0"
+                             Tablet="20,30,0,0" />
+                </playon:ImageButton.Margin>
+            </playon:ImageButton>
+            <StackLayout Grid.Row="1"
+                         Grid.Column="1"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Spacing>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="25"
+                             Tablet="50" />
+                </StackLayout.Spacing>
+                <StackLayout HorizontalOptions="Center"
+                             Orientation="Vertical"
+                             VerticalOptions="Center">
+                    <Image HorizontalOptions="Center"
+                           Source="channelLoginHelp.png"
+                           VerticalOptions="Start" />
+                    <Label FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Style="{DynamicResource ExtraMediumFontLabel}"
+                           Text="Need some help?"
+                           TextColor="White"
+                           VerticalOptions="Start"
+                           XAlign="Center" />
+                    <Label HorizontalOptions="Center"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="Some premium channels require account credentials in order for PlayOn Cloud to access that channel's content, while others allow you to access personal media and saved content when logging in with a free account. If you're having trouble logging in, double check your user name and password by visiting the respective channel provider's website. Or, if you feel like there is a problem logging in through the PlayOn Cloud app, please contact our support team through the link below and we'll help get everything sorted out."
+                           TextColor="White"
+                           VerticalOptions="Start"
+                           XAlign="Center" />
+                </StackLayout>
+                <Button Clicked="ContactSupportClick"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Style="{DynamicResource MediumTransparentButton}"
+                        Text="Contact support"
+                        TextColor="#198feb"
+                        VerticalOptions="Center">
+                    <Button.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="16"
+                                 Tablet="22" />
+                    </Button.FontSize>
+                </Button>
+            </StackLayout>
+        </Grid>
+    </playon:PopupBase.Content>
+</playon:PopupBase>

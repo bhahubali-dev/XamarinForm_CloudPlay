@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="PlayOnCloud.LibraryItemDetails">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:NameBreadcrumbsConverter x:Key="nameBreadcrumbsConverter" />
+            <playon:DurationConverter x:Key="durationConverter" />
+            <playon:DurationConverterShort x:Key="durationConverterShort" />
+            <playon:ByteArrayToImageSourceConverter x:Key="byteArrayToImageSourceConverter" />
+            <playon:AirDateConverter x:Key="airDateConverter" />
+            <playon:NullConverter x:Key="nullConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid BackgroundColor="Black" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>
+            <Grid Opacity="0.2"
+                  Grid.ColumnSpan="4">
+                <ffimageloading:CachedImage
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    BitmapOptimizations="False"
+                    TransformPlaceholders="False"
+                    FadeAnimationEnabled="False"
+                    RetryCount="2"
+                    Aspect="AspectFill"
+                    LoadingPlaceholder="defaultThumb.png"
+                    IsVisible="False">
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="False" />
+                                <BindingCondition
+                                    Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}"
+                                    Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="LoadingPlaceholder" Value="{Binding SelectedItem.SmallThumbnailUri}" />
+                            <Setter Property="ErrorPlaceholder" Value="defaultThumb.png" />
+                            <Setter Property="Source" Value="{Binding SelectedItem.LargeThumbnailUri}" />
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                    <ffimageloading:CachedImage.Transformations>
+                        <fftransformations:BlurredTransformation Radius="15" />
+                    </ffimageloading:CachedImage.Transformations>
+                </ffimageloading:CachedImage>
+                <ffimageloading:CachedImage
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    BitmapOptimizations="False"
+                    TransformPlaceholders="True"
+                    FadeAnimationEnabled="False"
+                    RetryCount="0"
+                    Aspect="AspectFill"
+                    LoadingPlaceholder="defaultThumb.png"
+                    IsVisible="False">
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="True" />
+                                <BindingCondition
+                                    Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}"
+                                    Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="LoadingPlaceholder"
+                                    Value="{Binding SelectedItem.SmallThumbnailData, Converter={StaticResource byteArrayToImageSourceConverter}}" />
+                            <Setter Property="ErrorPlaceholder" Value="defaultThumb.png" />
+                            <Setter Property="Source"
+                                    Value="{Binding SelectedItem.LargeThumbnailData, Converter={StaticResource byteArrayToImageSourceConverter}}" />
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                    <ffimageloading:CachedImage.Transformations>
+                        <fftransformations:BlurredTransformation Radius="15" />
+                    </ffimageloading:CachedImage.Transformations>
+                </ffimageloading:CachedImage>
+            </Grid>
+            <Grid Grid.ColumnSpan="4">
+                <ffimageloading:CachedImage
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    BitmapOptimizations="False"
+                    TransformPlaceholders="False"
+                    FadeAnimationEnabled="False"
+                    RetryCount="2"
+                    Aspect="AspectFit"
+                    IsVisible="False">
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="False" />
+                                <BindingCondition
+                                    Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}"
+                                    Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="LoadingPlaceholder" Value="{Binding SelectedItem.SmallThumbnailUri}" />
+                            <Setter Property="ErrorPlaceholder" Value="defaultThumb.png" />
+                            <Setter Property="Source" Value="{Binding SelectedItem.LargeThumbnailUri}" />
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                </ffimageloading:CachedImage>
+                <ffimageloading:CachedImage
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    BitmapOptimizations="False"
+                    TransformPlaceholders="False"
+                    FadeAnimationEnabled="False"
+                    RetryCount="0"
+                    Aspect="AspectFit"
+                    IsVisible="False">
+                    <ffimageloading:CachedImage.Triggers>
+                        <MultiTrigger TargetType="ffimageloading:CachedImage">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="True" />
+                                <BindingCondition
+                                    Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}"
+                                    Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="LoadingPlaceholder"
+                                    Value="{Binding SelectedItem.SmallThumbnailData, Converter={StaticResource byteArrayToImageSourceConverter}}" />
+                            <Setter Property="ErrorPlaceholder" Value="defaultThumb.png" />
+                            <Setter Property="Source"
+                                    Value="{Binding SelectedItem.LargeThumbnailData, Converter={StaticResource byteArrayToImageSourceConverter}}" />
+                            <Setter Property="IsVisible" Value="True" />
+                        </MultiTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                </ffimageloading:CachedImage>
+                <Grid.Padding>
+                    <OnIdiom
+                        x:TypeArguments="Thickness"
+                        Phone="37,8,37,17"
+                        Tablet="75,17,75,34" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" Binding="{Binding DeviceOrientation}"
+                                 Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom
+                                    x:TypeArguments="Thickness"
+                                    Phone="50,20,50,30"
+                                    Tablet="80,30,80,45" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Grid.Triggers>
+            </Grid>
+            <Grid Grid.Row="1" Grid.ColumnSpan="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*" />
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="0.1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.12*" />
+                    <RowDefinition Height="0.88*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical" VerticalOptions="StartAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <StackLayout.Spacing>
+                        <OnIdiom
+                            x:TypeArguments="x:Double"
+                            Phone="10"
+                            Tablet="15" />
+                    </StackLayout.Spacing>
+                    <Label
+                        x:Name="seriesLabel"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Style="{DynamicResource LargeFontLabel}"
+                        Text="{Binding SelectedItem.Series}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Source={x:Reference seriesLabel}, Path=Text}"
+                                         Value="{x:Static s:String.Empty}">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Style="{DynamicResource CompactFontLabel}"
+                        Text="{Binding SelectedItem.Title}" />
+                    <playon:CustomScrollView
+                        DisableBounces="True"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Fill"
+                        Orientation="Horizontal">
+                        <playon:CustomLabel
+                            TextColor="#0094FC"
+                            Style="{DynamicResource CompactFontLabel}"
+                            Text="{Binding SelectedItem.BrowsePathUI}"
+                            BoldText="{Binding SelectedItem.BrowsePathUI, Converter={StaticResource nameBreadcrumbsConverter}, ConverterParameter='GetOnlyLastName'}" />
+                    </playon:CustomScrollView>
+                    <StackLayout VerticalOptions="Start" HorizontalOptions="Start" Padding="0,3,0,3"
+                                 Orientation="Horizontal">
+                        <Label
+                            x:Name="airDateLabel"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            TextColor="White"
+                            Style="{DynamicResource CompactFontLabel}"
+                            Text="{Binding SelectedItem.AirDate, Converter={StaticResource airDateConverter}}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Source={x:Reference airDateLabel}, Path=Text}"
+                                             Value="{x:Static s:String.Empty}">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            TextColor="White"
+                            Style="{DynamicResource CompactFontLabel}"
+                            Text="{Binding SelectedItem.Duration, Converter={StaticResource durationConverterShort}}" />
+                        <Label
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            TextColor="White"
+                            Style="{DynamicResource CompactFontLabel}"
+                            Text="{Binding SelectedItem.Updated, StringFormat='Recorded: {0:MM/dd/yyyy}'}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding SelectedItem.IsLocal}" Value="True">
+                                    <Setter Property="Text"
+                                            Value="{Binding SelectedItem.Recorded, StringFormat='Recorded: {0:MM/dd/yyyy}'}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                    <ScrollView VerticalOptions="Start" HorizontalOptions="Start">
+                        <playon:CustomLabel
+                            VerticalOptions="Start"
+                            HorizontalOptions="Start"
+                            TextColor="White"
+                            Style="{DynamicResource CompactFontLabel}"
+                            LineSpacing="1.4"
+                            Text="{Binding SelectedItem.Description}" />
+                    </ScrollView>
+                </StackLayout>
+                <Grid
+                    Grid.Column="1"
+                    Grid.Row="2">
+                    <Grid.Padding>
+                        <OnIdiom
+                            x:TypeArguments="Thickness"
+                            Phone="0,0,0,36"
+                            Tablet="0,0,0,40" />
+                    </Grid.Padding>
+                    <Button
+                        BackgroundColor="Transparent"
+                        Text="Problem with your recording?"
+                        TextColor="#16bcee"
+                        BorderRadius="5"
+                        BorderColor="White"
+                        BorderWidth="1"
+                        VerticalOptions="End"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding Account.SubmitSupportRequest}"
+                        CommandParameter="{Binding SelectedItem}">
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="36"
+                                     Tablet="40" />
+                        </Button.HeightRequest>
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="11"
+                                     Tablet="16" />
+                        </Button.FontSize>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Button
+                Grid.Column="1"
+                Image="download.png"
+                HorizontalOptions="End"
+                VerticalOptions="EndAndExpand"
+                Command="{Binding Download}"
+                CommandParameter="{Binding SelectedItem}"
+                Clicked="ButtonClick"
+                IsVisible="False">
+                <Button.HeightRequest>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="48"
+                        Tablet="60" />
+                </Button.HeightRequest>
+                <Button.TranslationY>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="24"
+                        Tablet="30" />
+                </Button.TranslationY>
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="False" />
+                            <BindingCondition Binding="{Binding SelectedItem.LocalItem}" Value="{x:Null}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button
+                Grid.Column="1"
+                Image="play.png"
+                HorizontalOptions="Center"
+                VerticalOptions="EndAndExpand"
+                Command="{Binding Play}"
+                CommandParameter="{Binding SelectedItem}">
+                <Button.HeightRequest>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="48"
+                        Tablet="60" />
+                </Button.HeightRequest>
+                <Button.TranslationY>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="24"
+                        Tablet="30" />
+                </Button.TranslationY>
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding SelectedItem.IsLocal}" Value="False" />
+                            <BindingCondition Binding="{Binding SelectedItem.LocalItem}" Value="{x:Null}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="False" />
+                    </MultiTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button
+                Grid.Column="2"
+                Image="delete.png"
+                HorizontalOptions="Start"
+                VerticalOptions="EndAndExpand"
+                Command="{Binding Delete}"
+                CommandParameter="{Binding SelectedItem}">
+                <Button.HeightRequest>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="48"
+                        Tablet="60" />
+                </Button.HeightRequest>
+                <Button.TranslationY>
+                    <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="24"
+                        Tablet="30" />
+                </Button.TranslationY>
+            </Button>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<playon:SlidingContentView x:Class="PlayOnCloud.Notifications"
+                           xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                           xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                           xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+                           xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+                           xmlns:playonViewModel="clr-namespace:PlayOnCloud.ViewModel;assembly=PlayOnCloud"
+                           xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <playon:SlidingContentView.Resources>
+        <ResourceDictionary>
+            <playon:NullConverter x:Key="nullConverter" />
+            <playon:DurationConverter x:Key="durationConverter" />
+            <playon:LocalDateTimeConverter x:Key="localDateTimeConverter" />
+            <playon:IsFailedNotificationConverter x:Key="failedRecordingConverter" />
+            <playon:IsSuccessNotificationConverter x:Key="successNotificationConverter" />
+            <playon:DateOrTimeConverter x:Key="dateOrTimeConverter" />
+        </ResourceDictionary>
+    </playon:SlidingContentView.Resources>
+    <playon:SlidingContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="0.9*" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="10"
+                             Tablet="20" />
+                </Grid.Padding>
+                <Label Style="{StaticResource ExtraMediumFontLabel}"
+                       Text="Messages"
+                       TextColor="White" />
+                <playon:ImageButton Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding Notifications.DeleteAll}"
+                                    HorizontalOptions="End"
+                                    IsEnabled="True"
+                                    Source="xMarkBlue.png"
+                                    Text="Clear All Messages"
+                                    TextColor="#16bcee"
+                                    VerticalOptions="Center">
+                    <playon:ImageButton.Triggers>
+                        <DataTrigger Binding="{Binding Notifications.IsLoading}"
+                                     TargetType="playon:ImageButton"
+                                     Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </playon:ImageButton.Triggers>
+                    <playon:ImageButton.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="20"
+                                 Tablet="25" />
+                    </playon:ImageButton.HeightRequest>
+                    <playon:ImageButton.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="18" />
+                    </playon:ImageButton.FontSize>
+                    <playon:ImageButton.ImageWidthRequest>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="8"
+                                 Tablet="14" />
+                    </playon:ImageButton.ImageWidthRequest>
+                    <playon:ImageButton.ImageHeightRequest>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="7"
+                                 Tablet="13" />
+                    </playon:ImageButton.ImageHeightRequest>
+                </playon:ImageButton>
+            </Grid>
+            <StackLayout Grid.Row="0"
+                         Grid.RowSpan="2"
+                         HorizontalOptions="Center"
+                         IsVisible="False"
+                         Orientation="Vertical"
+                         VerticalOptions="Center">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="20,0,20,0"
+                             Tablet="40,0,40,0" />
+                </StackLayout.Padding>
+                <Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="No Messages"
+                       TextColor="White"
+                       XAlign="Center" />
+                <playon:CustomLabel LineSpacing="1.3"
+                                    ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+                                    Style="{DynamicResource CompactFontLabel}"
+                                    TextColor="#838383">
+                    You do not have any messages right now. We will send you messages to alert you when your recordings have completed.
+                </playon:CustomLabel>
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Notifications.NotificationItemsCount}" Value="0" />
+                            <BindingCondition Binding="{Binding Notifications.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <playon:CustomListView x:Name="notificationsItemsView"
+                                   Grid.Row="1"
+                                   BackgroundColor="Transparent"
+                                   CanEditRow="True"
+                                   IsPullToRefreshEnabled="True"
+                                   IsRefreshing="{Binding Notifications.IsRefreshing,
+                                                          Mode=TwoWay}"
+                                   ItemSelected="OnListBoxItemSelected"
+                                   ItemsSource="{Binding Notifications.NotificationItems}"
+                                   RefreshCommand="{Binding Notifications.Refresh}"
+                                   SelectedItem="{Binding Notifications.SelectedItem,
+                                                          Mode=TwoWay}">
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell Checked="{Binding Checked}" Tapped="Item_OnTapped">
+                            <StackLayout x:Name="notificationItem"
+                                         HorizontalOptions="FillAndExpand"
+                                         Orientation="Vertical"
+                                         VerticalOptions="FillAndExpand">
+                                <Grid HorizontalOptions="FillAndExpand">
+                                    <playon:CustomListView.RowHeight>
+                                        <OnIdiom x:TypeArguments="x:Int32"
+                                                 Phone="50"
+                                                 Tablet="100" />
+                                    </playon:CustomListView.RowHeight>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <!--<Image
+										Source="checkboxChecked.png"
+										IsVisible="{Binding Checked}"/>-->
+                                    <ffimageloading:CachedImage Grid.Column="1"
+                                                                Aspect="AspectFit"
+                                                                BitmapOptimizations="False"
+                                                                FadeAnimationEnabled="False"
+                                                                LoadingPlaceholder="defaultThumb.png"
+                                                                RetryCount="2"
+                                                                Source="{Binding ThumbnailDataUri}"
+                                                                TransformPlaceholders="True"
+                                                                VerticalOptions="Center">
+                                        <ffimageloading:CachedImage.Transformations>
+                                            <fftransformations:CircleTransformation>
+                                                <x:Arguments>
+                                                    <x:Double>40</x:Double>
+                                                    <x:String>#FFFFFF</x:String>
+                                                </x:Arguments>
+                                            </fftransformations:CircleTransformation>
+                                        </ffimageloading:CachedImage.Transformations>
+                                        <ffimageloading:CachedImage.HeightRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="40"
+                                                     Tablet="80" />
+                                        </ffimageloading:CachedImage.HeightRequest>
+                                        <ffimageloading:CachedImage.WidthRequest>
+                                            <OnIdiom x:TypeArguments="x:Double"
+                                                     Phone="40"
+                                                     Tablet="80" />
+                                        </ffimageloading:CachedImage.WidthRequest>
+                                    </ffimageloading:CachedImage>
+                                    <Grid Grid.Column="2"
+                                          ColumnSpacing="0"
+                                          VerticalOptions="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.Padding>
+                                            <OnIdiom x:TypeArguments="Thickness"
+                                                     Phone="3,0,0,0"
+                                                     Tablet="8,0,0,0" />
+                                        </Grid.Padding>
+                                        <Grid.Triggers>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         TargetType="Grid"
+                                                         Value="{x:Static playonModel:NotificationStatus.Read}">
+                                                <Setter Property="Opacity" Value="0.3" />
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Image Source="notificationsUnread.png">
+                                            <Image.Margin>
+                                                <OnIdiom x:TypeArguments="Thickness"
+                                                         Phone="0,0,5,1"
+                                                         Tablet="0,0,8,2" />
+                                            </Image.Margin>
+                                            <Image.WidthRequest>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="6"
+                                                         Tablet="12" />
+                                            </Image.WidthRequest>
+                                            <Image.HeightRequest>
+                                                <OnIdiom x:TypeArguments="x:Double"
+                                                         Phone="6"
+                                                         Tablet="12" />
+                                            </Image.HeightRequest>
+                                            <Image.Triggers>
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             TargetType="Image"
+                                                             Value="{x:Static playonModel:NotificationStatus.Read}">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                        <Label Grid.Column="1"
+                                               FontAttributes="Bold"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="Your recording is ready to download."
+                                               TextColor="White">
+                                            <Label.Triggers>
+                                                <DataTrigger Binding="{Binding Type,
+                                                                               Converter={StaticResource failedRecordingConverter}}"
+                                                             TargetType="Label"
+                                                             Value="True">
+                                                    <Setter Property="Text" Value="Your recording has failed." />
+                                                    <Setter Property="TextColor" Value="#f83c3c" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}"
+                                                             TargetType="Label"
+                                                             Value="{x:Static playonModel:NotificationType.DownloadExpiring}">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="1"
+                                               FontAttributes="Bold"
+                                               IsVisible="False"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="Your recording is about to expire."
+                                               TextColor="#ffa800">
+                                            <Label.Triggers>
+                                                <DataTrigger Binding="{Binding Type,
+                                                                               Converter={StaticResource failedRecordingConverter}}"
+                                                             TargetType="Label"
+                                                             Value="True">
+                                                    <Setter Property="Text" Value="Your recording has failed." />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}"
+                                                             TargetType="Label"
+                                                             Value="{x:Static playonModel:NotificationType.DownloadExpiring}">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="2"
+                                               FontAttributes="Bold"
+                                               Style="{DynamicResource SmallFontLabel}"
+                                               Text="{Binding Created,
+                                                              Converter={StaticResource dateOrTimeConverter}}"
+                                               TextColor="White" />
+                                        <playon:CustomLabel Grid.Row="1"
+                                                            Grid.ColumnSpan="3"
+                                                            IsVisible="False"
+                                                            LineBreakMode="TailTruncation"
+                                                            LinesCount="1"
+                                                            Style="{DynamicResource SmallFontLabel}"
+                                                            Text="{Binding FullTitle,
+                                                                           StringFormat='{0} is ready to be downloaded to any device.'}"
+                                                            TextColor="White">
+                                            <playon:CustomLabel.LinesCount>
+                                                <OnIdiom x:TypeArguments="x:Int32"
+                                                         Phone="1"
+                                                         Tablet="2" />
+                                            </playon:CustomLabel.LinesCount>
+                                            <playon:CustomLabel.Triggers>
+                                                <DataTrigger Binding="{Binding Type,
+                                                                               Converter={StaticResource successNotificationConverter}}"
+                                                             TargetType="playon:CustomLabel"
+                                                             Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </playon:CustomLabel.Triggers>
+                                        </playon:CustomLabel>
+                                        <playon:CustomLabel Grid.Row="1"
+                                                            Grid.ColumnSpan="3"
+                                                            IsVisible="False"
+                                                            LineBreakMode="TailTruncation"
+                                                            LinesCount="1"
+                                                            Style="{DynamicResource SmallFontLabel}"
+                                                            Text="{Binding FullTitle,
+                                                                           StringFormat='We could not record your video {0}.'}"
+                                                            TextColor="White">
+                                            <playon:CustomLabel.LinesCount>
+                                                <OnIdiom x:TypeArguments="x:Int32"
+                                                         Phone="1"
+                                                         Tablet="2" />
+                                            </playon:CustomLabel.LinesCount>
+                                            <playon:CustomLabel.Triggers>
+                                                <DataTrigger Binding="{Binding Type,
+                                                                               Converter={StaticResource failedRecordingConverter}}"
+                                                             TargetType="playon:CustomLabel"
+                                                             Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </playon:CustomLabel.Triggers>
+                                        </playon:CustomLabel>
+                                        <playon:CustomLabel Grid.Row="1"
+                                                            Grid.ColumnSpan="3"
+                                                            IsVisible="False"
+                                                            LineBreakMode="TailTruncation"
+                                                            LinesCount="1"
+                                                            Style="{DynamicResource SmallFontLabel}"
+                                                            Text="{Binding FullTitle,
+                                                                           StringFormat='{0} is going to expire soon.'}"
+                                                            TextColor="White">
+                                            <playon:CustomLabel.LinesCount>
+                                                <OnIdiom x:TypeArguments="x:Int32"
+                                                         Phone="1"
+                                                         Tablet="2" />
+                                            </playon:CustomLabel.LinesCount>
+                                            <playon:CustomLabel.Triggers>
+                                                <DataTrigger Binding="{Binding Type}"
+                                                             TargetType="playon:CustomLabel"
+                                                             Value="{x:Static playonModel:NotificationType.DownloadExpiring}">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </playon:CustomLabel.Triggers>
+                                        </playon:CustomLabel>
+                                    </Grid>
+                                    <StackLayout Grid.Column="3"
+                                                 HorizontalOptions="End"
+                                                 Orientation="Vertical"
+                                                 VerticalOptions="Center">
+                                        <StackLayout.Padding>
+                                            <OnIdiom x:TypeArguments="Thickness"
+                                                     Phone="10,0,10,0"
+                                                     Tablet="14,0,14,0" />
+                                        </StackLayout.Padding>
+                                        <Button Command="{Binding BindingContext.Notifications.Delete,
+                                                                  Source={x:Reference Name=notificationsItemsView}}"
+                                                CommandParameter="{Binding}"
+                                                Image="xCircle.png"
+                                                Style="{DynamicResource TransparentButton}" />
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
+                            <playon:CustomViewCell.ContextActions>
+                                <MenuItem Command="{Binding BindingContext.Notifications.Delete,
+                                                            Source={x:Reference Name=notificationsItemsView}}"
+                                          CommandParameter="{Binding}"
+                                          IsDestructive="True"
+                                          Text="Delete" />
+                            </playon:CustomViewCell.ContextActions>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+            </playon:CustomListView>
+            <playon:CustomActivityIndicator Grid.Row="1"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="{Binding Notifications.IsLoading}"
+                                            IsRunning="{Binding Notifications.IsLoading}"
+                                            IsVisible="{Binding Notifications.IsLoading}"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+        </Grid>
+    </playon:SlidingContentView.Content>
+</playon:SlidingContentView>

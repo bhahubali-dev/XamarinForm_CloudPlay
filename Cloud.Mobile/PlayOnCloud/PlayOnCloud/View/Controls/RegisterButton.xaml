@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView x:Class="PlayOnCloud.RegisterButton"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud">
+    <ContentView.Content>
+        <Grid>
+            <Grid.HeightRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="70"
+                         Tablet="92" />
+            </Grid.HeightRequest>
+            <Grid.WidthRequest>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="280"
+                         Tablet="520" />
+            </Grid.WidthRequest>
+            <playon:RoundButton x:Name="roundButton" Clicked="roundButtonClicked">
+                <playon:RoundButton.BorderRadius>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="10"
+                             Tablet="14" />
+                </playon:RoundButton.BorderRadius>
+            </playon:RoundButton>
+            <StackLayout InputTransparent="True" Orientation="Horizontal">
+                <Image x:Name="imageSource"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center">
+                    <Image.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="20,0,0,0"
+                                 Tablet="60,0,0,0" />
+                    </Image.Margin>
+                    <Image.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="26"
+                                 Tablet="40" />
+                    </Image.WidthRequest>
+                    <Image.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="26"
+                                 Tablet="40" />
+                    </Image.HeightRequest>
+                </Image>
+                <playon:CustomLabel x:Name="textLabel"
+                                    HorizontalOptions="Start"
+                                    Style="{DynamicResource CompactFontLabel}"
+                                    VerticalOptions="Center">
+                    <playon:CustomLabel.FontSize>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="28" />
+                    </playon:CustomLabel.FontSize>
+                </playon:CustomLabel>
+            </StackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

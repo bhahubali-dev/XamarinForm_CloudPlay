@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView x:Class="PlayOnCloud.ContentItemDetailsView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             x:Name="contentView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:DurationConverter x:Key="durationConverter" />
+            <playon:NameBreadcrumbsConverter x:Key="nameBreadcrumbsConverter" />
+            <playon:PluralStringConverter x:Key="pluralStringConverter" />
+            <playon:AirDateConverter x:Key="airDateConverter" />
+            <playon:NullConverter x:Key="nullConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid BackgroundColor="Black" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <ffimageloading:CachedImage Aspect="AspectFill"
+                                        BitmapOptimizations="False"
+                                        FadeAnimationEnabled="False"
+                                        HorizontalOptions="FillAndExpand"
+                                        Opacity="0.3"
+                                        RetryCount="3"
+                                        TransformPlaceholders="False"
+                                        VerticalOptions="FillAndExpand">
+                <ffimageloading:CachedImage.Triggers>
+                    <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem,
+                                                   Converter={StaticResource nullConverter}}"
+                                 TargetType="ffimageloading:CachedImage"
+                                 Value="False">
+                        <Setter Property="LoadingPlaceholder" Value="{Binding MediaContent.SelectedMediaItem.SmallThumbnailUrl}" />
+                        <Setter Property="ErrorPlaceholder" Value="{Binding MediaContent.SelectedMediaItem.SmallThumbnailUrl}" />
+                        <Setter Property="Source" Value="{Binding MediaContent.SelectedMediaItem.LargeThumbnailUrl}" />
+                    </DataTrigger>
+                </ffimageloading:CachedImage.Triggers>
+                <ffimageloading:CachedImage.Transformations>
+                    <fftransformations:BlurredTransformation Radius="15" />
+                </ffimageloading:CachedImage.Transformations>
+            </ffimageloading:CachedImage>
+            <Grid>
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="37,8,37,17"
+                             Tablet="75,18,75,36" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding DeviceOrientation}"
+                                 TargetType="Grid"
+                                 Value="{x:Static playonModel:DeviceOrientation.Portrait}">
+                        <Setter Property="Padding">
+                            <Setter.Value>
+                                <OnIdiom x:TypeArguments="Thickness"
+                                         Phone="37,18,37,36"
+                                         Tablet="75,36,75,72" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Grid.Triggers>
+                <ffimageloading:CachedImage Aspect="AspectFit"
+                                            BitmapOptimizations="False"
+                                            FadeAnimationEnabled="False"
+                                            HorizontalOptions="FillAndExpand"
+                                            RetryCount="3"
+                                            TransformPlaceholders="False"
+                                            VerticalOptions="FillAndExpand">
+                    <ffimageloading:CachedImage.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem,
+                                                       Converter={StaticResource nullConverter}}"
+                                     TargetType="ffimageloading:CachedImage"
+                                     Value="False">
+                            <Setter Property="LoadingPlaceholder" Value="{Binding MediaContent.SelectedMediaItem.SmallThumbnailUrl}" />
+                            <Setter Property="ErrorPlaceholder" Value="{Binding MediaContent.SelectedMediaItem.SmallThumbnailUrl}" />
+                            <Setter Property="Source" Value="{Binding MediaContent.SelectedMediaItem.LargeThumbnailUrl}" />
+                        </DataTrigger>
+                    </ffimageloading:CachedImage.Triggers>
+                </ffimageloading:CachedImage>
+            </Grid>
+            <Grid HorizontalOptions="Center" VerticalOptions="EndAndExpand">
+                <Grid.TranslationY>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="18"
+                             Tablet="24" />
+                </Grid.TranslationY>
+                <playon:RoundButton BackgroundColor="#00ccff"
+                                    BorderColor="#00ccff"
+                                    Command="{Binding MediaContent.Products.PurchaseContentItem}"
+                                    CommandParameter="{Binding MediaContent.SelectedMediaItem}"
+                                    TextColor="White">
+                    <playon:RoundButton.BorderWidth>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="1"
+                                 Tablet="2" />
+                    </playon:RoundButton.BorderWidth>
+                    <playon:RoundButton.Triggers>
+                        <MultiTrigger TargetType="playon:RoundButton">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.Account.UserInfo.HasCredits}" Value="False" />
+                                <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.InQueue}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Text" Value="{Binding MediaContent.Products.RecordingProduct.LocalizedPrice}" />
+                        </MultiTrigger>
+                        <MultiTrigger TargetType="playon:RoundButton">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.Account.UserInfo.HasCredits}" Value="True" />
+                                <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.InQueue}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Text" Value="Record for Free" />
+                        </MultiTrigger>
+                        <MultiTrigger TargetType="playon:RoundButton">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.Account.SignedIn}" Value="False" />
+                                <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.InQueue}" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Text" Value="Add to Queue" />
+                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem.InQueue}"
+                                     TargetType="playon:RoundButton"
+                                     Value="True">
+                            <Setter Property="Text" Value="Added to Queue" />
+                            <Setter Property="BackgroundColor" Value="Black" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding MediaContent.IsDetailsLoading}"
+                                     TargetType="playon:RoundButton"
+                                     Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </playon:RoundButton.Triggers>
+                </playon:RoundButton>
+                <Image HorizontalOptions="Start"
+                       InputTransparent="True"
+                       IsVisible="False"
+                       Source="plusSign.png"
+                       VerticalOptions="Center">
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem.InQueue}"
+                                     TargetType="Image"
+                                     Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                    <Image.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="20" />
+                    </Image.WidthRequest>
+                    <Image.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="16"
+                                 Tablet="24" />
+                    </Image.HeightRequest>
+                    <Image.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="20,0,0,0"
+                                 Tablet="24,0,0,0" />
+                    </Image.Margin>
+                </Image>
+            </Grid>
+            <Grid Grid.RowSpan="2"
+                  BackgroundColor="#802e2e2e"
+                  HorizontalOptions="FillAndExpand"
+                  IsVisible="False"
+                  VerticalOptions="FillAndExpand">
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="Grid">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.IsDetailsLoading}" Value="True" />
+                            <BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Portrait}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <playon:CustomActivityIndicator Grid.RowSpan="2"
+                                                HorizontalOptions="Center"
+                                                InputTransparent="True"
+                                                IsEnabled="False"
+                                                IsRunning="False"
+                                                IsVisible="False"
+                                                VerticalOptions="Center"
+                                                Color="White">
+                    <playon:CustomActivityIndicator.Triggers>
+                        <MultiTrigger TargetType="playon:CustomActivityIndicator">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding MediaContent.IsDetailsLoading}" Value="True" />
+                                <BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Portrait}" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible" Value="True" />
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Setter Property="IsRunning" Value="True" />
+                        </MultiTrigger>
+                    </playon:CustomActivityIndicator.Triggers>
+                    <playon:CustomActivityIndicator.WidthRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="22"
+                                 Tablet="44" />
+                    </playon:CustomActivityIndicator.WidthRequest>
+                    <playon:CustomActivityIndicator.HeightRequest>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="22"
+                                 Tablet="44" />
+                    </playon:CustomActivityIndicator.HeightRequest>
+                    <playon:CustomActivityIndicator.Margin>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="0, 120, 0, 0"
+                                 Tablet="0, 240, 0, 0" />
+                    </playon:CustomActivityIndicator.Margin>
+                </playon:CustomActivityIndicator>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.11*" />
+                    <ColumnDefinition Width="0.78*" />
+                    <ColumnDefinition Width="0.11*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.18*" />
+                    <RowDefinition Height="0.82*" />
+                </Grid.RowDefinitions>
+                <Grid.Padding>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0,5,0,0"
+                             Tablet="0,10,0,0" />
+                </Grid.Padding>
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="Grid">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.IsDetailsLoading}" Value="True" />
+                            <BindingCondition Binding="{Binding MediaContent.IsLoading}" Value="False" />
+                            <BindingCondition Binding="{Binding Products.IsLoading}" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Opacity" Value="0.3" />
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <Label Grid.Column="1"
+                       HorizontalOptions="Center"
+                       Style="{DynamicResource SmallFontLabel}"
+                       TextColor="#47baff"
+                       VerticalOptions="Center"
+                       XAlign="Center">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding MediaContent.Account.UserInfo.HasCredits}"
+                                     TargetType="Label"
+                                     Value="False">
+                            <Setter Property="Text" Value="{Binding MediaContent.Products.RecordingProduct.LocalizedPrice, StringFormat='Record for {0}. Download to your device.'}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding MediaContent.Account.UserInfo.HasCredits}"
+                                     TargetType="Label"
+                                     Value="True">
+                            <Setter Property="Text" Value="{Binding MediaContent.Account.UserInfo.Credits, Converter={StaticResource pluralStringConverter}, ConverterParameter='You have {0} free recording credit[PLURAL_REPLACE]. Record and download to your device.'}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem.InQueue}"
+                                     TargetType="Label"
+                                     Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <StackLayout Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalOptions="FillAndExpand"
+                             Orientation="Vertical"
+                             VerticalOptions="StartAndExpand">
+                    <StackLayout.Spacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="20" />
+                    </StackLayout.Spacing>
+                    <Label FontAttributes="Bold"
+                           HorizontalOptions="Start"
+                           Style="{DynamicResource LargeFontLabel}"
+                           TextColor="White"
+                           VerticalOptions="Start">
+                        <Label.Triggers>
+                            <MultiTrigger TargetType="Label">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.HasSeries}" Value="False" />
+                                    <BindingCondition Binding="{Binding IsInDetailsPage, Source={x:Reference contentView}}" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Text" Value="{Binding MediaContent.SelectedMediaItem.Name}" />
+                            </MultiTrigger>
+                            <MultiTrigger TargetType="Label">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.HasSeries}" Value="False" />
+                                    <BindingCondition Binding="{Binding IsInDetailsPage, Source={x:Reference contentView}}" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="False" />
+                            </MultiTrigger>
+                            <DataTrigger Binding="{Binding MediaContent.SelectedMediaItem.HasSeries}"
+                                         TargetType="Label"
+                                         Value="True">
+                                <Setter Property="Text" Value="{Binding MediaContent.SelectedMediaItem.Series}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label FontAttributes="Bold"
+                           HorizontalOptions="Start"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="{Binding MediaContent.SelectedMediaItem.Name}"
+                           TextColor="White"
+                           VerticalOptions="Start">
+                        <Label.Triggers>
+                            <MultiTrigger TargetType="Label">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding MediaContent.SelectedMediaItem.HasSeries}" Value="False" />
+                                    <BindingCondition Binding="{Binding IsInDetailsPage, Source={x:Reference contentView}}" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="False" />
+                            </MultiTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <playon:CustomScrollView DisableBounces="True"
+                                             HorizontalOptions="Fill"
+                                             Orientation="Horizontal"
+                                             VerticalOptions="Start">
+                        <StackLayout HorizontalOptions="Start" Orientation="Horizontal">
+                            <Label Style="{DynamicResource CompactFontLabel}"
+                                   Text="{Binding MediaContent.SelectedMediaItem.BrowsePathUI,
+                                                  Converter={StaticResource nameBreadcrumbsConverter},
+                                                  StringFormat='{0} > '}"
+                                   TextColor="#0094FC" />
+                            <Label FontAttributes="Bold"
+                                   Style="{DynamicResource CompactFontLabel}"
+                                   Text="{Binding MediaContent.SelectedFolder.Name}"
+                                   TextColor="#0094FC">
+                                <Label.Triggers>
+                                    <DataTrigger Binding="{Binding MediaContent.SelectedFolder.IsFromSearch}"
+                                                 TargetType="Label"
+                                                 Value="True">
+                                        <Setter Property="Text" Value="{Binding MediaContent.SelectedFolder.Name, StringFormat='Search results for &quot;{0}&quot;'}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </playon:CustomScrollView>
+                    <StackLayout HorizontalOptions="Start"
+                                 Orientation="Horizontal"
+                                 VerticalOptions="Start">
+                        <Label x:Name="airDateLabel"
+                               HorizontalOptions="Start"
+                               Style="{DynamicResource CompactFontLabel}"
+                               Text="{Binding MediaContent.SelectedMediaItem.AirDate,
+                                              Converter={StaticResource airDateConverter}}"
+                               TextColor="White"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger Binding="{Binding Source={x:Reference airDateLabel},
+                                                               Path=Text}"
+                                             TargetType="Label"
+                                             Value="{x:Static s:String.Empty}">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label HorizontalOptions="Start"
+                               Style="{DynamicResource CompactFontLabel}"
+                               Text="{Binding MediaContent.SelectedMediaItem.Duration,
+                                              Converter={StaticResource durationConverter}}"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                    </StackLayout>
+                    <ScrollView HorizontalOptions="Start" VerticalOptions="Start">
+                        <playon:CustomLabel HorizontalOptions="Start"
+                                            LineSpacing="1.4"
+                                            Style="{DynamicResource CompactFontLabel}"
+                                            Text="{Binding MediaContent.SelectedMediaItem.Description}"
+                                            TextColor="White"
+                                            VerticalOptions="Start" />
+                    </ScrollView>
+                </StackLayout>
+            </Grid>
+            <playon:CustomActivityIndicator Grid.Row="1"
+                                            HorizontalOptions="Center"
+                                            InputTransparent="True"
+                                            IsEnabled="False"
+                                            IsRunning="False"
+                                            IsVisible="False"
+                                            VerticalOptions="Center"
+                                            Color="White">
+                <playon:CustomActivityIndicator.Triggers>
+                    <MultiTrigger TargetType="playon:CustomActivityIndicator">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding MediaContent.IsDetailsLoading}" Value="True" />
+                            <BindingCondition Binding="{Binding MediaContent.IsLoading}" Value="False" />
+                            <BindingCondition Binding="{Binding Products.IsLoading}" Value="False" />
+                            <BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True" />
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Setter Property="IsRunning" Value="True" />
+                    </MultiTrigger>
+                </playon:CustomActivityIndicator.Triggers>
+                <playon:CustomActivityIndicator.WidthRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.WidthRequest>
+                <playon:CustomActivityIndicator.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="22"
+                             Tablet="44" />
+                </playon:CustomActivityIndicator.HeightRequest>
+                <playon:CustomActivityIndicator.Margin>
+                    <OnIdiom x:TypeArguments="Thickness"
+                             Phone="0, 120, 0, 0"
+                             Tablet="0, 240, 0, 0" />
+                </playon:CustomActivityIndicator.Margin>
+            </playon:CustomActivityIndicator>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

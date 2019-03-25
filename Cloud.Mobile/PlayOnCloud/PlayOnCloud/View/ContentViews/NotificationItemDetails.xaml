@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+			xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+			xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+			xmlns:s="clr-namespace:System;assembly=mscorlib"
+			x:Class="PlayOnCloud.NotificationItemDetails"
+			BackgroundColor="Black">
+	<ContentView.Resources>
+		<ResourceDictionary>
+			<playon:NameBreadcrumbsConverter x:Key="nameBreadcrumbsConverter"/>
+			<playon:LocalDateTimeConverter x:Key="localDateTimeConverter"/>
+			<playon:IsFailedNotificationConverter x:Key="isFailedNotificationConverter"/>
+			<playon:IsSuccessNotificationConverter x:Key="isSuccessNotificationConverter"/>
+		</ResourceDictionary>
+	</ContentView.Resources>
+	<ContentView.Content>
+		<Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<Grid.RowSpacing>
+				<OnIdiom
+					x:TypeArguments="x:Double"
+					Phone="10"
+					Tablet="20"/>
+			</Grid.RowSpacing>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.Padding>
+				<OnIdiom
+					x:TypeArguments="Thickness"
+					Phone="30,10,30,10"
+					Tablet="60,20,60,20"/>
+			</Grid.Padding>
+			<playon:CustomLabel
+				VerticalOptions="Start"
+				HorizontalOptions="Start"
+				TextColor="White"
+				LinesCount="2"
+				Text="{Binding Notifications.SelectedItem.RecordQueueItem.FullTitle, StringFormat='We could not record {0}'}"
+				IsVisible="False"
+				Style="{DynamicResource MediumFontLabel}">
+				<playon:CustomLabel.Triggers>
+				<MultiTrigger TargetType="playon:CustomLabel">
+					<MultiTrigger.Conditions>
+						<BindingCondition Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isFailedNotificationConverter}}" Value="True"/>
+						<BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}"/>
+					</MultiTrigger.Conditions>
+					<Setter Property="IsVisible" Value="True"/>
+				</MultiTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				VerticalOptions="Start"
+				HorizontalOptions="Start"
+				TextColor="White"
+				LinesCount="2"
+				Text="Your recording is ready!"
+				IsVisible="False"
+				Style="{DynamicResource MediumFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<MultiTrigger TargetType="playon:CustomLabel">
+						<MultiTrigger.Conditions>
+							<BindingCondition Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isSuccessNotificationConverter}}" Value="True"/>
+							<BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}"/>
+						</MultiTrigger.Conditions>
+						<Setter Property="IsVisible" Value="True"/>
+					</MultiTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				VerticalOptions="Start"
+				HorizontalOptions="Start"
+				TextColor="White"
+				LinesCount="2"
+				Text="Your recording is about to expire."
+				IsVisible="False"
+				Style="{DynamicResource MediumFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<MultiTrigger TargetType="playon:CustomLabel">
+						<MultiTrigger.Conditions>
+							<BindingCondition Binding="{Binding Notifications.SelectedItem.Type}" Value="{x:Static playonModel:NotificationType.DownloadExpiring}"/>
+							<BindingCondition Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}"/>
+						</MultiTrigger.Conditions>
+						<Setter Property="IsVisible" Value="True"/>
+					</MultiTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<Label
+				Grid.Row="1"
+				Text="{Binding Notifications.SelectedItem.Created, Converter={StaticResource localDateTimeConverter}, StringFormat='{0:h:mm tt  MM/dd/yy}'}"
+				TextColor="White"
+				Style="{DynamicResource CompactFontLabel}"
+				LineBreakMode="TailTruncation"/>
+			<Grid HorizontalOptions="FillAndExpand" BackgroundColor="#282828" VerticalOptions="Start" Grid.Row="2">
+				<Grid.Padding>
+					<OnIdiom
+						x:TypeArguments="Thickness"
+						Phone="4,4,4,4"
+						Tablet="8,8,8,8"/>
+				</Grid.Padding>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="2.5*"/>
+					<ColumnDefinition Width="7.5*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.GestureRecognizers>
+					<TapGestureRecognizer
+						Command="{Binding NavigateToRecording}"
+						CommandParameter="{Binding Notifications.SelectedItem}"/>
+				</Grid.GestureRecognizers>
+				<Grid VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+					<Grid.HeightRequest>
+						<OnIdiom
+							x:TypeArguments="x:Double"
+							Phone="50"
+							Tablet="90"/>
+					</Grid.HeightRequest>
+					<ffimageloading:CachedImage
+						BitmapOptimizations="False"
+						TransformPlaceholders="False"
+						FadeAnimationEnabled="False"
+						HorizontalOptions="Center"
+						VerticalOptions="Center"
+						Aspect="AspectFit"
+						Source="{Binding Notifications.SelectedItem.RecordQueueItem.LargeThumbnailUri}"
+						LoadingPlaceholder="defaultThumb.png"/>
+				</Grid>
+				<StackLayout Orientation="Vertical" Grid.Column="1" VerticalOptions="FillAndExpand">
+					<Label
+						VerticalOptions="Start"
+						HorizontalOptions="Start"
+						TextColor="White"
+						LineBreakMode="TailTruncation"
+						Style="{DynamicResource CompactFontLabel}"
+						Text="{Binding Notifications.SelectedItem.RecordQueueItem.FullTitle}"/>
+					<playon:CustomLabel
+						VerticalOptions="CenterAndExpand"
+						HorizontalOptions="Start"
+						TextColor="#9a9999"
+						LinesCount="2"
+						ParagraphStyleAlignment="{x:Static playon:CustomTextAlignment.Center}"
+						LineBreakMode="TailTruncation"
+						Style="{DynamicResource CompactFontLabel}"
+						Text="{Binding Notifications.SelectedItem.RecordQueueItem.Description}"/>
+					<playon:CustomScrollView
+						DisableBounces="True"
+						VerticalOptions="End"
+						HorizontalOptions="Fill"
+						Orientation="Horizontal">
+						<playon:CustomLabel
+							TextColor="#0094FC"
+							Style="{DynamicResource CompactFontLabel}"
+							Text="{Binding Notifications.SelectedItem.RecordQueueItem.BrowsePathUI}"
+							BoldText="{Binding Notifications.SelectedItem.RecordQueueItem.BrowsePathUI, Converter={StaticResource nameBreadcrumbsConverter}, ConverterParameter='GetOnlyLastName'}"/>
+					</playon:CustomScrollView>
+				</StackLayout>
+			</Grid>
+			<playon:CustomLabel
+				Grid.Row="3"
+				TextColor="White"
+				Text="Unfortunately your recording has failed. We are sorry for the inconvenience and will look into what went wrong with this particular recording. You have been issued a recording credit, which you can use to record any episode or movie."
+				LineSpacing="1.3"
+				BoldText="You have been issued recording credit"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<DataTrigger TargetType="playon:CustomLabel" Binding="{Binding Notifications.SelectedItem.Type}" Value="{x:Static playonModel:NotificationType.FailedRecording}">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				Grid.Row="3"
+				TextColor="White"
+				Text="Unfortunately your recording has failed. We are sorry for the inconvenience and will look into what went wrong with this particular recording. You have been issued a recording credit, which you can use to record any episode or movie."
+				LineSpacing="1.3"
+				BoldText="You have been issued recording credit"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<DataTrigger TargetType="playon:CustomLabel" Binding="{Binding Notifications.SelectedItem.Type}" Value="{x:Static playonModel:NotificationType.RecordingIssue}">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				Grid.Row="3"
+				TextColor="White"
+				Text="{Binding Notifications.SelectedItem.RecordQueueItem.ProviderName, StringFormat='Unfortunately it looks like your video was taken offline by {0} before your recording was completed. You can browse to it again to see if it is back online or find another video you want to record. You have been issued a recording credit, which you can use to record any episode or movie.'}"
+				BoldText="You have been issued recording credit"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<DataTrigger TargetType="playon:CustomLabel" Binding="{Binding Notifications.SelectedItem.Type}" Value="{x:Static playonModel:NotificationType.BrowsingError}">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				Grid.Row="3"
+				TextColor="White"
+				Text="Your recording is ready to be downloaded. Tap on the recording above and then download it to your device. Once downloaded, you can watch it at any time from the Recordings tab. Tip: Enable Auto-download on the Queue tab so new recordings are always ready to watch."
+				LineSpacing="1.3"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<DataTrigger TargetType="playon:CustomLabel" Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isSuccessNotificationConverter}}" Value="True">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<playon:CustomLabel
+				Grid.Row="3"
+				TextColor="White"
+				Text="Your recording is going to expire soon, at which point you will no longer be able to download it. If you have not done so already, please be sure to download your recording to any device before it expires."
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<playon:CustomLabel.Triggers>
+					<DataTrigger TargetType="playon:CustomLabel" Binding="{Binding Notifications.SelectedItem.Type}" Value="{x:Static playonModel:NotificationType.DownloadExpiring}">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</playon:CustomLabel.Triggers>
+			</playon:CustomLabel>
+			<Label
+				Grid.Row="4"
+				TextColor="White"
+				Text="In the meantime, our team is looking into this issue. Thank you for your patience as we work on delivering you the best experience possible!"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<Label.Triggers>
+					<DataTrigger TargetType="Label" Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isFailedNotificationConverter}}" Value="True">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</Label.Triggers>
+			</Label>
+			<Label
+				Grid.Row="4"
+				TextColor="White"
+				Text="Enjoy!"
+				IsVisible="False"
+				Style="{DynamicResource CompactFontLabel}">
+				<Label.Triggers>
+					<DataTrigger TargetType="Label" Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isSuccessNotificationConverter}}" Value="True">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</Label.Triggers>
+			</Label>
+			<Button
+				Grid.Row="5"
+				IsVisible="False"
+				Text="Why did my recording fail?"
+				TextColor="#47a2ff"
+				Style="{DynamicResource TransparentButton}"
+				HorizontalOptions="Center"
+				VerticalOptions="End"
+				Command="{Binding Notifications.ShowFailedRecordingTip}"
+				CommandParameter="True">
+				<Button.CommandParameter>
+					<s:Boolean>True</s:Boolean>
+				</Button.CommandParameter>
+				<Button.FontSize>
+					<OnIdiom x:TypeArguments="x:Double"
+						Phone="10"
+						Tablet="16"/>
+				</Button.FontSize>
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding Notifications.SelectedItem.Type, Converter={StaticResource isFailedNotificationConverter}}" Value="True">
+						<Setter Property="IsVisible" Value="True"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			<Grid.Triggers>
+				<DataTrigger TargetType="Grid" Binding="{Binding DeviceOrientation}" Value="{x:Static playonModel:DeviceOrientation.Landscape}">
+					<Setter Property="IsVisible">
+						<Setter.Value>
+							<OnIdiom
+								x:TypeArguments="Thickness"
+								Phone="20,45,20,25"
+								Tablet="40,90,40,50"/>
+						</Setter.Value>
+					</Setter>
+				</DataTrigger>
+			</Grid.Triggers>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

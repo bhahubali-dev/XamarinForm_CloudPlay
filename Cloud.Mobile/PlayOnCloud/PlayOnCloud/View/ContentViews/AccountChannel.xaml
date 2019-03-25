@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlayOnCloud.AccountChannel"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+             xmlns:playonModel="clr-namespace:PlayOnCloud.Model;assembly=PlayOnCloud"
+             xmlns:xfc="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:PluralStringConverter x:Key="pluralStringConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid BackgroundColor="#191919" VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label HorizontalTextAlignment="Center" Grid.Row="0"
+                   Style="{DynamicResource MediumFontLabel}"
+                   Text="Channel Settings"
+                   TextColor="White" VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand" />
+            <playon:CustomListView x:Name="accountChannelsView"
+                                   Grid.Row="1"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand"
+                                   ItemsSource="{Binding Account.ChannelsWithLoginOptions}"
+                                   SelectedItem="{Binding Account.SelectedChannel,
+                                                                  Mode=TwoWay}">
+                <playon:CustomListView.RowHeight>
+                    <OnIdiom x:TypeArguments="x:Int32"
+                             Phone="48"
+                             Tablet="64" />
+                </playon:CustomListView.RowHeight>
+                <playon:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <playon:CustomViewCell>
+                            <Grid RowSpacing="0">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}"
+                                                          Tapped="Channel_OnTapped" />
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.ColumnSpacing>
+                                    <OnIdiom x:TypeArguments="x:Double"
+                                             Phone="10"
+                                             Tablet="20" />
+                                </Grid.ColumnSpacing>
+                                <ffimageloading:CachedImage x:Name="channelImage"
+                                                            HorizontalOptions="Center"
+                                                            LoadingPlaceholder="defaultChannelTile.jpg"
+                                                            Source="{Binding LargeThumbnailUrl}"
+                                                            VerticalOptions="Center">
+                                    <ffimageloading:CachedImage.WidthRequest>
+                                        <OnIdiom x:TypeArguments="x:Double"
+                                                 Phone="48"
+                                                 Tablet="64" />
+                                    </ffimageloading:CachedImage.WidthRequest>
+                                    <ffimageloading:CachedImage.HeightRequest>
+                                        <OnIdiom x:TypeArguments="x:Double"
+                                                 Phone="48"
+                                                 Tablet="64" />
+                                    </ffimageloading:CachedImage.HeightRequest>
+                                </ffimageloading:CachedImage>
+                                <Label Grid.Column="1"
+                                       Style="{DynamicResource CompactFontLabel}"
+                                       Text="{Binding Name}"
+                                       TextColor="White"
+                                       VerticalOptions="Center" />
+                                <StackLayout Grid.Column="2">
+                                    <StackLayout HorizontalOptions="End"
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="CenterAndExpand">
+                                        <Label x:Name="loggedInStateLabel"
+                                               LineBreakMode="NoWrap"
+                                               Style="{DynamicResource TinyFontLabel}"
+                                               VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                             TargetType="Label"
+                                                             Value="True">
+                                                    <Setter Property="TextColor" Value="#0efee5" />
+                                                    <Setter Property="Text" Value="Logged in" />
+                                                    <Setter Property="VerticalOptions" Value="Start" />
+                                                </DataTrigger>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePassword}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="TextColor" Value="#fcb040" />
+                                                    <Setter Property="Text" Value="Login required" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordServiceProvider}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="TextColor" Value="#fcb040" />
+                                                    <Setter Property="Text" Value="Login required" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordPin}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="TextColor" Value="#fcb040" />
+                                                    <Setter Property="Text" Value="Login required" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordOptional}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="TextColor" Value="White" />
+                                                    <Setter Property="Text" Value="Not logged in" />
+                                                </MultiTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Image Margin="10,0,20,0"
+                                               Aspect="AspectFit"
+                                               HeightRequest="{Binding FontSize,
+                                                                               Source={x:Reference Name=loggedInStateLabel}}"
+                                               VerticalOptions="Center">
+                                            <Image.Triggers>
+                                                <DataTrigger Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                             TargetType="Image"
+                                                             Value="True">
+                                                    <Setter Property="Source" Value="checkmark.png" />
+                                                    <Setter Property="VerticalOptions" Value="Start" />
+                                                </DataTrigger>
+                                                <MultiTrigger TargetType="Image">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePassword}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Source" Value="warning.png" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Image">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordServiceProvider}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Source" Value="warning.png" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Image">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordPin}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Source" Value="warning.png" />
+                                                </MultiTrigger>
+                                                <MultiTrigger TargetType="Image">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition
+                                                            Binding="{Binding LoginInfo.ValidationSuccessful}"
+                                                            Value="False" />
+                                                        <BindingCondition Binding="{Binding CredentialsType}"
+                                                                          Value="{x:Static playonModel:ChannelCredentialsType.UsernamePasswordOptional}" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Source" Value="lock.png" />
+                                                </MultiTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </StackLayout>
+                                    <StackLayout>
+                                        <Label x:Name="loggedInName"
+                                               IsVisible="False"
+                                               LineBreakMode="TailTruncation"
+                                               Style="{DynamicResource TinyFontLabel}"
+                                               Text="{Binding UserName}">
+                                            <Label.Triggers>
+                                                <DataTrigger Binding="{Binding LoginInfo.LoginPerformed}"
+                                                             TargetType="Label"
+                                                             Value="True">
+                                                    <Setter Property="TextColor" Value="White" />
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Grid>
+                        </playon:CustomViewCell>
+                    </DataTemplate>
+                </playon:CustomListView.ItemTemplate>
+            </playon:CustomListView>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

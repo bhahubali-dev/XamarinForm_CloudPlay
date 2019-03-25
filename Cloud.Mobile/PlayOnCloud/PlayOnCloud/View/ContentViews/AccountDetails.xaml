@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView x:Class="PlayOnCloud.AccountDetails"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <playon:PluralStringConverter x:Key="pluralStringConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid IsVisible="False">
+            <Grid.Triggers>
+                <MultiTrigger TargetType="Grid">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding SignedIn}" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </Grid.Triggers>
+            <Grid.RowSpacing>
+                <OnIdiom x:TypeArguments="x:Double"
+                         Phone="20"
+                         Tablet="40" />
+            </Grid.RowSpacing>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <!--<Grid.Padding>
+                <OnIdiom x:TypeArguments="Thickness"
+                         Phone="15,10,10,10"
+                         Tablet="30,20,20,20" />
+            </Grid.Padding>-->
+            <BoxView Grid.Row="0"
+                     BackgroundColor="Transparent"
+                     HeightRequest="60"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+            <Label Grid.Row="1"
+                   HorizontalOptions="Center"
+                   Style="{DynamicResource MediumFontLabel}"
+                   Text="You are not signed in"
+                   TextColor="White"
+                   VerticalOptions="Start" />
+            <BoxView Grid.Row="2"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+            <Button Grid.Row="3"
+                    BackgroundColor="Transparent"
+                    BorderColor="Transparent"
+                    BorderRadius="5"
+                    Clicked="SignIn_Clicked"
+                    HorizontalOptions="Center"
+                    Text="Sign in"
+                    TextColor="#FFFFFF"
+                    VerticalOptions="StartAndExpand">
+                <Button.HeightRequest>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="24"
+                             Tablet="36" />
+                </Button.HeightRequest>
+
+                <Button.FontSize>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="12"
+                             Tablet="16" />
+                </Button.FontSize>
+                <Button.BorderWidth>
+                    <OnIdiom x:TypeArguments="x:Double"
+                             Phone="1"
+                             Tablet="2" />
+                </Button.BorderWidth>
+            </Button>
+            <BoxView Grid.Row="4"
+                     BackgroundColor="Silver"
+                     HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="End" />
+        </Grid>
+        <playon:CustomScrollView IsVisible="False" RefreshCommand="{Binding PullUserCreditsAsync}">
+            <playon:CustomScrollView.Triggers>
+                <MultiTrigger TargetType="playon:CustomScrollView">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding SignedIn}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </playon:CustomScrollView.Triggers>
+            <Grid VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                </Grid.RowDefinitions>
+
+                <BoxView Grid.Row="0"
+                         BackgroundColor="Transparent"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+
+
+                <!--<Label Style="{DynamicResource ExtraMediumFontLabel}"
+                       Text="Account"
+                       TextColor="White"
+                       VerticalOptions="Center" />-->
+                <Grid Grid.Row="1">
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="15,0,0,0"
+                                 Tablet="30,0,0,0" />
+                    </Grid.Padding>
+                    <Grid.RowSpacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="7"
+                                 Tablet="15" />
+                    </Grid.RowSpacing>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label FontAttributes="Bold"
+                           Style="{DynamicResource ExtraMediumFontLabel}"
+                           Text="{Binding UserInfo.Name,
+                                          StringFormat='{0}'}"
+                           TextColor="White"
+                           VerticalOptions="Start" />
+                    <Label Grid.Row="1"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="{Binding UserInfo.Email,
+                                          StringFormat='Logged in as: {0}'}"
+                           TextColor="White"
+                           VerticalOptions="Start" />
+                    <Label Grid.Row="2"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="Password: ********"
+                           TextColor="White"
+                           VerticalOptions="Start" />
+                </Grid>
+                <BoxView Grid.Row="2"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+                <Grid Grid.Row="3">
+                    <Grid.Padding>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="15,0,0,0"
+                                 Tablet="30,0,0,0" />
+                    </Grid.Padding>
+                    <Grid.RowSpacing>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="7"
+                                 Tablet="15" />
+                    </Grid.RowSpacing>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{DynamicResource CompactFontLabel}"
+                           Text="{Binding UserInfo.Credits,
+                                          Converter={StaticResource pluralStringConverter},
+                                          ConverterParameter='Credits: You have {0} credit[PLURAL_REPLACE]'}"
+                           TextColor="#fad400"
+                           VerticalOptions="Start" />
+                    <Label Grid.Row="1"
+                           FontAttributes="Italic"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="In the case of a failed recording, you will be given credit for a new free recording of your choice."
+                           TextColor="#7b7b7b"
+                           VerticalOptions="Start" />
+                </Grid>
+                <BoxView Grid.Row="4"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+
+                <Grid Grid.Row="5">
+                    <Button BackgroundColor="Transparent"
+                            Clicked="OnClick_ChannelSettings"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Channel Setting"
+                            VerticalOptions="Start">
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="28"
+                                     Tablet="36" />
+                        </Button.HeightRequest>
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="12"
+                                     Tablet="16" />
+                        </Button.FontSize>
+
+                    </Button>
+                    <!--<Label HorizontalOptions="StartAndExpand"
+                           HorizontalTextAlignment="Start"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="Channel Setting"
+                           TextColor="#16bcee"
+                           VerticalOptions="End"
+                           VerticalTextAlignment="Center">
+
+                        <Label.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="30"
+                                     Tablet="50" />
+                        </Label.HeightRequest>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClick_ChannelSettings" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label HorizontalOptions="StartAndExpand"
+                           HorizontalTextAlignment="Start"
+                           Style="{DynamicResource CompactFontLabel}"
+                           Text="&#xf014;"
+                           VerticalOptions="End"
+                           VerticalTextAlignment="Center">
+
+                        <Label.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="30"
+                                     Tablet="50" />
+                        </Label.HeightRequest>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClick_ChannelSettings" />
+                        </Label.GestureRecognizers>
+                    </Label>-->
+                </Grid>
+                <BoxView Grid.Row="6"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+                <Grid Grid.Row="7">
+                    <Button BackgroundColor="Transparent"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Download options"
+                            VerticalOptions="Start"
+                            Clicked="DownloadOption_OnClicked">
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="28"
+                                     Tablet="36" />
+                        </Button.HeightRequest>
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="12"
+                                     Tablet="16" />
+                        </Button.FontSize>
+                        <Button.BorderWidth>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="1"
+                                     Tablet="2" />
+                        </Button.BorderWidth>
+                    </Button>
+                </Grid>
+                <BoxView Grid.Row="8"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+
+                <Grid Grid.Row="9">
+                    <Button BackgroundColor="Transparent"
+                            Command="{Binding SubmitSupportRequest}"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Submit a support request"
+                            TextColor="White"
+                            VerticalOptions="Start">
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="28"
+                                     Tablet="36" />
+                        </Button.HeightRequest>
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="12"
+                                     Tablet="16" />
+                        </Button.FontSize>
+                        <Button.BorderWidth>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="1"
+                                     Tablet="2" />
+                        </Button.BorderWidth>
+                    </Button>
+                </Grid>
+                <BoxView Grid.Row="10"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+
+                <Grid Grid.Row="11">
+                    <Button BorderColor="White"
+                            BorderRadius="5"
+                            Clicked="SignOut_OnClicked"
+                            HorizontalOptions="Center"
+                            IsVisible="False"
+                            Style="{DynamicResource TransparentButton}"
+                            Text="Log out of PlayOn Cloud"
+                            TextColor="White"
+                            VerticalOptions="Start">
+                        <Button.Triggers>
+                            <DataTrigger Binding="{Binding SignedIn}"
+                                         TargetType="Button"
+                                         Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                        <Button.HeightRequest>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="24"
+                                     Tablet="36" />
+                        </Button.HeightRequest>
+                        <Button.FontSize>
+                            <OnIdiom x:TypeArguments="x:Double"
+                                     Phone="12"
+                                     Tablet="16" />
+                        </Button.FontSize>
+                    </Button>
+                </Grid>
+                <BoxView Grid.Row="12"
+                         BackgroundColor="Silver"
+                         HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="End" />
+
+            </Grid>
+        </playon:CustomScrollView>
+
+    </Grid>
+</ContentView>

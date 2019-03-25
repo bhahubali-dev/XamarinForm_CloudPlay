@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application x:Class="PlayOnCloud.App"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Style.Triggers>
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="playon:CheckBox">
+                <Style.Triggers>
+                    <Trigger TargetType="playon:CheckBox" Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="playon:RoundButton">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="220"
+                                 Tablet="280" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="48" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="18"
+                                 Tablet="24" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RoundButtonLoginControls" TargetType="playon:RoundButton">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="250"
+                                 Tablet="340" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="50" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="18"
+                                 Tablet="25" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="RoundFrameButton" TargetType="playon:RoundFrame">
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="200"
+                                 Tablet="260" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="48" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="18"
+                                 Tablet="24" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RoundFrameButtonLoginControls" TargetType="playon:RoundFrame">
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="250"
+                                 Tablet="340" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="50" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="18"
+                                 Tablet="25" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="playon:RoundEntry">
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="180"
+                                 Tablet="250" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="36" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="10"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="LoginControls" TargetType="playon:RoundEntry">
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="250"
+                                 Tablet="340" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="36"
+                                 Tablet="50" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="18"
+                                 Tablet="25" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="playon:BindablePicker">
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="110"
+                                 Tablet="220" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="36" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="BindablePickerLoginControls" TargetType="playon:BindablePicker">
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="250"
+                                 Tablet="340" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="24"
+                                 Tablet="50" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="TransparentButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="25" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="MediumTransparentButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="14" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ExtraLargeFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="20"
+                                 Tablet="36" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="LargeFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="18"
+                                 Tablet="27" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ExtraMediumFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="16"
+                                 Tablet="22" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="MediumFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="CompactFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="12"
+                                 Tablet="16" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="SmallFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="14" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="TinyFontLabel" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="8"
+                                 Tablet="12" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="NavigationButton" TargetType="playon:NavigationFrame">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="8"
+                                 Tablet="10" />
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger TargetType="playon:NavigationFrame" Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="RecordingsImageButton" TargetType="playon:ImageButton">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="Orientation" Value="{x:Static playon:ImageOrientation.ImageCentered}" />
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="8"
+                                 Tablet="10" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ImageWidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="8"
+                                 Tablet="12" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ImageHeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="8"
+                                 Tablet="12" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="BackImageButton" TargetType="playon:ImageButton">
+                <Setter Property="ShadowColor" Value="Black" />
+                <Setter Property="ShadowOffset" Value="2" />
+                <Setter Property="ShadowOpacity" Value="0.95" />
+                <Setter Property="ShadowRadius" Value="2" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="Source" Value="backArrow.png" />
+                <Setter Property="Orientation" Value="{x:Static playon:ImageOrientation.ImageCentered}" />
+                <Setter Property="playon:ImageButton.Margin">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="6,5,0,0"
+                                 Tablet="20,10,0,0" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="playon:ImageButton.ImageWidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="12"
+                                 Tablet="24" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="playon:ImageButton.ImageHeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Int32"
+                                 Phone="17"
+                                 Tablet="30" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="playon:ImageButton.WidthRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="26"
+                                 Tablet="52" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="playon:ImageButton.HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="40"
+                                 Tablet="80" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="LoginPopupImageButton" TargetType="playon:ImageButton">
+                <Setter Property="HorizontalContentAlignment" Value="Start" />
+                <Setter Property="BorderColor" Value="#777777" />
+                <Setter Property="BorderWidth" Value="0.5" />
+                <Setter Property="BorderRadius" Value="1" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="TextColor" Value="#16bcee" />
+                <Setter Property="FontFamily" Value="HelveticaNeue-Light" />
+                <Setter Property="IsVisible" Value="False" />
+                <Setter Property="ContentMargin">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="Thickness"
+                                 Phone="25,0,0,0"
+                                 Tablet="50,0,0,0" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="11"
+                                 Tablet="20" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="40"
+                                 Tablet="60" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RegisterButton"
+                   BasedOn="{StaticResource TransparentButton}"
+                   TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Command" Value="{Binding Register.SwitchView}" />
+                <Setter Property="Margin">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="Thickness" Phone="0,2,0,0" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="30"
+                                 Tablet="50" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="18" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

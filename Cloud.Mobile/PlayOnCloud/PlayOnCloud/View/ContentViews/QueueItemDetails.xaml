@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			xmlns:s="clr-namespace:System;assembly=mscorlib"
+			xmlns:playon="clr-namespace:PlayOnCloud;assembly=PlayOnCloud"
+			xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+			xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+			x:Class="PlayOnCloud.QueueItemDetails">
+	<ContentView.Resources>
+		<ResourceDictionary>
+			<playon:NameBreadcrumbsConverter x:Key="nameBreadcrumbsConverter"/>
+			<playon:DurationConverter x:Key="durationConverter"/>
+			<playon:AirDateConverter x:Key="airDateConverter"/>
+		<playon:NullConverter x:Key="nullConverter"/>
+		</ResourceDictionary>
+	</ContentView.Resources>
+	<ContentView.Content>
+		<Grid BackgroundColor="Black" RowSpacing="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="3*"/>
+				<RowDefinition Height="7*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.4*"/>
+				<ColumnDefinition Width="0.2*"/>
+				<ColumnDefinition Width="0.4*"/>
+			</Grid.ColumnDefinitions>
+			<ffimageloading:CachedImage
+				Grid.ColumnSpan="3"
+				HorizontalOptions="FillAndExpand"
+				VerticalOptions="FillAndExpand"
+				Aspect="AspectFill"
+				TransformPlaceholders="True"
+				Opacity="0.3">
+				<ffimageloading:CachedImage.Triggers>
+					<MultiTrigger TargetType="ffimageloading:CachedImage">
+						<MultiTrigger.Conditions>
+							<BindingCondition Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}" Value="False"/>
+						</MultiTrigger.Conditions>
+						<Setter Property="LoadingPlaceholder" Value="{Binding SelectedItem.SmallThumbnailUri}"/>
+						<Setter Property="ErrorPlaceholder" Value="defaultThumb.png"/>
+						<Setter Property="Source" Value="{Binding SelectedItem.LargeThumbnailUri}"/>
+					</MultiTrigger>
+				</ffimageloading:CachedImage.Triggers>
+				<ffimageloading:CachedImage.Transformations>
+					<fftransformations:BlurredTransformation Radius="15"/>
+				</ffimageloading:CachedImage.Transformations>
+			</ffimageloading:CachedImage>
+			<Grid Grid.ColumnSpan="3">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<ffimageloading:CachedImage
+					Grid.RowSpan="2"
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="FillAndExpand"
+					Aspect="AspectFit">
+					<ffimageloading:CachedImage.Triggers>
+						<MultiTrigger TargetType="ffimageloading:CachedImage">
+							<MultiTrigger.Conditions>
+								<BindingCondition Binding="{Binding SelectedItem, Converter={StaticResource nullConverter}}" Value="False"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="LoadingPlaceholder" Value="{Binding SelectedItem.SmallThumbnailUri}"/>
+							<Setter Property="ErrorPlaceholder" Value="defaultThumb.png"/>
+							<Setter Property="Source" Value="{Binding SelectedItem.LargeThumbnailUri}"/>
+						</MultiTrigger>
+					</ffimageloading:CachedImage.Triggers>
+				</ffimageloading:CachedImage>
+				<Grid.Padding>
+					<OnIdiom
+						x:TypeArguments="Thickness"
+						Phone="36,36,36,20"
+						Tablet="36,36,36,40"/>
+				</Grid.Padding>
+			</Grid>
+			<Grid Grid.Row="1" Grid.ColumnSpan="3">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.11*"/>
+					<ColumnDefinition Width="0.78*"/>
+					<ColumnDefinition Width="0.11*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="0.18*"/>
+					<RowDefinition Height="0.82*"/>
+				</Grid.RowDefinitions>
+				<StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+					<Label
+						VerticalOptions="Start"
+						HorizontalOptions="Start"
+						TextColor="White"
+						FontAttributes="Bold"
+						Style="{DynamicResource ExtraMediumFontLabel}"
+						Text="{Binding SelectedItem.Series}"/>
+					<Label
+						VerticalOptions="Start"
+						HorizontalOptions="Start"
+						TextColor="White"
+						FontAttributes="Bold"
+						Style="{DynamicResource MediumFontLabel}"
+						Text="{Binding SelectedItem.Title}"/>
+					<playon:CustomScrollView
+						DisableBounces="True"
+						VerticalOptions="Start"
+						HorizontalOptions="Fill"
+						Orientation="Horizontal">
+						<playon:CustomLabel
+							TextColor="#0094FC"
+							Style="{DynamicResource CompactFontLabel}"
+							Text="{Binding SelectedItem.BrowsePathUI}"
+							BoldText="{Binding SelectedItem.BrowsePathUI, Converter={StaticResource nameBreadcrumbsConverter}, ConverterParameter='GetOnlyLastName'}"/>
+					</playon:CustomScrollView>
+					<StackLayout VerticalOptions="Start" HorizontalOptions="Start" Padding="0,5,0,5" Orientation="Horizontal">
+						<Label
+							x:Name="airDateLabel"
+							VerticalOptions="Center"
+							HorizontalOptions="Start"
+							TextColor="White"
+							Style="{DynamicResource CompactFontLabel}"
+							Text="{Binding SelectedItem.AirDate, Converter={StaticResource airDateConverter}}">
+							<Label.Triggers>
+								<DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference airDateLabel}, Path=Text}" Value="{x:Static s:String.Empty}">
+									<Setter Property="IsVisible" Value="False"/>
+								</DataTrigger>
+							</Label.Triggers>
+						</Label>
+						<Label
+							VerticalOptions="Center"
+							HorizontalOptions="Start"
+							TextColor="White"
+							Style="{DynamicResource CompactFontLabel}"
+							Text="{Binding SelectedItem.Duration, Converter={StaticResource durationConverter}}"/>
+					</StackLayout>
+					<ScrollView VerticalOptions="Start" HorizontalOptions="Start">
+						<playon:CustomLabel
+							VerticalOptions="Start"
+							HorizontalOptions="Start"
+							TextColor="White"
+							Style="{DynamicResource CompactFontLabel}"
+							Text="{Binding SelectedItem.Description}"
+							LineSpacing="1.5"/>
+					</ScrollView>
+				</StackLayout>
+			</Grid>
+		</Grid>
+	</ContentView.Content>
+</ContentView>
